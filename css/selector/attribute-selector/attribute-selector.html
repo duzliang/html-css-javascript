@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        div[action] {
+            color: blueviolet;
+        }
+
+        div[action="refresh"]{
+            color: chocolate;
+        }
+        
+        div[action~="bar"]{
+            background-color: chartreuse;
+        }
+
+        div[action^="fa"]{
+            color: red;
+        }
+
+        div[action$="icon"]{
+            background-color: #cccccc;
+        }
+        
+        div[action*="od"]{
+            background-color: #ee11ee;
+        }
+
+        div[action|="en"]{
+            background-color: #a67cff;
+        }
+    </style>
+</head>
+<body>
+<h3>属性选择器</h3>
+
+<div action >有action属性</div>
+<div action="refresh">action属性的值为refresh</div>
+<div action="fa bar">属性值是以空格分开的多个值，bar是其中一个值</div>
+<div action="fashion">属性值是以fa开始</div>
+<div action="foo-icon">属性值是以icon结尾</div>
+<div action="food">属性值中包含oo</div>
+<div action="en-fa-so">属性值是以连字符连接,从左向右，以en开始</div>
+</body>
+</html>
