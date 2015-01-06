@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        a[href^="http"]::after{
+            content: "(" attr(href) ")";
+        }
+    </style>
+</head>
+<body>
+<a href="http://www.google.com">Google</a>
+</body>
+</html>
