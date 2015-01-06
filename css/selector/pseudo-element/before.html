@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        span::before{
+            content: "*";
+        }
+
+        /*ol{*/
+            /*list-style-type: lower-roman;*/
+        /*}*/
+
+        ol > li:before{
+            content: counter(i,decimal);
+        }
+    </style>
+</head>
+<body>
+<span>I'm a span</span>
+
+<ol>
+    <li>item1</li>
+    <li>item2</li>
+    <li>item3</li>
+    <li>item4</li>
+</ol>
+</body>
+</html>

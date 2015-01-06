@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0 auto;
+        }
+
+        ul li {
+            list-style: none;
+            line-height: 34px;
+            font-size: 24px;
+        }
+
+        ul li:nth-last-child(1) {
+            color: green;
+        }
+
+        /*无法选择*/
+        ul li:nth-child(3) {
+            color: chocolate;
+        }
+
+        /*选择第三个li*/
+        ul li:nth-of-type(3) {
+            font-size: 34px;
+            color: red;
+        }
+
+        ul li:nth-last-of-type(3) {
+            text-shadow: #2288dd;
+        }
+
+        ul li:not(div) {
+            border: 1px dotted #ee11ee;
+        }
+
+        ul li:nth-child(even) {
+            background-color: #cccccc;
+        }
+
+        ul li:empty{
+            border-bottom: 2px solid red;
+        }
+
+        ol li:only-child {
+            font-size: 38px;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+<ul>
+    <li>1</li>
+    <li>2</li>
+    <div>div1</div>
+    <div>div2</div>
+    <li>3</li>
+    <li>4</li>
+    <li>5</li>
+    <br/>
+    <li></li>
+</ul>
+
+<ol>
+    <li><span>ol2</span></li>
+</ol>
+</body>
+</html>
