@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-cn">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    /*box-sizing的三个属性值*/
+    input {
+      /*w3c标准*/
+      /*box-sizing: content-box;*/
+      /*ie5以下*/
+      /*box-sizing: border-box;*/
+
+      /*box-sizing: inherit;*/
+
+      border: 1px solid #cccccc;
+      padding: 2px 5px;
+      margin: 3px;
+      width: 100px;
+      height: 30px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .wrapper {
+      width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+      color: #ffffff;
+      font-size: 30px;
+      text-align: center;
+    }
+
+    #header {
+      height: 100px;
+      background: #38382e;
+      margin-bottom: 10px;
+    }
+
+    .sidebar {
+      float: left;
+      width: 220px;
+      margin-right: 20px;
+      margin-bottom: 10px;
+      height: 300px;
+      background: #5d33cf;
+    }
+
+    .content {
+      float: left;
+      width: 720px;
+      height: 300px;
+      background: #cecece;
+      margin-bottom: 10px;
+    }
+
+    #footer {
+      background: #cc4ad5;
+      height: 100px;
+      clear: both;
+    }
+  </style>
+</head>
+<body>
+<div class="wrapper">
+  <div id="header">头部</div>
+  <div class="sidebar">侧边栏</div>
+  <div class="content">内容区</div>
+  <div id="footer">底部</div>
+</div>
+</body>
+</html>
