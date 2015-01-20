@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-cn">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .item {
+      width: 400px;
+      height: 300px;
+      margin: 50px auto;
+      border: 5px solid hsla(60, 50%, 80%, 0.8);
+      background-image: -webkit-radial-gradient(hsla(120, 70%, 60%, 0.9), hsla(360, 60%, 60%, 0.9));
+      background-image: radial-gradient(hsla(120, 70%, 60%, 0.9), hsla(360, 60%, 60%, 0.9));
+    }
+
+    .center .circle {
+      background-image: -webkit-radial-gradient(circle at center, rgb(220, 75, 200), rgb(0, 0, 75));
+      background-image: radial-gradient(circle at center, rgb(220, 75, 200), rgb(0, 0, 75));
+    }
+
+    .center .ellipse {
+      background-image: -webkit-radial-gradient(ellipse at center, rgb(220, 75, 200), rgb(0, 0, 75));
+      background-image: radial-gradient(ellipse at center, rgb(220, 75, 200), rgb(0, 0, 75));
+    }
+
+  </style>
+</head>
+<body>
+<div class="item"></div>
+
+<div class="center circle"></div>
+<div class="center ellipse"></div>
+</body>
+</html>

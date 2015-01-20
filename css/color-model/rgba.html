@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="zh-cn">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title></title>
+  <style>
+    .parent {
+      width: 300px;
+      height: 300px;
+      margin: 0 auto;
+      border: 3px solid chocolate;
+      background: rgba(203, 104, 255, .5);
+    }
+
+    .child {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto;
+      border: 4px solid rgba(18,25,127, 0.3);
+      background: green;
+    }
+  </style>
+</head>
+
+<body>
+<div class="parent">
+  parent,当前元素具有透明效果，后代元素不继承
+  <p>可为任何具有颜色属性的值设置透明</p>
+
+  <div class="child">
+    child
+  </div>
+</div>
+</body>
+</html>
