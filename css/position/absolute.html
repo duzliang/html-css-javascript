@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>absolute</title>
+
+  <style>
+  * {
+    box-sizing: border;
+  }
+  .container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    border: 5px solid red;
+    background: green;
+  }
+  .left {
+    width: 50px;
+    /*height: 50px;*/
+    margin: 0 auto;
+    background: red;
+    position: absolute;
+    left: 10px;
+    top:10px;
+    bottom: 10px;
+  }
+  .right {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    background: blue;
+    position: absolute;
+  }
+  </style>
+</head>
+
+<body>
+  <h3>元素脱离离原来的文档流</h3>
+  <ol>
+    <li>未设置left,top,right,bottom时，默认显示在父容器的左上角，根据出现的先后顺序进行层叠</li>
+    <li>设置left,top,right,bottom时,根据浏览器可视窗口进行偏移</li>
+    <li>元素不设置宽度或高度时，会拉伸元素的大小，如.left未设置height时</li>
+    <li></li>
+  </ol>
+  <div class="container">
+    <div class="left">left</div>
+    <div class="right">right</div>
+  </div>
+</body>
+
+</html>

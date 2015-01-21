@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>z-index</title>
+
+  <style>
+  * {
+    box-sizing: border;
+  }
+  .container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    border: 5px solid red;
+    background: green;
+  }
+  .left {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    background: white;
+    position: relative;
+    top: 5px;
+    left: 10px;
+    z-index: 1;
+  }
+  .right {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    background: blue;
+    position: relative;
+    right: 10px;
+  }
+  </style>
+</head>
+
+<body>
+<p>默认z-index按照文档流进行层叠，可通过z-index设置z轴的层叠顺序</p>
+<div class="container">
+  <div class="left">left</div>
+  <div class="right">right</div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>relative</title>
+
+  <style>
+  * {
+    box-sizing: border;
+  }
+  .container {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    border: 5px solid red;
+    background: green;
+  }
+  .left {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    background: white;
+    position: relative;
+    top: 5px;
+    left: 10px;
+  }
+  .right {
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    background: blue;
+    position: relative;
+    top: 10px;
+    right: 10px;
+  }
+  </style>
+</head>
+
+<body>
+  <h3>元素未脱离原来的文档流</h3>
+  <p>元素以原始位置(static时的位置)(根据left,top,right,bottom)进行移动</p>
+  <div class="container">
+    <div class="left">left</div>
+    <div class="right">right</div>
+  </div>
+</body>
+
+</html>
