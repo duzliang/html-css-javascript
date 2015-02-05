@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>flex</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .flex-container {
+      width: 960px;
+      margin: 20px auto;
+      min-height: 300px;
+      border: 1px solid hsla(120, 30%, 58%, .8);
+      color: #ffffff;
+      font-weight: bold;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-flow: row nowrap;
+      flex-flow: row nowrap;
+      -webkit-justify-content: space-around;
+      justify-content: space-around;
+      -webkit-align-items: stretch;
+      align-items: stretch;
+    }
+
+    .flex-container > div {
+      padding: 10px;
+    }
+
+    .flex-container > div:nth-child(1) {
+      background-color: hsla(170, 60%, 80%, .9);
+      flex: 1;
+    }
+
+    .flex-container > div:nth-child(2) {
+      background-color: hsla(30, 80%, 50%, .9);
+      flex: 2;
+    }
+
+    .flex-container > div:nth-child(3) {
+      background-color: hsla(100, 30%, 30%, .9);
+      flex: 3;
+    }
+
+  </style>
+</head>
+<body>
+<div class="flex-container">
+  <div>left sidebar container</div>
+  <div>main container</div>
+  <div>right sidebar container</div>
+</div>
+</body>
+</html>
