@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    .container {
+      margin: 0;
+      padding: 0;
+    }
+
+    .box1 {
+      height: 400px;
+      background: #3F51B5;
+      -webkit-animation: moveToLeft 2s cubic-bezier(0.87,0,0.58,1) 1s 3;
+      -o-animation: moveToLeft 2s cubic-bezier(0.87,0,0.58,1) 1s 3;
+      animation: moveToLeft 2s cubic-bezier(0.87,0,0.58,1) 1s 3;
+    }
+
+    @keyframes moveToLeft {
+      polyfill-rule{
+
+      }
+
+      to {
+        -webkit-transform: translateX(100%);
+        -moz-transform: translateX(100%);
+        -ms-transform: translateX(100%);
+        -o-transform: translateX(100%);
+        transform: translateX(100%);
+
+        opacity: .1;
+      }
+    }
+
+    .box2 {
+      height: 200px;
+      background: greenyellow;
+      animation-name: slide-right;
+      animation-duration: 2s;
+    }
+
+    @keyframes slide-right {
+
+      from {
+        margin-left: 0px;
+      }
+
+      50% {
+        margin-left: 100%;
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.9;
+      }
+
+      to {
+        margin-left: 200px;
+      }
+
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <div class="box1"></div>
+
+  <div class="box2"></div>
+</div>
+</body>
+</html>
