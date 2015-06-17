@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+
+  <style>
+    
+    div{
+      height: 200px;
+      background: gold;
+      -webkit-animation: bounce 3s 2s;
+      -o-animation: bounce 3s 2s;
+      animation: bounce 3s 2s;
+    }
+    
+    @keyframes bounce {
+
+      from {
+        top: 100px;
+        animation-timing-function: ease-out;
+      }
+
+      25% {
+        top: 50px;
+        animation-timing-function: ease-in;
+      }
+
+      50% {
+        top: 100px;
+        animation-timing-function: ease-out;
+      }
+
+      75% {
+        top: 75px;
+        animation-timing-function: ease-in;
+      }
+
+      to {
+        top: 100px;
+      }
+
+    }
+  </style>
+</head>
+<body>
+  <div></div>
+</body>
+</html>
