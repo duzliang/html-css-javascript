@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Prototype Chaining</title>
+</head>
+<body>
+<script>
+  function SuperType() {
+    this.property = true;
+  }
+
+  SuperType.prototype.getSuperValue = function() {
+    return this.property;
+  };
+
+  function SubType() {
+    this.subProperty = false;
+  }
+
+  // extend SuperType
+  SubType.prototype = new SuperType();
+
+  SubType.prototype.getSubValue = function() {
+    return this.subProperty;
+  };
+
+  var instance = new SubType();
+
+  console.log('subValue=>', instance.getSubValue()); // false
+
+  // 原型与实例的关系
+  console.log('instanceof=>', instance instanceof Object);
+  console.log('instanceof=>', instance instanceof SuperType);
+  console.log('instanceof=>', instance instanceof SubType);
+
+  console.log('isPrototypeOf=>', Object.prototype.isPrototypeOf(instance));
+  console.log('isPrototypeOf=>', SuperType.prototype.isPrototypeOf(instance));
+  console.log('isPrototypeOf=>', SubType.prototype.isPrototypeOf(instance));
+</script>
+</body>
+</html>
