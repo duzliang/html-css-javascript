@@ -1,0 +1,47 @@
+<!--first-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<div id="head" style="font-size: 20px;" onclick="onDivClick()">
+  <h3 class="head">Head</h3>
+</div>
+
+<footer>
+  <div>
+    <h6>footer</h6>
+  </div>
+</footer>
+
+<script>
+  let div = document.getElementsByTagName('div')[0];
+  // console.log('log=>', document.documentElement)
+
+  // 取得完整的URL
+  var url = document.URL;
+  // 取得域名
+  var domain = document.domain;
+  // 取得来源页面链接
+  var referrer = document.referrer;
+
+  console.log('url=>', url);
+  console.log('domain=>', domain);
+  console.log('referrer=>', referrer);
+
+  var images = document.images;
+  var links = document.links;
+  console.log('log=>', images, links)
+
+  function onDivClick() {
+    console.log('log=>', 'click div');
+  }
+</script>
+</body>
+</html>
+<!--second-->

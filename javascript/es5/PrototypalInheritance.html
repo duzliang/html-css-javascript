@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Prototypal Inheritance</title>
+</head>
+<body>
+<script>
+  function object(o) {
+    function F() {
+    };
+    F.prototype = o;
+    return new F();
+  }
+
+  var person = {
+    name: 'duke',
+    colors: ['red', 'green'],
+  };
+
+  var person1 = object(person);
+  person1.naem = 'dome1';
+  person1.colors.push('black');
+
+  var person2 = object(person);
+  person2.naem = 'dome2';
+  person2.colors.push('white');
+
+  console.log('person colors=>', person.colors); // ["red", "green", "black", "white"]
+  console.log('person1=>', person1.name, person1.colors); // duke ["red", "green", "black", "white"]
+
+  // ES5规范化格式
+  // Object.create(o)
+
+  var newPerson = Object.create(person);
+  newPerson.name = 'new';
+  newPerson.colors.push('yellow');
+  console.log('newPerson=>', newPerson.colors); //  ["red", "green", "black", "white", "yellow"]
+
+  var anotherPerson = Object.create(person, {
+    name: {
+      value: 'anotherName',
+    },
+  });
+  console.log('log=>', anotherPerson.name); // anotherName
+
+  // 寄生式继承
+
+  function createPerson(original) {
+    var clone = object(original); // 调用函数创建一个新对象
+    clone.sayHi = function() {     // 增强对象
+      return 'hi';
+    };
+    return clone;
+  }
+
+  var anotherPerson = createPerson(person);
+  console.log('log=>', anotherPerson.sayHi()); // hi
+</script>
+</body>
+</html>

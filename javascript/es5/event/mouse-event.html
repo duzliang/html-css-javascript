@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mouse and Wheel event</title>
+
+  <style>
+    #container{
+      width: 100%;
+      height: 900px;
+      background: orange;
+    }
+  </style>
+</head>
+<body>
+<div id="container">
+  <input type="text" id="input">
+</div>
+
+<script>
+  var container = document.getElementById('container');
+  container.onclick = function(e) {
+    console.log('event=>', e);
+    console.log('view=>', e.clientX, e.clientY);
+    console.log('page=>', e.pageX, e.pageY);
+    console.log('screen=>', e.screenX, e.screenY);
+  };
+
+  container.onmouseover = function(e) {
+    console.log('mouseover=>', e)
+  };
+
+  var input = document.getElementById('input');
+
+  input.addEventListener('input', function(e) {
+    console.log('textinput=>', e)
+  });
+
+  var isSupportMutationEvents = document.implementation.hasFeature('MutationEvents', '2.0')
+  console.log('isSupportMutationEvents=>', isSupportMutationEvents)
+</script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Closure</title>
+</head>
+<body>
+<h3>闭包</h3>
+
+<script>
+  function createComparisionFunction(propName) {
+    return function(obj1, obj2) {
+      var val1 = obj1[propName];
+      var val2 = obj2[propName];
+
+      if (val1 < val2) {
+        return -1;
+      } else if (val1 > val2) {
+        return 1;
+      } else {
+        return 0;
+      }
+    };
+  }
+
+  // initial version
+  function createFunctions() {
+    var result = new Array();
+
+    for (var i = 0; i < 10; i++) {
+      result[i] = function() {
+        return i;
+      };
+    }
+
+    return result;
+  }
+
+  var arrFunctions1 = createFunctions2(); // return 10
+  console.log('arrFunctions1=>', arrFunctions1);
+
+  // fixed version
+  function createFunctions2() {
+    var result = new Array();
+
+    for (var i = 0; i < 10; i++) {
+      result[i] = function(num) {
+        return function() {
+          console.log('in closure=>', this);
+          return num;
+        };
+      }(i);
+    }
+
+    return result;
+  }
+
+  var arrFunctions2 = createFunctions2(); // return 0, 1...
+  console.log('arrFunctions2=>', arrFunctions2);
+
+  var name = 'the window';
+  var object = {
+    name: 'the object',
+    sayName: function() {
+      return function() {
+        return this.name;
+      };
+    },
+  };
+
+  console.log('sayName=>', object.sayName()()) // the window
+</script>
+</body>
+</html>
