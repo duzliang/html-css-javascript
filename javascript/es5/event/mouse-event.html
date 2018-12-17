@@ -20,6 +20,8 @@
   <input type="text" id="input">
 </div>
 
+<button id="contentmenu">contentmenu</button>
+
 <script>
   var container = document.getElementById('container');
   container.onclick = function(e) {
@@ -41,6 +43,19 @@
 
   var isSupportMutationEvents = document.implementation.hasFeature('MutationEvents', '2.0')
   console.log('isSupportMutationEvents=>', isSupportMutationEvents)
+
+  // contentmenu event
+  var contentmenu = document.getElementById('contentmenu');
+  contentmenu.oncontextmenu = function(e) {
+    e.preventDefault();
+    console.log('log=>', 'contentmenu')
+  }
+
+  // beforeupload
+  window.addEventListener('beforeunload', function(e) {
+    e.returnValue = 'confirm to leave?';
+    return e;
+  })
 </script>
 </body>
 </html>
