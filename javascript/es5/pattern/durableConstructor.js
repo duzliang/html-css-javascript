@@ -11,5 +11,8 @@ function Person(name, age) {
   return o;
 }
 
-var person = Person('duke', 22);
-console.log('say=>', person.sayName());
+var person = Person('duke', 22); // 不使用new
+console.log('say=>', person.sayName()); // duke
+var person2 = Person('duke2', 22);
+console.log('say=>', person2.sayName()); // duke2
+
