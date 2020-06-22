@@ -1,3 +1,14 @@
+// type annotation
+function greeter(person: Person) {
+    return 'Hello, ' + person.firstName + ' ' + person.lastName;
+}
+
+// interface
+interface Person {
+    firstName: string;
+    lastName: string;
+}
+
 // class
 class Student {
     fullName: string;
@@ -9,16 +20,6 @@ class Student {
     ) {
         this.fullName = firstName + ' ' + middleInitial + ' ' + lastName
     }
-}
-
-// interface
-interface Person {
-    firstName: string;
-    lastName: string;
-}
-
-function greeter(person: Person) {
-    return 'Hello, ' + person.firstName + ' ' + person.lastName;
 }
 
 let user = new Student('Jane', 'M.', 'User');
