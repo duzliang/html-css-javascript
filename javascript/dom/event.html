@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Event</title>
+</head>
+<body>
+<h1>DOM Event</h1>
+
+<div id="container">
+  <input type="text" id="input" />
+</div>
+
+<button id="btn">click me!</button>
+
+<script>
+  document.getElementById('container').addEventListener('mousedown', function() {
+    console.log('log=> key1');
+  }, true);
+  document.getElementById('input').addEventListener('mousedown', function() {
+    console.log('log=> key2');
+  }, true);
+
+  document.getElementById('container').addEventListener('mousedown', function() {
+    console.log('log=> key11');
+  }, false);
+  document.getElementById('input').addEventListener('mousedown', function() {
+    console.log('log=> key22');
+  }, false);
+
+  document.getElementById('btn').addEventListener('look', function() {
+    console.log('log=>click me');
+  });
+
+  var evt = new Event('look', { 'bubbles': true, 'cancelable': false });
+  document.getElementById('btn').dispatchEvent(evt);
+</script>
+</body>
+</html>
