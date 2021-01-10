@@ -22,4 +22,27 @@ function closureLoop2() {
   }
 }
 
-closureLoop2();
+// closureLoop2();
+
+/**
+ * closure ex2
+ */
+function foo() {
+  var myName = "name"
+  let test1 = 1
+  const test2 = 2
+  var innerBar = {
+    getName:function(){
+      console.log(test1)
+      return myName
+    },
+    setName:function(newName){
+      myName = newName
+    }
+  }
+  return innerBar
+}
+var bar = foo()
+bar.setName("name2")
+bar.getName()
+console.log(bar.getName())
