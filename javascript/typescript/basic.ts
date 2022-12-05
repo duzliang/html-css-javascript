@@ -9,6 +9,11 @@ interface Person {
     lastName: string;
 }
 
+const User: Person = {
+    firstName: 'duke',
+    lastName: 'du',
+}
+
 // class
 class Student {
     fullName: string;
