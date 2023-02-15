@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page</title>
+  </head>
+  <body>
+    <h1>Page Lifecycle: script defer</h1>
+
+    <script>
+      // 等待defer脚本加载并执行结束后触发
+      document.addEventListener("DOMContentLoaded", () =>
+        console.log("DOM ready after defer!")
+      );
+    </script>
+
+    <p>...content before script...</p>
+    <script
+      defer
+      src="https://javascript.info/article/script-async-defer/long.js?speed=1"
+    ></script>
+    <script
+      defer
+      src="https://javascript.info/article/script-async-defer/small.js"
+    ></script>
+
+    <!-- 立即可见 -->
+    <p>...content after script...</p>
+  </body>
+</html>

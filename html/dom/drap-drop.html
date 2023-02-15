@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drap and Drop</title>
+
+    <style>
+      .payground {
+        width: 400px;
+        height: 300px;
+        background-color: green;
+        border: 4px dashed #fff;
+      }
+
+      .ball {
+        width: 50px;
+        height: 50px;
+        border-radius: 25px;
+        background-color: #fff;
+        border: 1px solid #000;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="v1">V1: ball example</h1>
+    <div class="payground">
+      <div class="ball" id="ball"></div>
+    </div>
+
+    <script>
+      ball.onmousedown = function (event) {
+        let shiftX = event.clientX - ball.getBoundingClientRect().left;
+        let shiftY = event.clientY - ball.getBoundingClientRect().top;
+
+        // (1) 准备移动：确保 absolute，并通过设置 z-index 以确保球在顶部
+        console.log("mousedown", document.elementFromPoint(event.clientX, event.clientY));
+        ball.style.position = "absolute";
+        ball.style.zIndex = 1000;
+
+        // 将其从当前父元素中直接移动到 body 中
+        // 以使其定位是相对于 body 的
+        document.body.append(ball);
+
+        // 现在球的中心在 (pageX, pageY) 坐标上
+        function moveAt(pageX, pageY) {
+          ball.style.left = pageX - shiftX + "px";
+          ball.style.top = pageY - shiftY + "px";
+        }
+
+        // 将我们绝对定位的球移到指针下方
+        moveAt(event.pageX, event.pageY);
+
+        function onMouseMove(event) {
+          moveAt(event.pageX, event.pageY);
+        }
+
+        // (2) 在 mousemove 事件上移动球
+        document.addEventListener("mousemove", onMouseMove);
+
+        // (3) 放下球，并移除不需要的处理程序
+        ball.onmouseup = function () {
+          document.removeEventListener("mousemove", onMouseMove);
+          ball.onmouseup = null;
+        };
+      };
+    </script>
+  </body>
+</html>

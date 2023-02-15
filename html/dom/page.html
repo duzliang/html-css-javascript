@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document Page Lifecycle and Events</title>
+  </head>
+  <body>
+    <h1>Page Lifecycle and Events</h1>
+
+    <!-- 遇到脚本，先执行脚本，在执行后续代码 -->
+    <script>
+      console.log('dom state:', document.readyState);
+
+      document.addEventListener("DOMContentLoaded", function (event) {
+        console.log("dom ready", document.readyState);
+        // 图片目前尚未加载完成（除非已经被缓存），所以图片的大小为 0x0
+        console.log(`Image size1: ${img.offsetWidth}x${img.offsetHeight}`);
+      });
+
+      // 样式、图片和其他资源被加载完成时触发onload事件
+      window.onload = function(event) {
+        console.log('dom state:', document.readyState);
+        console.log(`Image size2: ${img.offsetWidth}x${img.offsetHeight}`);
+      }
+      window.onunload = function(event) {
+        console.log('leave page', event);
+      }
+      window.onbeforeunload = function(event) {
+        alert('confirm leave?')
+        return false;
+      }
+    </script>
+
+    <!-- 1. 具有 async 特性（attribute）的脚本不会阻塞 DOMContentLoaded -->
+    <!-- 2. 使用 document.createElement('script') 动态生成并添加到网页的脚本也不会阻塞 DOMContentLoaded -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.js"></script>
+    <script>
+      console.log("Library loaded, inline script executed");
+    </script>
+    <img id="img" src="https://en.js.cx/clipart/train.gif?speed=1&cache=0" />
+  </body>
+</html>

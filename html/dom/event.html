@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Event</title>
+</head>
+<body>
+  <p >Right click here to show document contextmenu</p>
+  <button id="elem">Right click here to show button contextmenu</button>
+
+  <h2>Custom Event</h2>
+  <button id="custom" onclick="btnClick(event)">auto click</button>
+
+  <h2 id="bubble">Custom bubbles event</h3>
+
+  <script>
+    document.addEventListener('hello', function(event) {
+      console.log('bubble click:', event);
+    });
+
+    function btnClick(event) {
+      console.log('event', event);
+      console.log('auto click');
+    }
+
+    elem.oncontextmenu = function(event) {
+      console.log('event', event);
+      event.preventDefault();
+      // event.stopPropagation(); // 不合适，代价大，阻止冒泡后续都无法访问
+      alert('button contextmenu')
+    }
+  
+    document.oncontextmenu = function(event) {
+      event.preventDefault();
+      if (event.defaultPrevented) return;
+      alert('document context menu')
+    }
+
+    // custome event
+    let iEvent = new Event('hello', { bubbles: true });
+    bubble.dispatchEvent(iEvent);
+
+  </script>
+</body>
+</html>

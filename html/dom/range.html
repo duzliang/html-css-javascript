@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Range</title>
+  </head>
+  <body>
+    <p id="p">Hello</p>
+    <button id="btn">remove selection</button>
+    <button id="del">delete selection</button>
+    <script>
+      let range = new Range();
+      range.setStart(p.firstChild, 2);
+      range.setEnd(p.firstChild, 4);
+
+      // 对 range 进行 toString 处理，range 则会把其包含的内容以文本的形式返回
+      console.log(range); // ll
+      document.getSelection().addRange(range);
+
+      btn.onclick = function() {
+        document.getSelection().removeAllRanges();
+      }
+      del.onclick = function() {
+        range.deleteContents();
+      }
+    </script>
+  </body>
+</html>

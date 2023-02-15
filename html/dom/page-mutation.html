@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page</title>
+  </head>
+  <body>
+    <h1>Page Mutation Observer</h1>
+
+    <script>
+      // let observer = new MutationObserver(function() {
+
+      // });
+    </script>
+
+    <div contenteditable id="elem">Click and <b>edit</b>, please</div>
+
+    <script>
+      let observer = new MutationObserver((mutationRecords) => {
+        console.log(mutationRecords); // console.log(the changes)
+      });
+
+      // 观察除了特性之外的所有变动
+      observer.observe(elem, {
+        childList: true, // 观察直接子节点
+        subtree: true, // 及其更低的后代节点
+        characterDataOldValue: true, // 将旧的数据传递给回调
+      });
+    </script>
+  </body>
+</html>

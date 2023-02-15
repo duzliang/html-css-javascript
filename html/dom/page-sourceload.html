@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page</title>
+  </head>
+  <body>
+    <h1>Page Source</h1>
+
+    <script>
+      let script = document.createElement("script");
+
+      // 可以从任意域（domain），加载任意脚本
+      script.src =
+        "https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.3.0/lodash.js";
+      document.head.append(script);
+
+      script.onload = function () {
+        // 该脚本创建了一个变量 "_"
+        alert(_.VERSION); // 显示库的版本
+      };
+      script.onerror = function () {
+        alert("Error loading " + this.src);
+      };
+    </script>
+  </body>
+</html>

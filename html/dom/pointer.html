@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pointer Events</title>
+    <style>
+      .box {
+        width: 200px;
+        height: 150px;
+        background: green;
+        border: 1px solid red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>指针事件</h1>
+    <div id="elem" class="box">我是一个盒子</div>
+
+    <script>
+      elem.addEventListener("pointerdown", function (e) {
+        console.log("pointer down:", e);
+      });
+    </script>
+  </body>
+</html>

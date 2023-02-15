@@ -1,21 +1,63 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>table</title>
-</head>
-<body>
-<table>
-    <tr>
-        <td>apple</td>
-        <td>orange</td>
-        <td>pear</td>
-    </tr>
-    <tr>
-        <td>I can speak english</td>
-        <td>chinese</td>
-        <td>japanese</td>
-    </tr>
-</table>
-</body>
+    <style>
+      table {
+        border-spacing: 0.5rem;
+        border-collapse: collapse;
+      }
+      /* thead,
+      tbody {
+        border-spacing: 0;
+      } */
+      th,
+      td {
+        border: 1px solid gray;
+        padding: 0.5rem;
+        text-align: left;
+        width: 100px;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <th>Name</th>
+        <th>Note</th>
+        <th>Action</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="2">apple</td>
+          <td>show</td>
+        </tr>
+        <tr>
+          <td rowspan="2">orange</td>
+          <td>orange has a lot of water</td>
+          <td>eat</td>
+        </tr>
+        <tr>
+          <td>pear is delicious</td>
+          <td>do</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>handy table</h2>
+    <section style="display: table">
+      <header style="display: table-row">
+        <div style="display: table-cell">apple</div>
+        <div style="display: table-cell">me</div>
+        <div style="display: table-cell">eat</div>
+      </header>
+      <div style="display: table-row">
+        <div style="display: table-cell">pear</div>
+        <div style="display: table-cell">you</div>
+        <div style="display: table-cell">plant</div>
+      </div>
+    </section>
+  </body>
 </html>
