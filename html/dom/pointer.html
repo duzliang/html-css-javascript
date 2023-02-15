@@ -19,6 +19,17 @@
     <div id="elem" class="box">我是一个盒子</div>
 
     <script>
+      // 指针事件及对应的鼠标事件
+      // pointerdown	  mousedown
+      // pointerup	    mouseup
+      // pointermove	  mousemove
+      // pointerover	  mouseover
+      // pointerout	  mouseout
+      // pointerenter	mouseenter
+      // pointerleave	mouseleave
+      // pointercancel	-
+      // gotpointercapture	-
+      // lostpointercapture
       elem.addEventListener("pointerdown", function (e) {
         console.log("pointer down:", e);
       });
