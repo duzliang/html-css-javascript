@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Table DOM operate diagonal cell</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+      td {
+        border: 1px solid black;
+        padding: 3px 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <table id="table">
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>2</td>
+        <td>3</td>
+        <td>4</td>
+        <td>5</td>
+      </tr>
+    </table>
+
+    <script>
+      let table = document.getElementById("table");
+      let trs = table.rows;
+      for (let i = 0; i < trs.length; i++) {
+        trs[i].cells[i].style.backgroundColor = "red";
+      }
+    </script>
+  </body>
+</html>

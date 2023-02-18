@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .operate-zoom {
+        width: 100%;
+        height: 100px;
+        border: 2px dotted orange;
+        margin-bottom: 10px;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      ul > li {
+        height: 40px;
+        line-height: 40px;
+        margin-bottom: 5px;
+        border: 1px solid #000;
+      }
+      
+      /* 使用CSS绘制斑马纹 */
+      /* ul li:nth-of-type(odd) {
+        background-color: #000;
+      }
+      ul li:nth-of-type(even) {
+        background-color: gray;
+      } */
+      
+      .bg-black {
+        background-color: #e1e1e1;
+      }
+      .bg-gray {
+        background-color: gray;
+      }
+
+      .bold {
+        font-weight: 900;
+      }
+      .success {
+        color: green;
+      }
+    </style>
+    <script>
+      window.onload = function () {
+        let form = document.getElementById("form1");
+        let input = document.createElement("input");
+        input.setAttribute(
+          "style",
+          "width: 200px; height: 50px; padding: 5px;"
+        );
+        input.setAttribute("type", "text");
+        input.setAttribute("placeholder", "请输入手机号码");
+        form.append(input);
+      };
+    </script>
+  </head>
+  <body>
+    <div id="opt" class="operate-zoom"><button id="btn-success">li.0 to success</button></div>
+
+    <form action="" id="form1"></form>
+
+    <ul id="list">
+      <li>
+        <div>
+          <span>Title</span>
+          <span>first content</span>
+        </div>
+      </li>
+      <li>second</li>
+      <li>third</li>
+      <li>four</li>
+      <li>five</li>
+      <li>six</li>
+      <li>seven</li>
+      <li>eight</li>
+      <li>nine</li>
+      <li>ten</li>
+    </ul>
+
+    <script>
+      // 使用js绘制斑马纹
+      let list = document.getElementById("list");
+      let nodes = list.children;
+      for (let i = 0; i < nodes.length; i++) {
+        if (i % 2 > 0) {
+          nodes[i].classList.add("bg-gray");
+        } else {
+          nodes[i].classList.add("bg-black");
+        }
+      }
+
+      for ( let node of list.childNodes) {
+        console.log('li node:', node);
+      }
+
+      const btnSuccess = document.querySelector('button[id="btn-success"]');
+      btnSuccess.onclick = function() {
+        list.firstChild.classList.add('bold success');
+      }
+      
+    </script>
+  </body>
+</html>

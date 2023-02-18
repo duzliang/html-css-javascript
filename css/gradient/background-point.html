@@ -1,97 +1,116 @@
 <!DOCTYPE html>
 <html>
-<head lang="zh-cn">
-  <meta charset="UTF-8">
-  <title>斑点纹理背景</title>
-  <style>
-    body {
-      background-color: #282828;
-      background-image: -webkit-radial-gradient(black 15%, transparent 16%),
-      -webkit-radial-gradient(black 15%, transparent 16%),
-      -webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%),
-      -webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
-      background-image: -moz-radial-gradient(black 15%, transparent 16%),
-      -moz-radial-gradient(black 15%, transparent 16%),
-      -moz-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%),
-      -moz-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
-      background-image: -ms-radial-gradient(black 15%, transparent 16%),
-      -ms-radial-gradient(black 15%, transparent 16%),
-      -ms-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%),
-      -ms-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
-      background-image: -webkit-radial-gradient(black 15%, transparent 16%),
-      radial-gradient(black 15%, transparent 16%),
-      radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%),
-      radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
-      background-position: 0 0px, 8px 8px, 0 1px, 8px 9px;
-      background-size: 16px 16px;
-    }
+  <head lang="zh-cn">
+    <meta charset="UTF-8" />
+    <title>斑点纹理背景</title>
+    <style>
+      body {
+        background-color: #282828;
+        background-image: -webkit-radial-gradient(black 15%, transparent 16%),
+          -webkit-radial-gradient(black 15%, transparent 16%),
+          -webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%),
+          -webkit-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
+        background-image: -moz-radial-gradient(black 15%, transparent 16%),
+          -moz-radial-gradient(black 15%, transparent 16%),
+          -moz-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%),
+          -moz-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
+        background-image: -ms-radial-gradient(black 15%, transparent 16%),
+          -ms-radial-gradient(black 15%, transparent 16%),
+          -ms-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%),
+          -ms-radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
+        background-image: -webkit-radial-gradient(black 15%, transparent 16%),
+          radial-gradient(black 15%, transparent 16%),
+          radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%),
+          radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 20%);
+        background-position: 0 0px, 8px 8px, 0 1px, 8px 9px;
+        background-size: 16px 16px;
+      }
 
-    .btn {
-      width: 70px;
-      height: 70px;
-      margin-right: 90px;
-      font-size: 0;
-      border-radius: 50%;
-      border: none;
-      box-shadow: 0 1px 5px rgba(255, 255, 255, .5) inset,
-      0 -1px 5px rgba(0, 0, 0, .3) inset,
-      0 3px 8px rgba(0, 0, 0, .8);
-      background: -webkit-radial-gradient(circle at top center, #f28fb8, #e982ad, #ec568c);
-      background: radial-gradient(circle at top center, #f28fb8, #e982ad, #ec568c);
-    }
+      .btn {
+        width: 70px;
+        height: 70px;
+        margin-right: 90px;
+        font-size: 0;
+        border-radius: 50%;
+        border: none;
+        box-shadow: 0 1px 5px rgba(255, 255, 255, 0.5) inset,
+          0 -1px 5px rgba(0, 0, 0, 0.3) inset, 0 3px 8px rgba(0, 0, 0, 0.8);
+        background: -webkit-radial-gradient(
+          circle at top center,
+          #f28fb8,
+          #e982ad,
+          #ec568c
+        );
+        background: radial-gradient(
+          circle at top center,
+          #f28fb8,
+          #e982ad,
+          #ec568c
+        );
+      }
 
-    @font-face {
-      font-family: 'icomoon';
-      src: url('../fonts/icomoon.eot?-wq3ck');
-      src: url('../fonts/icomoon.eot?#iefix-wq3ck') format('embedded-opentype'),
-      url('../fonts/icomoon.woff?-wq3ck') format('woff'),
-      url('../fonts/icomoon.ttf?-wq3ck') format('truetype'),
-      url('../fonts/icomoon.svg?-wq3ck#icomoon') format('svg');
-      font-weight: normal;
-      font-style: normal;
-    }
+      @font-face {
+        font-family: "icomoon";
+        src: url("../fonts/icomoon.eot?-wq3ck");
+        src: url("../fonts/icomoon.eot?#iefix-wq3ck")
+            format("embedded-opentype"),
+          url("../fonts/icomoon.woff?-wq3ck") format("woff"),
+          url("../fonts/icomoon.ttf?-wq3ck") format("truetype"),
+          url("../fonts/icomoon.svg?-wq3ck#icomoon") format("svg");
+        font-weight: normal;
+        font-style: normal;
+      }
 
-    .btn:nth-child(3) {
-      margin-right: 0;
-    }
+      .btn:nth-child(3) {
+        margin-right: 0;
+      }
 
-    .btn:after {
-      font-family: 'icomoon';
-      speak: none;
-      font-weight: normal;
-      -webkit-font-smoothing: antialiased;
-      font-size: 36px;
-      content: "\eae5";
-      color: #dd5183;
-      text-shadow: 0 3px 10px #f1a2c1, 0 -3px 10px #f1a2c1;
-    }
+      .btn:after {
+        font-family: "icomoon";
+        speak: none;
+        font-weight: normal;
+        -webkit-font-smoothing: antialiased;
+        font-size: 36px;
+        content: "\eae5";
+        color: #dd5183;
+        text-shadow: 0 3px 10px #f1a2c1, 0 -3px 10px #f1a2c1;
+      }
 
-    .btn:nth-child(2):after {
-      content: "\22";
-    }
+      .btn:nth-child(2):after {
+        content: "\22";
+      }
 
-    .btn:nth-child(3):after {
-      content: "\23";
-    }
+      .btn:nth-child(3):after {
+        content: "\23";
+      }
 
-    .btn:hover:after {
-      color: #ffffff;
-      text-shadow: 0 1px 20px #fccdda, 1px 0 14px #fccdda;
-    }
+      .btn:hover:after {
+        color: #ffffff;
+        text-shadow: 0 1px 20px #fccdda, 1px 0 14px #fccdda;
+      }
 
-    .btn:active {
-      box-shadow: 0 2px 7px rgba(0, 0, 0, .5) inset,
-      0 -3px 10px rgba(0, 0, 0, .1) inset,
-      0 1px 3px rgba(255, 255, 255, .5);
-      background: -webkit-radial-gradient(circle at top center, #f28fb8, #e982ad, #ec568c);
-      background: radial-gradient(circle at top center, #f28fb8, #e982ad, #ec568c);
-    }
-
-  </style>
-</head>
-<body>
-<button class="btn"></button>
-<button class="btn"></button>
-<button class="btn"></button>
-</body>
+      .btn:active {
+        box-shadow: 0 2px 7px rgba(0, 0, 0, 0.5) inset,
+          0 -3px 10px rgba(0, 0, 0, 0.1) inset,
+          0 1px 3px rgba(255, 255, 255, 0.5);
+        background: -webkit-radial-gradient(
+          circle at top center,
+          #f28fb8,
+          #e982ad,
+          #ec568c
+        );
+        background: radial-gradient(
+          circle at top center,
+          #f28fb8,
+          #e982ad,
+          #ec568c
+        );
+      }
+    </style>
+  </head>
+  <body>
+    <button class="btn"></button>
+    <button class="btn"></button>
+    <button class="btn"></button>
+  </body>
 </html>
