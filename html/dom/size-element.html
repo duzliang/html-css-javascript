@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Element size</title>
+    <title>Element size and Geometry</title>
     <style>
       .parent {
         width: 600px;
@@ -28,8 +28,8 @@
     </style>
   </head>
   <body>
-    <div class="parent">
-      <div class="element box">
+    <div id="parent" class="parent">
+      <div id="box" class="element box">
         This is a very long content,This is a very long content,This is a very
         long content,This is a very long content,This is a very long
         content,This is a very long content,This is a very long content,This is
@@ -44,15 +44,28 @@
       </div>
     </div>
 
+    <!-- span.offsetParent is td or th -->
+    <table>
+      <tr>
+        <th>
+          <span id="span1">1</span>
+        </th>
+      </tr>
+      <tr>
+        <td>
+          <span id="span2">2</span>
+        </td>
+      </tr>
+    </table>
+
     <script>
       let child = document.querySelector("div.element");
-      console.log(child.clientWidth);
-      console.log(child.clientHeight);
-      console.log(child.clientLeft);
-      console.log(child.clientTop);
-      console.log(child.scrollWidth);
-      console.log(child.scrollHeight);
-      console.dir(getComputedStyle(child).width)
+      console.log('blue box geometry info:');
+      console.log("clientWith/Height:", child.clientWidth, child.clientHeight);
+      console.log("clientLeft/Top:", child.clientLeft, child.clientTop);
+      console.log("offsetLeft/Top:", child.offsetLeft, child.offsetTop);
+      console.log("scrollWith/Height:", child.scrollWidth, child.scrollHeight);
+      console.dir("width:", getComputedStyle(child).width);
     </script>
   </body>
 </html>

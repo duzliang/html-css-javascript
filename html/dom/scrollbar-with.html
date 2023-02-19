@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scrollbar Width</title>
+    <style>
+      .box {
+        width: 200px;
+        height: 150px;
+        overflow: scroll;
+        scroll-behavior: unset;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="box" class="box">
+      JavaScript is great, and by all means use it, while also being aware that
+      you can build so many functional UI components without the additional
+      dependancy. Maybe you can include a few lines of utility code, or a mixin,
+      and forgo the requirement. If you're only targeting more modern browsers,
+      you might not need anything more than what the browser ships with. This
+      site is fully copied from youmightnotneedjquery.com, an excellent resource
+      for vanilla JavaScript created by @adamfschwartz and @zackbloom. But this
+      time, we take a look at the power of modern native HTML and CSS as well as
+      some of the syntactic sugar of Sass. Because, you might not need scripts
+      for that task at all! (Note: Some of these demos may not be accessible and
+      work on all browsers. Please take a moment to review the usage notes and
+      to test them in your project before using in production)
+    </div>
+
+    <script>
+      let box = document.querySelector("div.box");
+      let scrollbarWith = box.offsetWidth - box.clientWidth;
+      console.log("scrollbarWith:", scrollbarWith);
+    </script>
+  </body>
+</html>
