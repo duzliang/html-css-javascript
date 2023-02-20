@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS value unit</title>
+
+    <style>
+      html {
+        font-size: 16px;
+      }
+
+      /* body {
+      font-size: 14px;
+    } */
+
+      #box > p:first-of-type {
+        font-size: 1.5em;
+      }
+      #box > p {
+        font-size: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CSS Value and Units</h1>
+
+    <ul>
+      <li>px: real size</li>
+      <li>em: based on parent font-size</li>
+      <li>rem: based on root element font-size, generally the html element</li>
+      <li>%: based on parent size, such as font-size or width...</li>
+    </ul>
+
+    <p>I'm body text, with font-size: 14px, html's font-size is 16px;</p>
+
+    <div id="box">
+      <p>I'm the first prograph, font-size: 1.5em</p>
+      <p>I'm the last prograph font-size: 2rem</p>
+    </div>
+
+    <strong>实际大小</strong>
+    <div id="msg"></div>
+
+    <script>
+      let box = document.getElementById("box");
+      let pFontSize = getComputedStyle(box.firstElementChild).fontSize;
+      let p2FontSize = getComputedStyle(box.lastElementChild).fontSize;
+      msg.innerHTML = `<strong>p1 font-size: ${pFontSize}px</strong> \n <strong>p2 font-size: ${p2FontSize}px</strong>`;
+
+      // 监听DOM变化
+      let observe = new MutationObserver(function (mutationRecords) {
+        console.log("mutationRecords:", mutationRecords);
+      });
+
+      observe.observe(document.querySelector("body"), {
+        childList: true,
+        subtree: true,
+        characterDataOldValue: true,
+      });
+    </script>
+  </body>
+</html>
