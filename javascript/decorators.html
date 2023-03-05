@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Decorators and Frowarding</title>
+</head>
+
+<body>
+  <h1>装饰器和转发，call/apply</h1>
+  <p>func.call(context, ...args);</p>
+  <p>func.apply(context, args);</p>
+  
+  <script>
+    // 透明缓存
+    function slow(x) {
+      // 做一些繁重的处理工作
+      console.log('called with ', x);
+      return x;
+    }
+
+    function cachingDecorator(func) {
+      let cache = new Map();
+
+      return function (x) {
+        if (cache.has(x)) { // has cache
+          return cache.get(x); // get from cache 
+        }
+
+        let result = func(x);
+        cache.set(x, result);
+        return result;
+      }
+    }
+
+    slow = cachingDecorator(slow);
+    console.log('slow1:', slow(1));
+    console.log('slow1 again:', slow(1));
+  </script>
+</body>
+
+</html>
