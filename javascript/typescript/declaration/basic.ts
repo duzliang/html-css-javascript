@@ -7,7 +7,7 @@ interface Box {
 interface Box {
   scale: number;
 }
-
+// merge into =>
 let box: Box = { height: 5, width: 6, scale: 10 };
 
 interface Animal {
