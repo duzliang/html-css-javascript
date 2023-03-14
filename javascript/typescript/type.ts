@@ -39,11 +39,16 @@ function getLength(obj: string | string[]) {
 }
 
 /**
- *
+ * Primitive style
  */
 type StringArray = Array<string>;
 type NumberArray = Array<number>;
 type ObjectArray = Array<{ name: string }>
+
+/** Literal style */
+type StringArrayL = string[];
+type NumberArrayL = number[];
+type ObjectArrayL = object[];
 
 // same as
 let strArrs = ['a', 'b'];
