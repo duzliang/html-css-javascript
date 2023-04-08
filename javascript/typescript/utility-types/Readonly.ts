@@ -18,3 +18,18 @@ function freeze<TodoRead>(obj: TodoRead): Readonly<TodoRead> {
   };
   return freezeTodo;
 }
+
+/** Generic readonly */
+type Foo = {
+  bar: number;
+  baz: number;
+}
+
+type FooReadonly<T> = Readonly<Foo>;
+
+// use
+const foo: Foo = { bar: 1, baz: 2 };
+const fooReadonly: FooReadonly<Foo> = { bar: 1, baz: 2 };
+foo.bar = 3;
+fooReadonly.bar = 3; // error bar is readonly
+
