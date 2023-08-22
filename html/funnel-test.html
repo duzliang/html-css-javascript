@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>ECharts 3D漏斗图示例</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.3.0/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts-gl@2.0.9/dist/echarts-gl.min.js"></script>
+  </head>
+
+  <body>
+    <div id="chart" style="width: 600px; height: 400px"></div>
+
+    <script>
+      var chartDom = document.getElementById("chart");
+      var myChart = echarts.init(chartDom, null, { renderer: "canvas" });
+
+      var option = {
+        tooltip: {
+          trigger: "item",
+          formatter: "{a} <br/>{b}: {c}%",
+        },
+        series: [
+          {
+            type: "funnel3D",
+            width: "40%",
+            height: "80%",
+            depth: 90,
+            top: "center",
+            bottom: "5%",
+            left: "5%",
+            right: "50%",
+            label: {
+              show: true,
+              position: "inside",
+              formatter: "{b}: {c}%",
+            },
+            emphasis: {
+              label: {
+                fontSize: 20,
+              },
+            },
+            data: [
+              { value: 60, name: "访问" },
+              { value: 40, name: "咨询" },
+              { value: 20, name: "订单" },
+              { value: 80, name: "点击" },
+              { value: 100, name: "展现" },
+            ],
+          },
+        ],
+      };
+
+      option && myChart.setOption(option);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  #funnel-chart {
+    width: 400px;
+    height: 400px;
+  }
+</style>
+</head>
+<body>
+  <div id="funnel-chart"></div>
+
+  <script>
+    // 获取容器元素
+    const chartContainer = document.getElementById("funnel-chart");
+
+    // 创建SVG元素
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("width", "100%");
+    svg.setAttribute("height", "100%");
+
+    // 创建漏斗图的各个层级
+    const funnelLayers = [
+      { name: "访问数", value: 59 },
+      { name: "下载数", value: 32 },
+      { name: "注册数", value: 18 },
+      { name: "搜索数", value: 9 },
+      { name: "付款数", value: 2 }
+    ];
+
+    // 计算漏斗图的尺寸
+    const totalHeight = 400; // 漏斗图总高度
+    const funnelWidth = 200; // 漏斗图底部宽度
+    const layerHeight = totalHeight / funnelLayers.length; // 每个层级的高度
+
+    // 绘制漏斗图的各个层级
+    funnelLayers.forEach((layer, index) => {
+      const layerWidth = funnelWidth * (layer.value / funnelLayers[0].value);
+      const layerX = (funnelWidth - layerWidth) / 2;
+      const layerY = index * layerHeight;
+
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", M ${layerX} ${layerY} h ${layerWidth} v ${layerHeight} h -${layerWidth}));
+      path.setAttribute("fill", "blue");
+
+      svg.appendChild(path);
+    });
+
+    // 将SVG添加到容器元素中
+    chartContainer.appendChild(svg);
+  </script>
+</body>
+</html>
