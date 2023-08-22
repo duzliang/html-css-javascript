@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canvas</title>
+    <style>
+      canvas {
+        border: 1px solid green;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas width="512" height="512"></canvas>
+
+    <script>
+      const canvas = document.querySelector("canvas");
+      const context = canvas.getContext("2d");
+      const rectSize = [100, 100];
+      context.fillStyle = "red";
+      context.beginPath();
+      // 1. set top left coordinate
+      // context.rect(0.5 * (canvas.width - rectSize[0]), 0.5 * (canvas.height - rectSize[1]), ...rectSize);
+      // 2. translate
+      context.translate(-0.5 * rectSize[0], -0.5 * rectSize[1]);
+      context.rect(0.5 * canvas.width, 0.5 * canvas.height, ...rectSize);
+
+      context.fill();
+    </script>
+  </body>
+</html>

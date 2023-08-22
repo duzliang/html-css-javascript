@@ -6,17 +6,61 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Event</title>
+
+  <style>
+      .test {
+          width: 300px;
+          height: 200px;
+          border: 1px solid orange;
+          padding: 20px;
+      }
+  </style>
 </head>
 <body>
-<h1>DOM Event</h1>
+<div id="test" class="test">
+  <h1>DOM Event</h1>
+  <div id="msg"></div>
+  <div id="container">
+    <input type="text" id="input" />
+  </div>
 
-<div id="container">
-  <input type="text" id="input" />
+  <button id="btn">click me!</button>
+
+  <button id="btn_me">click me again</button>
 </div>
 
-<button id="btn">click me!</button>
-
+<div id="test_order">
+  <button id="btn_add_msg">add message box</button>
+</div>
 <script>
+  document.getElementById('test').addEventListener('mousemove', (e) => {
+    document.getElementById('msg').textContent = 'Event: mousemove';
+  });
+  document.getElementById('test').addEventListener('click', (e) => {
+    document.getElementById('msg').textContent = 'Event: mouse click';
+  });
+  document.getElementById('btn_me').onclick = (e) => {
+    console.log('log=>click me again:', e);
+  };
+
+  // test order
+  const orderContainer = document.getElementById('test_order');
+  document.getElementById('btn_add_msg').onclick = () => {
+    const msgBox = document.createElement('div');
+    msgBox.setAttribute('id', 'msg_box')
+    msgBox.textContent = 'Hello you!';
+    msgBox.style = 'width: 100px; height: 50px; border: 1px solid green; padding: 10px;'
+    orderContainer.appendChild(msgBox);
+
+    // work
+    // document.getElementById('msg_box').addEventListener('click', () => {
+    //   alert('I am already on page!');
+    // });
+  }
+  document.getElementById('msg_box').addEventListener('click', () => {
+    alert('I am already on page!');
+  });
+
   document.getElementById('container').addEventListener('mousedown', function() {
     console.log('log=> key1');
   }, true);
