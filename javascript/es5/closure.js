@@ -1,5 +1,6 @@
 /**
  * closure with loop
+ * don't work
  */
 function closureLoop() {
   for (var i = 1; i <= 5; i++) {
@@ -11,6 +12,10 @@ function closureLoop() {
 
 closureLoop();
 
+/**
+ * fix solution 1
+ * use IIFE
+ */
 function closureLoop2() {
   for (var i = 1; i <= 5; i++) {
     (function() {
@@ -23,6 +28,33 @@ function closureLoop2() {
 }
 
 // closureLoop2();
+
+// pass i directly
+function closureLoop21() {
+  for (var i = 1; i <= 5; i++) {
+    (function(j) {
+      setTimeout(function timer() {
+        console.log('times:', j);
+      }, j * 1000);
+    })(i);
+  }
+}
+
+// closureLoop21();
+
+/**
+ * fix solution 2
+ * just change var to let
+ */
+function closureLoop3() {
+  for (let i = 1; i <= 5; i++) {
+    setTimeout(function timer() {
+      console.log('times:', i);
+    }, i * 1000);
+  }
+}
+
+// closureLoop3();
 
 /**
  * closure ex2
