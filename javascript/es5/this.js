@@ -89,6 +89,7 @@
   baz();
 })();
 
+(function(){
 /**
  * this bind rules
  */
@@ -117,3 +118,42 @@ var objFunc = {
 }
 
 objFunc.foo(); // obj
+  
+}());
+
+(function(){
+  console.log('latest------------------------->');
+  
+  function foo() {
+    console.log('foo=>', this.a);
+  }
+
+  var obj = {
+    a: 32,
+    foo: foo,
+  };
+
+  var a = 'this is global a';
+  foo();
+
+  var bar = obj.foo;
+  var a = 'oops! this is global';
+  bar(); // 'oops! this is global'
+})();
+
+/**
+ * 显示绑定
+ * call(context, arg, arg2, ...)
+ * apply(context, arguments[])
+ */
+(function(){
+  function foo() {
+    console.log('foo=>d', this.a);
+  }
+
+  var obj = {
+    a: 'd-2',
+  };
+
+  foo.call(obj);
+})();
