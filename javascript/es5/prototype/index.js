@@ -23,6 +23,40 @@
 });
 
 /**
+ * 继承
+ */
+(function() {
+  function Foo(a) {
+    this.name = a;
+  }
+
+  function Bar(b) {
+    this.age = b;
+  }
+
+  Bar.prototype = Object.create(Foo.prototype);
+
+  // 用来判断o1是否关联到（委托）o2的辅助函数
+  function isRelatedTo(o1, o2) {
+    function F() {
+    }
+
+    F.prototype = o2;
+    return o1 instanceof F;
+  }
+
+  var a = {};
+  var b = Object.create(a);
+
+  console.log(isRelatedTo(a, b)); // true
+
+  let f = new Foo('foo')
+  console.log('log=>Foo.isPrototypeOf:', Foo.isPrototypeOf(f)); // false
+  console.log('log=>a.isPrototypeOf b:', a.isPrototypeOf(b)); // true
+  console.log('log=>getPrototypeOf f:', Object.getPrototypeOf(f) === Foo.prototype); // true
+}());
+
+/**
  * prototype extend
  */
 (function() {
@@ -52,4 +86,4 @@
   var a = new Bar('duke', 'coder');
   console.log('log=>name', a.myName());
   console.log('log=>label', a.myLabel());
-})();
+});
