@@ -18,6 +18,10 @@
   };
 });
 
+/**
+ * Debugged
+ * 委托关系: 调试
+ */
 (function() {
   function Foo() {}
 
@@ -40,4 +44,60 @@
     value: function Gotcha(){},
   });
   console.log('log=>b1', b1); // Gotcha {}
+});
+
+/**
+ * 原型面向对象风格
+ */
+(function() {
+  function Foo(who) {
+    this.me = who;
+  }
+
+  Foo.prototype.identify = function() {
+    return `I am ${this.me}`;
+  };
+
+  function Bar(who) {
+    Foo.call(this, who);
+  }
+
+  Bar.prototype = Object.create(Foo.prototype);
+  Bar.prototype.speak = function() {
+    console.log(`Hello,  ${this.identify()}.`);
+  };
+
+  let b1 = new Bar('b1');
+  let b2 = new Bar('b2');
+
+  b1.speak();
+  b2.speak();
+});
+
+/**
+ * 对象关联风格
+ */
+(function() {
+  let Foo = {
+    init: function(who) {
+      this.me = who;
+    },
+    identify: function() {
+      return `I am ${this.me}`;
+    },
+  };
+
+  let Bar = Object.create(Foo);
+
+  Bar.speak = function() {
+    console.log(`Hello,  ${this.identify()}.`);
+  };
+
+  let b1 = Object.create(Bar);
+  b1.init('b1');
+  let b2 = Object.create(Bar);
+  b2.init('b2');
+
+  b1.speak();
+  b2.speak();
 })();
