@@ -363,6 +363,7 @@
 
 /**
  * 行为委托模式
+ * behavior delegation
  */
 (function() {
   const LoginController = {
