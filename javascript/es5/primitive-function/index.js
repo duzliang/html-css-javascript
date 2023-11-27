@@ -119,5 +119,68 @@
   console.log('log=>', Number(''));           // 0
   console.log('log=>', Number([]));           // 0
   console.log('log=>', Number(['abc']));      // NaN
+  console.log('log=>bool true', Number(true)); // 1
+  console.log('log=>bool false', Number(false)); // 0
+});
 
+/**
+ * ToBoolean()
+ * 假值列表
+ * falsy value
+ * 1. null
+ * 2. undefined
+ * 3. 0
+ * 4. -0
+ * 5. '' 字符串中唯一的假值
+ * 6. NaN
+ */
+(function() {
+  console.log('log=>', Boolean(null)); // false
+  console.log('log=>', Boolean(undefined)); // false
+  console.log('log=>', Boolean(0)); // false
+  console.log('log=>', Boolean(-0)); // false
+  console.log('log=>', Boolean('')); // false
+  console.log('log=>', Boolean(NaN)); // false
+
+  // falsy object 假值对象
+  var a = new Boolean(false);
+  var b = new Number(0);
+  var c = new String('');
+
+  console.log('log=>a', a);
+  console.log('log=>b', b);
+  console.log('log=>c', c);
+  var union = a && b && c;
+  console.log('log=>before:', union, typeof union); // [String: ''] object
+  var result = Boolean(a && b && c);
+  console.log('log=>result', result); // true
+
+  // truthy value 真值列表
+  console.log('log=>truthy1', Boolean(1)); // true
+  console.log('log=>truthy2', Boolean(-1)); // true
+  console.log('log=>truthy3', Boolean("''")); // true
+  console.log('log=>truthy4', Boolean({})); // true
+  console.log('log=>truthy5', Boolean([])); // true
+  console.log('log=>truthy6', Boolean(true)); // true
+  console.log('log=>truthy7', Boolean(new Boolean(true))); // true
+  console.log('log=>truthy8', Boolean(function() {})); // true
+});
+
+/**
+ * 显式强制类型转换
+ */
+(function() {
+
+  // 特殊字符 ~  字位截除
+  console.log('log=>', String(~42)); // "-42"
+  console.log('log=>', String(~~42)); // "42"
+
+  // 显式解析数字字符串
+  var a = '42';
+  var b = '42px';
+  console.log('log=>a', Number(a), parseInt(a)); // 42 42
+  console.log('log=>b', Number(b), parseInt(b)); // NaN 42
+
+  // parseInt(string) 接收字符串，非字符串会隐式转换为字符串
+  console.log('log=>', parseInt(42));
 })();
