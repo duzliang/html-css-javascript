@@ -158,12 +158,13 @@
   // truthy value 真值列表
   console.log('log=>truthy1', Boolean(1)); // true
   console.log('log=>truthy2', Boolean(-1)); // true
-  console.log('log=>truthy3', Boolean("''")); // true
+  console.log('log=>truthy3', Boolean('\'\'')); // true
   console.log('log=>truthy4', Boolean({})); // true
   console.log('log=>truthy5', Boolean([])); // true
   console.log('log=>truthy6', Boolean(true)); // true
   console.log('log=>truthy7', Boolean(new Boolean(true))); // true
-  console.log('log=>truthy8', Boolean(function() {})); // true
+  console.log('log=>truthy8', Boolean(function() {
+  })); // true
 });
 
 /**
@@ -181,6 +182,89 @@
   console.log('log=>a', Number(a), parseInt(a)); // 42 42
   console.log('log=>b', Number(b), parseInt(b)); // NaN 42
 
+  var bf = '42.32px';
+  console.log('log=>bf', Number(bf), parseFloat(bf)); // NaN 42.32
+
   // parseInt(string) 接收字符串，非字符串会隐式转换为字符串
   console.log('log=>', parseInt(42));
+
+  // 解析时间字符串
+  var date = new Date('2023-11-28 09:02:25');
+  console.log('log=>date', date.toString());
+  console.log('log=>', Date.parse(date.toString()));
+  console.log('log=>hour', parseInt(date.getHours())); // 9
+  console.log('log=>minute', parseInt(date.getMinutes())); // 2
+
+  // 解析特殊字符串
+  let strObj = new String('42');
+  console.log('log=>strObj', parseInt(strObj));
+
+  let strObj2 = {
+    num: 21,
+    toString: function() {
+      return String(this.num * 2);
+    },
+  };
+  console.log('log=>strObj2', parseInt(strObj2)); // 42
+
+  /**
+   * JavaScript代码中不会用到基数19。它的有效数字字符范围是0-9和a-i（区分大小写）
+   * @type {number}
+   */
+  console.log('log=>', parseInt(1 / 0, 19)); // 18
+
+  let n1 = parseInt(0.000008);       // 0   ("0" 来自于 "0.000008")
+  let n2 = parseInt(0.0000008);      // 8   ("8" 来自于 "8e-7")
+  let n3 = parseInt(false, 16); // 250 ("fa" 来自于 "false")
+  let n4 = parseInt(parseInt, 16);    // 15  ("f" 来自于 "function..")
+  let n5 = parseInt('0x10');         // 16
+  let n6 = parseInt('103', 2);  // 2
+  console.log('log=>n1', n1);
+  console.log('log=>n2', n2);
+  console.log('log=>n3', n3);
+  console.log('log=>n4', n4);
+  console.log('log=>n5', n5);
+  console.log('log=>n6', n6);
+});
+
+/**
+ * 显式转换为布尔值
+ */
+(function() {
+  var a = '0';
+  var b = [];
+  var c = {};
+
+  var d = '';
+  var e = 0;
+  var f = null;
+  var g;
+
+  // Boolean()不常用
+  console.log('log=>a', Boolean(a)); // true
+  console.log('log=>b', Boolean(b)); // true
+  console.log('log=>c', Boolean(c)); // true
+
+  console.log('log=>d', Boolean(d)); // false
+  console.log('log=>e', Boolean(e)); // false
+  console.log('log=>f', Boolean(f)); // false
+  console.log('log=>g', Boolean(g)); // false
+
+  // 更常用的是一元操作符!和!!
+  console.log('log=>!!a', !!a); // true
+  console.log('log=>!!b', !!b); // true
+  console.log('log=>!!c', !!c); // true
+
+  console.log('log=>!!d', !!d); // false
+  console.log('log=>!!e', !!e); // false
+  console.log('log=>!!f', !!f); // false
+  console.log('log=>!!g', !!g); // false
+});
+
+/**
+ * 隐式强制类型转换
+ * todo
+ */
+(function() {
+
 })();
