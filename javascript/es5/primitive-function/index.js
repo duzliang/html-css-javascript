@@ -263,8 +263,62 @@
 
 /**
  * 隐式强制类型转换
- * todo
  */
 (function() {
+  /**
+   * 数字和字符串的隐式强制类型转换
+   *
+   * @specification
+   * 根据ES5规范11.6.1节，如果某个操作数是字符串或者能够通过以下步骤转换为字符串的话，+将进行拼接操作。
+   * 如果其中一个操作数是对象（包括数组），则首先对其调用ToPrimitive抽象操作（规范9.1节），
+   * 该抽象操作再调用[[DefaultValue]]（规范8.12.8节），以数字作为上下文
+   *
+   * @note
+   * 如果+的其中一个操作数是字符串（或者通过以上步骤可以得到字符串），则执行字符串拼接；否则执行数字加法
+   *
+   */
+  var a = '42';
+  var b = '0';
 
+  var c = 42;
+  var d = 0;
+  console.log('log=>a+b', a + b); // "420"
+  console.log('log=>c+d', c + d); // 42
+
+  /**
+   * a + ""（隐式）和前面的String(a)（显式）之间有一个细微的差别需要注意。
+   * 根据ToPrimitive抽象操作规则，a + ""会对a调用valueOf()方法，
+   * 然后通过ToString抽象操作将返回值转换为字符串。而String(a)则是直接调用ToString()
+   * @type {number[]}
+   */
+  var arr1 = [1, 2];
+  var arr2 = [3, 4];
+  console.log('log=>array plus', arr1 + arr2); // "1,23,4"
+
+  var aObj = {
+    valueOf: function() {
+      return '42';
+    },
+    toString: function() {
+      return '4';
+    }
+  };
+  console.log('log=>aObj plus:', aObj + ''); // 42
+  console.log('log=>aObj toString:', String(aObj)); // 4
+});
+
+/**
+ * 布尔值强制类型转换
+ * || && 叫操作数选择器运算符更贴切
+ */
+(function() {
+  var a = '42';
+  var b = 'abc';
+  var c = null;
+
+  console.log('log=>1||', a || b);
+  console.log('log=>2||', a || c);
+  console.log('log=>3||', c || a);
+  console.log('log=>1&&', a && b);
+  console.log('log=>2&&', a && c);
 })();
