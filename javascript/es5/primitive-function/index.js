@@ -301,7 +301,7 @@
     },
     toString: function() {
       return '4';
-    }
+    },
   };
   console.log('log=>aObj plus:', aObj + ''); // 42
   console.log('log=>aObj toString:', String(aObj)); // 4
@@ -321,4 +321,47 @@
   console.log('log=>3||', c || a);
   console.log('log=>1&&', a && b);
   console.log('log=>2&&', a && c);
+});
+
+/**
+ * 符号强制类型转换
+ */
+(function() {
+  var s1 = Symbol('cool');
+  console.log('log=>s1', String(s1));
+  var s2 = Symbol('not cool');
+  // console.log('log=>s2', s2 + ''); // TypeError: Cannot convert a Symbol value to a string
+  console.log('log=>s1 bool:', Boolean(s1)); // true
+  var s3 = Symbol('');
+  console.log('log=>s3 bool:', Boolean(s3)); // true
+});
+
+/**
+ * loose equals vs strict equals
+ * == vs ===
+ * ==允许在相等比较中进行强制类型转换，而===不允许
+ *
+ * 1. string vs number
+ * @specification
+ * (1) 如果Type(x)是数字，Type(y)是字符串，则返回x == ToNumber(y)的结果
+ * (2) 如果Type(x)是字符串，Type(y)是数字，则返回ToNumber(x) == y的结果
+ *
+ * @specification
+ * 2. otherType vs boolean
+ * (1) 如果Type(x)是布尔类型，则返回ToNumber(x) == y的结果
+ * (2) 如果Type(y)是布尔类型，则返回x == ToNumber(y)的结果
+ */
+(function() {
+  var x = '1';
+  var y = 1;
+  console.log('log=>1', x == y); // true 进行了类型转换
+  console.log('log=>2', x === y); // false 也会判断类型，但是判断类型不同后的处理方式不同
+
+  var z = true;
+  var x1 = '12';
+  var y1 = 12;
+  console.log('log=>x vs z:', x == z); // true
+  console.log('log=>y vs z:', y == z); // true
+  console.log('log=>x1 vs z:', x1 == z); // false
+  console.log('log=>y1 vs z:', y1 == z); // false
 })();
