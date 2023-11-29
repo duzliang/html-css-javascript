@@ -364,4 +364,38 @@
   console.log('log=>y vs z:', y == z); // true
   console.log('log=>x1 vs z:', x1 == z); // false
   console.log('log=>y1 vs z:', y1 == z); // false
-})();
+});
+
+/**
+ * 假值的相等比较
+ * 特殊值
+ */
+(function() {
+  "0" == null;           // false
+  "0" == undefined;      // false
+  "0" == false;          // true -- 晕！
+  "0" == NaN;            // false
+  "0" == 0;              // true
+  "0" == "";             // false
+
+  false == null;         // false
+  false == undefined;    // false
+  false == NaN;          // false
+  false == 0;            // true -- 晕！
+  false == "";           // true -- 晕！
+  false == [];           // true -- 晕！
+  false == {};           // false
+
+  "" == null;            // false
+  "" == undefined;       // false
+  "" == NaN;             // false
+  "" == 0;               // true -- 晕！
+  "" == [];              // true -- 晕！
+  "" == {};              // false
+
+  0 == null;             // false
+  0 == undefined;        // false
+  0 == NaN;              // false
+  0 == [];               // true -- 晕！
+  0 == {};               // false
+});
