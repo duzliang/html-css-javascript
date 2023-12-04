@@ -142,6 +142,10 @@
  * 错误处理
  * 1. try catch 语句无法处理异步错误
  * 2. 使用Promise分离式的错误处理方式
+ *
+ * @question
+ * 1. promise catch块和 then 中的rejected()有什么区别？
+ * then中的rejected()是捕获当前 promise 链中未被捕获到错误，catch是捕获前面所有 promise 未处理的异常，是最终的异常处理函数
  */
 (function() {
   // function foo() {
@@ -161,25 +165,50 @@
   let p = Promise.reject('Oops');
 
   // 分离式处理
-  p.then(function(value) {
+  p.then(function fulfilled(value) {
     console.log('log=>p success:', value.bar()); // 无法捕获到错误
-  }, function(err) {
+  }, function rejected(err) {
     console.log('log=>p err occurred:', err); // log=>err occurred: Oops
   });
 
   // catch 语句块
-  p.catch(function(err) {
+  p.catch(function handleErrors(err) {
     console.log('log=>p err catch:', err); // log=>err catch: Oops
   });
 
   let p2 = Promise.resolve(22);
-  p2.then(function(value) {
+  p2.then(function fulfilled(value) {
     console.log('log=>p2 success:', value.toLowerCase());
-  }, function(err) {
+  }, function rejected(err) {
     // 未接收到错误信息？
     console.log('log=>p2 err occurred:', err);
   }).catch(function(err) { // 总是在末尾添加catch来捕获Promise全链未被捕获的异常
     console.log('log=>p2 err catch:', err); // log=>p2 err catch: Oops 接收到错误
     // 若是在这里抛出异常，该如何处理呢？
   });
+});
+
+/**
+ * Promise 链
+ */
+(function() {
+  let p1 = Promise.resolve(21);
+  let p2 = Promise.resolve(p1);
+  let r1 = Promise.reject('r1');
+  let r2 = Promise.reject('r2');
+
+  // p1, p2 都完成后，进入下一步 then
+  Promise.all([p1, p2])
+   .then(function fulfilled(values) {
+      console.log('log=>all success:', values); // [21, 21]
+    }, function rejected(err) {
+      console.log('log=>all err:', err); // r1
+    });
+
+  Promise.all([r1, r2])
+   .then(function fulfilled(values) {
+      console.log('log=>all success:', values);
+    }, function rejected(err) {
+      console.log('log=>all err:', err); // r1
+    });
 })();
