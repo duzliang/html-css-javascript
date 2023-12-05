@@ -316,4 +316,102 @@
   Promise.all(foo2(10, 20)).then(function([x, y]) {
     console.log('log=>destructure:', x, y); // 200 599
   });
+});
+
+/**
+ * Promisory Promise化
+ * 把传统回调模式的代码，重构为Promise方式的代码
+ */
+(function() {
+  // 1. tools
+  // polyfill安全的guard检查
+  if (!Promise.wrap) {
+    Promise.wrap = function(fn) {
+      return function() {
+        let args = [].slice.call(arguments);
+
+        return new Promise(function(resolve, reject) {
+          fn.apply(
+            null,
+            args.concat(function(err, v) {
+              if (err) {
+                reject(err);
+              } else {
+                resolve(v);
+              }
+            }),
+          );
+        });
+      };
+    };
+  }
+
+  /**
+   * callback style code
+   */
+  function ajax(url, cb) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        cb(null, xhr.responseText);
+      } else {
+        cb(new Error('Request failed with status' + xhr.status));
+      }
+    };
+    xhr.onerror = function() {
+      cb(new Error('Request failed'));
+    };
+  }
+
+  function foo(x, y, cb) {
+    ajax(
+      'http://some.url.1/? x=' + x + '&y=' + y,
+      cb,
+    );
+  }
+
+  foo(11, 31, function(err, text) {
+    if (err) {
+      console.error(err);
+    } else {
+      console.log(text);
+    }
+  });
+
+  /**
+   * use promise.wrap to refactor
+   */
+
+    // 为ajax(..)构造一个promisory
+  var request = Promise.wrap(ajax);
+
+  // 重构foo(..)，但使其外部成为基于外部回调的，
+  // 与目前代码的其他部分保持通用
+  // ——只在内部使用request(..)的promise
+  function fooWrap(x, y, cb) {
+    request(
+      'http://some.url.1/? x=' + x + '&y=' + y,
+    )
+      .then(
+        function fulfilled(text) {
+          cb(null, text);
+        },
+        cb,
+      );
+  }
+
+  // 现在，为了这段代码的目的，为foo(..)构造一个promisory
+  var betterFoo = Promise.wrap(fooWrap);
+
+  // 并使用这个promisory
+  betterFoo(11, 31)
+    .then(
+      function fulfilled(text) {
+        console.log(text);
+      },
+      function rejected(err) {
+        console.error(err);
+      },
+    );
 })();
