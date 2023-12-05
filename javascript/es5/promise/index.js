@@ -253,4 +253,67 @@
     ),
     p3,
   ]);
+});
+
+/**
+ * Promise局限性
+ * Promise的设计局限性（具体来说，就是它们链接的方式）造成了一个让人很容易中招的陷阱，即Promise链中的错误很容易被无意中默默忽略掉
+ */
+(function() {
+  // v1.0
+  function getY(x) {
+    return new Promise(function(resolve, reject) {
+      setTimeout(function() {
+        resolve((3 * x) - 1);
+      }, 100);
+    });
+  }
+
+  function foo(bar, baz) {
+    let x = bar * baz;
+    return getY(x)
+      .then(function(y) {
+        // 把两个值封装到容器中
+        return [x, y];
+      });
+  }
+
+  foo(10, 20)
+    .then(function(msgs) {
+      var x = msgs[0];
+      var y = msgs[1];
+
+      console.log('log=>', x, y);    // 200 599
+    });
+
+  // v2.0 把每个值封装到自己的 Promise 中
+  function foo2(bar, baz) {
+    let x = bar * baz;
+    // 返回 2 个 Promise
+    return [
+      Promise.resolve(x),
+      getY(x),
+    ];
+  }
+
+  Promise.all(foo2(10, 20)).then(function(msgs) {
+    var x = msgs[0];
+    var y = msgs[1];
+    console.log('log=>v2:', x, y); // 200 599
+  });
+
+  // 展开参数工具函数
+  function spread(fn) {
+    return Function.apply.bind(fn, null);
+  }
+
+  Promise.all(foo2(10, 20))
+    .then(spread(function(x, y) {
+      console.log('log=>spread:', x, y); // 200 599
+    }));
+
+  // 可以使用自带的结构参数方式
+  Promise.all(foo2(10, 20)).then(function([x, y]) {
+    console.log('log=>destructure:', x, y); // 200 599
+  });
 })();
