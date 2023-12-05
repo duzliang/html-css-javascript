@@ -190,6 +190,9 @@
 
 /**
  * Promise 链
+ * 1. Promise.all()
+ * 2. Promise.race()
+ * @notice 当执行中被淘汰的Promise会被忽略，但是有什么副作用呢？
  */
 (function() {
   let p1 = Promise.resolve(21);
@@ -199,16 +202,55 @@
 
   // p1, p2 都完成后，进入下一步 then
   Promise.all([p1, p2])
-   .then(function fulfilled(values) {
+    .then(function fulfilled(values) {
       console.log('log=>all success:', values); // [21, 21]
     }, function rejected(err) {
       console.log('log=>all err:', err); // r1
     });
 
   Promise.all([r1, r2])
-   .then(function fulfilled(values) {
+    .then(function fulfilled(values) {
       console.log('log=>all success:', values);
     }, function rejected(err) {
       console.log('log=>all err:', err); // r1
     });
+
+  let p3 = new Promise((resolve, reject) => {
+    setTimeout(function() {
+      resolve(31);
+    }, 3000);
+  });
+  Promise.race([p1, p3])
+    .then(function fulfilled(value) {
+      console.log('log=>race success:', value); // 21
+    }, function rejected(err) {
+      console.log('log=>race err:', err); // r1
+    });
+
+  // polyfill 安全的 guard 检查
+  if (!Promise.observe) {
+    Promise.observe = function(pr, cb) {
+      pr.then(function fulfilled(msg) {
+        // 异步回调
+        Promise.resolve(msg).then(cb);
+      }, function rejected(err) {
+        // 异步回调
+        Promise.resolve(err).then(cb);
+      });
+
+      // 返回原promise
+      return pr;
+    };
+  }
+
+  Promise.race([
+    Promise.observe(
+      p1,
+      function cleanup(msg) {
+        // 在 p1 之后清理
+        console.log('log=>cleanup:', msg);
+      },
+    ),
+    p3,
+  ]);
 })();
