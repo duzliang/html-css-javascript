@@ -414,4 +414,31 @@
         console.error(err);
       },
     );
+});
+
+/**
+ * 无法取消的Promise
+ */
+(function() {
+  let foo = new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      resolve('foo');
+    }, 3000);
+  });
+  let bar = new Promise(function(resolve, reject) {
+    resolve('bar');
+  });
+
+  Promise.race([foo, bar])
+    .then(function fulfilled(value) {
+      // 处理第一个成功的promise
+      console.log('log=>race success:', value); // bar
+    }, function rejected(err) {
+      console.log('log=>race err:', err); // r1
+    });
+
+  foo.then(res => {
+    // 超时，但是没有取消，仍会执行
+    console.log('log=>foo success:', res);
+  });
 })();
