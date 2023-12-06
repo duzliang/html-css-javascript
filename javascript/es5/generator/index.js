@@ -45,4 +45,20 @@
   gar();
   console.log('log=>gx', x);
   console.log('log=>it.next:', it.next());
+});
+
+/**
+ * yield暂停
+ */
+(function() {
+  function* foo(x) {
+    let y = x * (yield);
+    return y;
+  }
+
+  var it = foo(6);
+
+  it.next(); // 启动foo()
+  var res = it.next(7);
+  console.log('log=>val:', res.value); // 42
 })();
