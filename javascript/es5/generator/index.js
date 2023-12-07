@@ -48,17 +48,34 @@
 });
 
 /**
+ * 1. 迭代消息传递
+ * 生成器提供了内建消息输入输出能力，通过 yield和next()实现
  * yield暂停
  */
 (function() {
   function* foo(x) {
-    let y = x * (yield);
-    return y;
+    return x * (yield);
   }
 
-  var it = foo(6);
+  let it = foo(6);
 
   it.next(); // 启动foo()
-  var res = it.next(7);
+  let res = it.next(7); // 7作为 yield 表达式的结果
   console.log('log=>val:', res.value); // 42
+});
+
+/**
+ * 2. 双向消息传递
+ */
+(function() {
+  function* foo(x) {
+    let y = x * (yield 'Hello'); // 1. 第一次调用 next() 时，x = 6, 在 yield 处暂停，Hello作为响应值返回
+    return y; // 2. 第二次调用 next() 时，x = 7作为 yield 处的参数继续执行，和上一次的 6 相乘，赋值给 y, 之后没有 yield，遇到 return 语句返回
+  }
+
+  let it = foo(6);
+  let res = it.next(3); // 第一个next()，没传值，因为只有暂停的 yield 才能接受通过 next(x)传递的 x 值，所以启动生成器时，第一个 next()一定要不带参数，根据规范和所有兼容浏览器，都会默认丢弃传递给第一个 next() 的任何东西。
+  console.log('log=>first:', res.value); // Hello
+  res = it.next(7);
+  console.log('log=>second:', res.value); // 42
 })();
