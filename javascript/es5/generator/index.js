@@ -78,4 +78,37 @@
   console.log('log=>first:', res.value); // Hello
   res = it.next(7);
   console.log('log=>second:', res.value); // 42
+});
+
+/**
+ * 生成器交互
+ * 每次构建一个迭代器，实际上就隐式构建了生成器的一个实例，通过这个迭代器来控制的是这个生成器实例
+ */
+(function() {
+  function *foo() {
+    var x = yield 2;
+    z++;
+    var y = yield (x * z);
+    console.log('log=>', x, y, z);
+  }
+
+  var z = 1;
+
+  var it1 = foo();
+  var it2 = foo();
+
+  var val1 = it1.next().value;
+  console.log('log=>val1:', val1); // 2
+  var val2 = it2.next().value;
+  console.log('log=>val2:', val2); // 2
+
+  val1 = it1.next(val2 * 10).value; // (2*10) * 2(z)
+  console.log('log=>val1 new:', val1); // 40
+  val2 = it2.next(val1 * 5).value; // (40 * 5) * 3(z)
+  console.log('log=>val2 new:', val2); // 600
+
+  var res1 = it1.next(val2 / 2); // (600 / 2)
+  var res2 = it2.next(val1 / 4); // (40 / 4)
+  console.log('log=>res1:', res1.value);
+  console.log('log=>res2:', res2.value);
 })();
