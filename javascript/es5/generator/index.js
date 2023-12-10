@@ -85,7 +85,7 @@
  * 每次构建一个迭代器，实际上就隐式构建了生成器的一个实例，通过这个迭代器来控制的是这个生成器实例
  */
 (function() {
-  function *foo() {
+  function* foo() {
     var x = yield 2;
     z++;
     var y = yield (x * z);
@@ -111,4 +111,67 @@
   var res2 = it2.next(val1 / 4); // (40 / 4)
   console.log('log=>res1:', res1.value);
   console.log('log=>res2:', res2.value);
+});
+
+/**
+ * 生成器产生值
+ *
+ * 1. 生产者和迭代器
+ */
+(function() {
+  // 使用函数闭包实现
+  var gimmeSomething = (function() {
+    var nextVal;
+
+    return function() {
+      if (nextVal === undefined) {
+        nextVal = 1;
+      } else {
+        nextVal = (nextVal * 3) + 6;
+      }
+      return nextVal;
+    };
+  })();
+
+  console.log('log=>', gimmeSomething());
+  console.log('log=>', gimmeSomething());
+  console.log('log=>', gimmeSomething());
+  console.log('log=>', gimmeSomething());
+
+  // 使用迭代器实现
+  var iteratorSomething = (function() {
+    var nextVal;
+
+    return {
+      // for of 循环需要
+      [Symbol.iterator]: function() {
+        return this;
+      },
+      // 标准迭代器接口方法
+      next: function() {
+        if (nextVal === undefined) {
+          nextVal = 1;
+        } else {
+          nextVal = (nextVal * 3) + 6;
+        }
+
+        return {
+          done: false,
+          value: nextVal,
+        };
+      },
+    };
+  })();
+
+  console.log('log=>2', iteratorSomething.next());
+  console.log('log=>2', iteratorSomething.next());
+  console.log('log=>2', iteratorSomething.next());
+  console.log('log=>2', iteratorSomething.next());
+
+  for (let val of iteratorSomething) {
+    console.log('log=>3', val);
+    if (val > 1000) {
+      break; // 退出循环，防止死循环
+    }
+  }
 })();
