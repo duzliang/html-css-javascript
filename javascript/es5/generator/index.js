@@ -174,4 +174,93 @@
       break; // 退出循环，防止死循环
     }
   }
+});
+
+/**
+ * 生成器迭代器
+ */
+(function() {
+  function* something() {
+    var nextVal;
+
+    while (true) {
+      if (nextVal === undefined) {
+        nextVal = 1;
+      } else {
+        nextVal = (nextVal * 3) + 6;
+      }
+
+      yield nextVal;
+    }
+  }
+
+  var it = something();
+  for (let val of it) {
+    console.log('log=>4', val);
+    if (val > 1000) {
+      // 方法1. 退出循环，防止死循环
+      // break;
+      // 方法2. 完成生成器的迭代器
+      console.log('log=>', it.return('Hello World').value);
+    }
+  }
+});
+
+/**
+ * 异步迭代生成器
+ */
+(function() {
+  // custom ajax
+  let ajax = function(url, cb) {
+    return new Promise(function(resolve, reject) {
+      setTimeout(function() {
+        resolve(url);
+      }, 1000);
+    });
+  };
+
+  /**
+   * 回调模式
+   */
+  function* fooCallback(x, y, cb) {
+    ajax('', cb);
+  }
+
+  fooCallback(11, 31, function(err, text) {
+    if (err) {
+      console.error('log=>err:', err);
+    } else {
+      console.log('log=>text:', text);
+    }
+  });
+
+  /**
+   * 生成器模式
+   * @relearn
+   */
+  function foo(x, y) {
+    ajax('url', function(err, text) {
+      if (err) {
+        // 向 *main() 抛出错误
+        it.throw(err);
+      } else {
+        // 用收到的  data 恢复*main()
+        it.next(data);
+      }
+    });
+  }
+
+  function* main() {
+    try {
+      let text = yield foo(11, 31);
+      console.log('log=>text:', text);
+    } catch (err) {
+      console.error('log=>err:', err);
+    }
+  }
+
+  var it = main();
+
+  // 启动生成器
+  it.next();
 })();
