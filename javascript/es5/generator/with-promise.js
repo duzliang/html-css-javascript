@@ -33,10 +33,10 @@ function run(gen) {
     });
 }
 
+/**
+ * ES7 中，我们可以直接使用async/await实现类似run的功能
+ */
 (function() {
-  /**
-   * ES7 中，我们可以直接使用async/await实现类似的功能
-   */
   function getUsers() {
     return new Promise(function(resolve, reject) {
       setTimeout(function() {
@@ -76,7 +76,7 @@ function run(gen) {
  * 4.2 多请求并发
  */
 (function() {
-  function * foo() {
+  function* foo() {
     // 1. 并发请求
     let p1 = new Promise(function(resolve, reject) {
       setTimeout(function() {
@@ -105,5 +105,30 @@ function run(gen) {
   }
 
   // 使用自定义 run 运行
+  run(foo);
+})();
+
+/**
+ * 隐藏 promise 实现
+ */
+(function() {
+  function bar(url1, url2) {
+    return Promise.all([
+      fetch(url1),
+      fetch(url2),
+    ]);
+  }
+
+  function* foo() {
+    // 用 bar 隐藏基于 Promise 的并发请求细节
+    let results = yield bar('/api/user/1', '/api/user/2');
+
+    let r1 = results[0];
+    let r2 = results[1];
+
+    let r3 = yield fetch(`/api/user/${r1 + r2}`);
+    console.log('log=>r3', r3);
+  }
+
   run(foo);
 })();
