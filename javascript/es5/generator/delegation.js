@@ -119,5 +119,24 @@
   } catch (err) {
     console.log('log=>catch error in outside:', err); // F
   }
+});
+
+/**
+ * 异步委托
+ */
+(function () {
+  function* foo() {
+    let r2 = fetch('url2');
+    let r3 = fetch('url3?q=' + r2);
+  }
+
+  function* bar() {
+    let r1 = fetch('url1');
+    let r3 = yield* foo();
+    console.log('log=>', r3);
+  }
+
+  // use the run function to run
+  // run(bar)
 })();
 
