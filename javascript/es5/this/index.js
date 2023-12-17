@@ -118,12 +118,12 @@ var objFunc = {
 }
 
 objFunc.foo(); // obj
-  
+
 }());
 
 (function(){
   console.log('latest------------------------->');
-  
+
   function foo() {
     console.log('foo=>', this.a);
   }
@@ -142,7 +142,7 @@ objFunc.foo(); // obj
 })();
 
 /**
- * 显示绑定
+ * 显式绑定
  * call(context, arg, arg2, ...)
  * apply(context, arguments[])
  */
