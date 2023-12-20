@@ -115,6 +115,8 @@
 
 /**
  * default params
+ * 函数默认参数
+ * @note 可以是值，也可以是任意合法的表达式
  */
 (function() {
   function foo(a = 'a', b = 'b', c = 'c') {
@@ -123,7 +125,7 @@
     console.log('log=>c:', c);
   }
 
-  foo('duke');
+  // foo('duke');
 
   function oldFoo(a, b, c) {
     a = a || 'a';
@@ -136,7 +138,8 @@
 
   // if a is a falsy value, the default value will be used
   let a = 0;
-  oldFoo(a);
+
+  // oldFoo(a);
 
   function oldFooImproved(a, b, c) {
     a = a !== undefined ? a : 'a';
@@ -148,5 +151,40 @@
     console.log('improved=>c:', c);
   }
 
-  oldFooImproved(a);
+  // oldFooImproved(a);
+
+  // es6处理缺失和 undefined
+  function fooLack(x = 11, y = 31) {
+    console.log(x + y);
+  }
+
+  fooLack();                   // 42
+  fooLack(5, 6);          // 11
+  fooLack(0, 42);         // 42
+
+  fooLack(5);                // 36
+  fooLack(5, undefined);  // 36 <-- 丢了undefined
+  fooLack(5, null);       // 5  <-- null被强制转换为0
+
+  fooLack(undefined, 6);  // 17 <-- 丢了undefined
+  fooLack(null, 6);       // 6  <-- null被强制转换为0
+
+  /**
+   * z 会引发 es6 TDZ Error
+   */
+  var w = 1, z = 2; // ReferenceError: Cannot access 'z' before initialization
+  var u = 3;
+  function fooComplex( x = w + 1, y = x + 1, z = u + 1 ) {
+    console.log( x, y, z );
+  }
+
+  fooComplex();
+
+  // 使用 IIFE 作为默认参数
+  function fooIIFE(x = (function(v) { return v + 11; })(31)) {
+    console.log('log=>x', x);
+  }
+  fooIIFE(); // 42
+  fooIIFE(18); // 18
 })();
+
