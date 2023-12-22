@@ -54,4 +54,39 @@
   // 数组解构赋值
   ({ a: a2[0], b: a2[1], c: a2[2] } = o1);
   console.log('log=>a2', a2);
+
+  // 轻松解决交换两个变量的问题
+  let my = 'duke', you = 'you';
+  [my, you] = [you, my];
+  console.log('log=>my,you', my, you);
+
+  // 多次赋值，解构子对象或数组属性
+  let { a: X, a: Y } = { a: 1 };
+  console.log('log=>multi:', X, Y);
+
+  // 解构嵌套对象，使用多行展示，便于阅读
+  let {
+    a: {
+      b: {
+        c: d,
+      },
+    },
+  } = { a: { b: { c: 1 } } };
+});
+
+/**
+ * 解构赋值表达式
+ * @note 对象或者数组解构的赋值表达式的完成值是所有右侧对象/数组的值
+ */
+(function() {
+  let o = { a: 1, b: 2, c: 3 };
+
+  let p = { a, b, c } = o;
+  console.log('log=>val:', a, b, c); // 1 2 3
+  console.log('log=>p', p); // {a: 1, b: 2, c: 3}
+  console.log('log=>p is o:', p === o); // true
+
+  // 解构默认值设置
+  let { a: a1 = 1, d: d1 = '-1' } = o;
+  console.log('log=>a1 d1', a1, d1); // 1 -1
 })();
