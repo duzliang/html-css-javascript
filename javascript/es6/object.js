@@ -47,4 +47,25 @@
     },
   });
   console.log('log=>runConcise:', runConcise);
+});
+
+/**
+ * Getter and Setter
+ */
+(function() {
+  let o = {
+    _name: 'duke',
+    get name() {
+      return this._name;
+    },
+    // Gather and rest parameter is not supported in Setter
+    // set name(...value) { // SyntaxError: Setter function argument must not be a rest parameter
+    set name(value) {
+      this._name = value;
+    },
+  };
+  console.log('log=>1', o.name);
+
+  o.name = 'duke2';
+  console.log('log=>o.name:', o.name);
 })();
