@@ -1,5 +1,14 @@
 /**
  * Arrow function
+ * =>是关于this、arguments和super的词法绑定
+ * 1. 箭头函数使用词法 this, 不是动态绑定，也没有自己的 this
+ * 2. 箭头函数使用词法 arguments，而不是自己的 arguments
+ *
+ * 使用规则：
+ * 如果你有一个简短单句在线函数表达式，其中唯一的语句是return某个计算出的值，且这个函数内部没有this引用，且没有自身引用（递归、事件绑定/解绑定），且不会要求函数执行这些，那么可以安全地把它重构为=>箭头函数
+ * 如果你有一个内层函数表达式，依赖于在包含它的函数中调用var self = thishack或者.bind(this)来确保适当的this绑定，那么这个内层函数表达式应该可以安全地转换为=>箭头函数
+ * 如果你的内层函数表达式依赖于封装函数中某种像var args =Array.prototype.slice. call(arguments)来保证arguments的词法复制，那么这个内层函数应该可以安全地转换为=>箭头函数
+ * 所有的其他情况——函数声明、较长的多语句函数表达式、需要词法名称标识符（递归等）的函数，以及任何不符合以上几点特征的函数——一般都应该避免=>函数语法
  */
 
 // 常规的使用，简单化, 在简短的语句中，能够让代码更简洁，但是如果是多行代码，有时候使用 function 和具名函数可能是更好的选择
@@ -89,6 +98,11 @@
       }, 1000);
     },
   };
+  /**
+   * 使用controllerObjWithArrowFunction调用，会报错
+   * arrow function 会从背包围的作用域中词法继承 this，所以这里 this 指向全局作用域
+   */
   controllerObjWithArrowFunction.makeRequest();
+
 })();
 
