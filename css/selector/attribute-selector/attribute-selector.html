@@ -1,85 +1,85 @@
 <!DOCTYPE html>
 <html>
-  <head lang="en">
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Attribute Selectors</title>
+<head lang="en">
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attribute Selectors</title>
 
-    <style>
-      div[action] {
-        color: blueviolet;
-      }
+  <style>
+    div[action] {
+      color: blueviolet;
+    }
 
-      div[action="refresh"] {
-        color: chocolate;
-      }
+    div[action="refresh"] {
+      color: chocolate;
+    }
 
-      div[action~="bar"] {
-        background-color: chartreuse;
-      }
+    div[action~="bar"] {
+      background-color: chartreuse;
+    }
 
-      div[action^="fa"] {
-        color: red;
-      }
+    div[action^="fa"] {
+      color: red;
+    }
 
-      div[action$="icon"] {
-        background-color: #cccccc;
-      }
+    div[action$="icon"] {
+      background-color: #cccccc;
+    }
 
-      div[action*="od"] {
-        background-color: #ee11ee;
-      }
+    div[action*="od"] {
+      background-color: #ee11ee;
+    }
 
-      div[action|="en"] {
-        background-color: #a67cff;
-      }
-    </style>
-  </head>
-  <body>
-    <h1>7种属性选择器</h1>
-    <pre>
+    div[action|="en"] {
+      background-color: #a67cff;
+    }
+  </style>
+</head>
+<body>
+<h1>7种属性选择器</h1>
+<pre>
     <code>
     [data-value] {
     /* Attribute exists */
     }
-        
+
     [data-value="foo"] {
     /* Attribute has this exact value */
     }
-    
+
     [data-value*="foo"] {
     /* Attribute value contains this value somewhere in it */
     }
-    
+
     [data-value~="foo"] {
     /* Attribute has this value in a space-separated list somewhere */
     }
-    
+
     [data-value^="foo"] {
     /* Attribute value starts with this */
     }
-    
+
     [data-value|="foo"] {
     /* Attribute value starts with this in a dash-separated list */
     }
-    
+
     [data-value$="foo"] {
     /* Attribute value ends with this */
     }
     </code>
     </pre>
 
-    <div action>[action]:有action属性</div>
-    <div action="refresh">[action="refresh"]:action属性的值为refresh</div>
-    <div action="fa bar">
-      [action="fa bar"]:属性值是以空格分开的多个值，bar是其中一个值
-    </div>
-    <div action="fashion">[action="fashion"]:属性值是以fa开始</div>
-    <div action="foo-icon">[action="foo-icon"]:属性值是以icon结尾</div>
-    <div action="food">[action="food"]属性值中包含oo</div>
-    <div action="en-fa-so">
-      [action="en-fa-so"]属性值是以连字符连接,从左向右，以en开始
-    </div>
-  </body>
+<div action>[action]:有action属性</div>
+<div action="refresh">[action="refresh"]:action属性的值为refresh</div>
+<div action="fa bar">
+  [action="fa bar"]:属性值是以空格分开的多个值，bar是其中一个值
+</div>
+<div action="fashion">[action="fashion"]:属性值是以fa开始</div>
+<div action="foo-icon">[action="foo-icon"]:属性值是以icon结尾</div>
+<div action="food">[action="food"]属性值中包含oo</div>
+<div action="en-fa-so">
+  [action="en-fa-so"]属性值是以连字符连接,从左向右，以en开始
+</div>
+</body>
 </html>

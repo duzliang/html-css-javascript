@@ -1,67 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CSS Grid</title>
-    <style>
-      html,
-      body {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS Grid</title>
+  <style>
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
 
-      .container {
-        /*display: inline-grid;*/
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        /*grid-template-rows: [row1-start] 25% [row1-end row2-start] 100px [row2-end] auto;*/
-        grid-gap: 10px;
-      }
+    .container {
+      /*display: inline-grid;*/
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      /*grid-template-rows: [row1-start] 25% [row1-end row2-start] 100px [row2-end] auto;*/
+      grid-gap: 10px;
+    }
 
-      .item {
-        background-color: #eee;
-        padding: 20px;
-        text-align: center;
-      }
+    .item {
+      background-color: #eee;
+      padding: 20px;
+      text-align: center;
+    }
 
-      /* .wrapper {
-        display: grid;
-        grid-template-columns: 250px repeat(5, 1fr);
-        grid-gap: 10px;
-      }
+    /* .wrapper {
+      display: grid;
+      grid-template-columns: 250px repeat(5, 1fr);
+      grid-gap: 10px;
+    }
 
-      .column {
-        background-color: orange;
-        padding: 20px;
-        text-align: center;
-      } */
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="item">item</div>
-      <div class="item">item</div>
-      <div class="item">item</div>
-      <div class="item">item</div>
-      <div class="item">item</div>
-      <div class="item">item</div>
-      <div class="item">item</div>
-      <div class="item">item</div>
-    </div>
+    .column {
+      background-color: orange;
+      padding: 20px;
+      text-align: center;
+    } */
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="item">item</div>
+  <div class="item">item</div>
+  <div class="item">item</div>
+  <div class="item">item</div>
+  <div class="item">item</div>
+  <div class="item">item</div>
+  <div class="item">item</div>
+  <div class="item">item</div>
+</div>
 
-    <!-- <div class="wrapper">
-      <div class="column">column</div>
-      <div class="column">column</div>
-      <div class="column">column</div>
-      <div class="column">column</div>
-      <div class="column">column</div>
-      <div class="column">column</div>
-      <div class="column">column</div>
-      <div class="column">column</div>
-    </div> -->
-  </body>
+<!-- <div class="wrapper">
+  <div class="column">column</div>
+  <div class="column">column</div>
+  <div class="column">column</div>
+  <div class="column">column</div>
+  <div class="column">column</div>
+  <div class="column">column</div>
+  <div class="column">column</div>
+  <div class="column">column</div>
+</div> -->
+</body>
 </html>

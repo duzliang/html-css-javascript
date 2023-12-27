@@ -1,57 +1,57 @@
 <!DOCTYPE html>
 <html>
-  <head lang="zh-cn">
-    <meta charset="UTF-8" />
-    <title>CSS3渐变制作纹理图片</title>
-    <style>
-      .patterns {
-        width: 200px;
-        height: 200px;
-        float: left;
-        margin: 10px;
-        -webkit-box-shadow: 0 1px 8px #666;
-        -moz-box-shadow: 0 1px 8px #666;
-        box-shadow: 0 1px 8px;
-      }
+<head lang="zh-cn">
+  <meta charset="UTF-8" />
+  <title>CSS3渐变制作纹理图片</title>
+  <style>
+    .patterns {
+      width: 200px;
+      height: 200px;
+      float: left;
+      margin: 10px;
+      -webkit-box-shadow: 0 1px 8px #666;
+      -moz-box-shadow: 0 1px 8px #666;
+      box-shadow: 0 1px 8px;
+    }
 
-      .pt1 {
-        background-size: 50px 50px;
-        background-color: #0ae;
-        background-image: linear-gradient(
+    .pt1 {
+      background-size: 50px 50px;
+      background-color: #0ae;
+      background-image: linear-gradient(
           rgba(255, 255, 255, 0.2) 50%,
           transparent 50%,
           transparent
-        );
-      }
+      );
+    }
 
-      .pt2 {
-        background-size: 50px 50px;
-        background-color: #f90;
-        background-image: linear-gradient(
+    .pt2 {
+      background-size: 50px 50px;
+      background-color: #f90;
+      background-image: linear-gradient(
           0deg,
           rgba(255, 255, 255, 0.2) 50%,
           transparent 50%,
           transparent
-        );
-      }
+      );
+    }
 
-      .pt20 {
-        background-color: #ddeeff;
-        background-image: radial-gradient(
-            closest-side,
-            transparent 98%,
-            rgba(0, 0, 0, 0.3) 99%
-          ),
-          radial-gradient(closest-side, transparent 98%, rgba(0, 0, 0, 0.3) 99%);
-        background-position: 0 0px, 40px 40px;
-        background-size: 80px 80px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="patterns pt1"></div>
-    <div class="patterns pt2"></div>
+    .pt20 {
+      background-color: #ddeeff;
+      background-image: radial-gradient(
+          closest-side,
+          transparent 98%,
+          rgba(0, 0, 0, 0.3) 99%
+      ),
+      radial-gradient(closest-side, transparent 98%, rgba(0, 0, 0, 0.3) 99%);
+      background-position: 0 0px, 40px 40px;
+      background-size: 80px 80px;
+    }
+  </style>
+</head>
+<body>
+<div class="patterns pt1"></div>
+<div class="patterns pt2"></div>
 
-    <div class="patterns pt20"></div>
-  </body>
+<div class="patterns pt20"></div>
+</body>
 </html>

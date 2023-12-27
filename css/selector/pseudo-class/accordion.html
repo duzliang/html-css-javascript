@@ -1,94 +1,94 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title>vertical accordion</title>
-    <style>
-        .accordion {
-            background: #ffffff;
-            color: #424242;
-            font: 12px Arial;
-            margin: 0 auto;
-            padding: 10px;
-            width: 500px;
-        }
+  <meta charset="UTF-8">
+  <title>vertical accordion</title>
+  <style>
+    .accordion {
+      background: #ffffff;
+      color: #424242;
+      font: 12px Arial;
+      margin: 0 auto;
+      padding: 10px;
+      width: 500px;
+    }
 
-        .accordion h2 {
-            margin: 5px 0;
-            padding: 0;
-            position: relative;
-        }
+    .accordion h2 {
+      margin: 5px 0;
+      padding: 0;
+      position: relative;
+    }
 
-        .accordion h2:before {
-            border: 5px solid #fff;
-            border-color: #fff transparent transparent;
-            content: "";
-            height: 0;
-            position: absolute;
-            right: 10px;
-            top: 15px;
-            width: 0;
-        }
+    .accordion h2:before {
+      border: 5px solid #fff;
+      border-color: #fff transparent transparent;
+      content: "";
+      height: 0;
+      position: absolute;
+      right: 10px;
+      top: 15px;
+      width: 0;
+    }
 
-        .accordion h2 a {
-            background: #8f8f8f;
-            background: -moz-linear-gradient(top, #cecece, #8f8f8f);
-            background: -webkit-gradient(linear, left top, left bottom, from(#cecece), to(#8f8f8f));
-            background: linear-gradient(top, #cecece, #8f8f8f);
-            border-radius: 5px;
-            color: #424242;
-            display: block;
-            font-size: 13px;
-            font-weight: normal;
-            margin: 0;
-            padding: 10px;
-            text-shadow: 2px 2px 2px #aeaeae;
-            text-decoration: none;
-        }
+    .accordion h2 a {
+      background: #8f8f8f;
+      background: -moz-linear-gradient(top, #cecece, #8f8f8f);
+      background: -webkit-gradient(linear, left top, left bottom, from(#cecece), to(#8f8f8f));
+      background: linear-gradient(top, #cecece, #8f8f8f);
+      border-radius: 5px;
+      color: #424242;
+      display: block;
+      font-size: 13px;
+      font-weight: normal;
+      margin: 0;
+      padding: 10px;
+      text-shadow: 2px 2px 2px #aeaeae;
+      text-decoration: none;
+    }
 
-        .accordion:target h2 a,
-        .accordion h2 a:focus,
-        .accordion h2 a:hover,
-        .accordion h2 a:active {
-            background: #2288dd;
-            background: -webkit-gradient(linear, left top, left bottom, from(#6bb2ff), to(#2288dd));
-            background: linear-gradient(top, #6bb2ff, #2288dd);
-            color: #ffffff;
-        }
+    .accordion:target h2 a,
+    .accordion h2 a:focus,
+    .accordion h2 a:hover,
+    .accordion h2 a:active {
+      background: #2288dd;
+      background: -webkit-gradient(linear, left top, left bottom, from(#6bb2ff), to(#2288dd));
+      background: linear-gradient(top, #6bb2ff, #2288dd);
+      color: #ffffff;
+    }
 
-        .accordion p {
-            margin: 0;
-            height: 0;
-            overflow: hidden;
-            padding: 0 10px;
-            transition: height 0.5s ease-in;
-            -webkit-transition: height 0.5s ease-in;
-        }
+    .accordion p {
+      margin: 0;
+      height: 0;
+      overflow: hidden;
+      padding: 0 10px;
+      transition: height 0.5s ease-in;
+      -webkit-transition: height 0.5s ease-in;
+    }
 
-        .accordion:target p{
-            height: 100px;
-            overflow: auto;
-        }
+    .accordion:target p {
+      height: 100px;
+      overflow: auto;
+    }
 
-        .accordion:target h2:before{
-            border-color: transparent transparent transparent #ffffff;
-        }
-    </style>
+    .accordion:target h2:before {
+      border-color: transparent transparent transparent #ffffff;
+    }
+  </style>
 </head>
 <body>
 <div class="accordion">
-    <div class="menu" id="brand">
-        <h2><a href="#brand">Brand</a></h2>
-        <p>brand ...</p>
-    </div>
-    <div class="menu" id="promotion">
-        <h2><a href="#promotion">Promotion</a></h2>
-        <p>Promotion ...</p>
-    </div>
-    <div class="menu" id="event">
-        <h2><a href="#event">Event</a></h2>
-        <p>event ...</p>
-    </div>
+  <div class="menu" id="brand">
+    <h2><a href="#brand">Brand</a></h2>
+    <p>brand ...</p>
+  </div>
+  <div class="menu" id="promotion">
+    <h2><a href="#promotion">Promotion</a></h2>
+    <p>Promotion ...</p>
+  </div>
+  <div class="menu" id="event">
+    <h2><a href="#event">Event</a></h2>
+    <p>event ...</p>
+  </div>
 </div>
 </body>
 </html>

@@ -1,47 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Background Opacity</title>
-    <style>
-      .wrap {
-        width: 500px;
-        height: 300px;
-        /* background: rgba(255, 0, 0, 0.2); option1 */
-        position: relative; /* option2 */
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Background Opacity</title>
+  <style>
+    .wrap {
+      width: 500px;
+      height: 300px;
+      /* background: rgba(255, 0, 0, 0.2); option1 */
+      position: relative; /* option2 */
+    }
 
-      /* option2 */
-      .wrap::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: #f00;
-        opacity: 0.2;
-      }
+    /* option2 */
+    .wrap::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #f00;
+      opacity: 0.2;
+    }
 
-      .sub {
-        width: 500px;
-        height: 50px;
-        line-height: 50px;
-        color: #fff;
-        background: #000;
-        position: absolute;
-        top: 125px;
-        left: auto;
-        z-index: 1;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="wrap">
-      This is the outer div: with some transparent;
-      <div class="sub">This is the inner div: not transparent;</div>
-    </div>
-  </body>
+    .sub {
+      width: 500px;
+      height: 50px;
+      line-height: 50px;
+      color: #fff;
+      background: #000;
+      position: absolute;
+      top: 125px;
+      left: auto;
+      z-index: 1;
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  This is the outer div: with some transparent;
+  <div class="sub">This is the inner div: not transparent;</div>
+</div>
+</body>
 </html>

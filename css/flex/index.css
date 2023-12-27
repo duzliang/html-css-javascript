@@ -1,20 +1,20 @@
-.flex-container{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-flow: row wrap;
-    gap: 10px 20px;
-    align-content: space-between;
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-flow: row wrap;
+  gap: 10px 20px;
+  align-content: space-between;
 
-    border: 1px solid gray;
+  border: 1px solid gray;
 }
 
 .flex-item {
-    /*flex: 1;*/
-    width: 200px;
-    border: 1px solid green;
+  /*flex: 1;*/
+  width: 200px;
+  border: 1px solid green;
 }
 
 .flex-item:last-child {
-    order: 2;
+  order: 2;
 }

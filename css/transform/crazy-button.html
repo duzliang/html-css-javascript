@@ -1,51 +1,50 @@
 <!DOCTYPE html>
 <html>
-  <head lang="zh-cn">
-    <meta charset="UTF-8" />
-    <title>CSS制作旋转icon</title>
-    <style>
-      @font-face {
-        font-family: "icomoon";
-        src: url("../fonts/icomoon.eot?-wq3ck");
-        src: url("../fonts/icomoon.eot?#iefix-wq3ck")
-            format("embedded-opentype"),
-          url("../fonts/icomoon.woff?-wq3ck") format("woff"),
-          url("../fonts/icomoon.ttf?-wq3ck") format("truetype"),
-          url("../fonts/icomoon.svg?-wq3ck#icomoon") format("svg");
-        font-weight: normal;
-        font-style: normal;
-      }
+<head lang="zh-cn">
+  <meta charset="UTF-8" />
+  <title>CSS制作旋转icon</title>
+  <style>
+    @font-face {
+      font-family: "icomoon";
+      src: url("../fonts/icomoon.eot?-wq3ck");
+      src: url("../fonts/icomoon.eot?#iefix-wq3ck") format("embedded-opentype"),
+      url("../fonts/icomoon.woff?-wq3ck") format("woff"),
+      url("../fonts/icomoon.ttf?-wq3ck") format("truetype"),
+      url("../fonts/icomoon.svg?-wq3ck#icomoon") format("svg");
+      font-weight: normal;
+      font-style: normal;
+    }
 
-      #socialicons img,
-      #socialicons2 img {
-        transition: all 0.8s ease-in-out;
-      }
+    #socialicons img,
+    #socialicons2 img {
+      transition: all 0.8s ease-in-out;
+    }
 
-      #socialicons img:hover {
-        transform: rotate(360deg) scale(1.5);
-      }
+    #socialicons img:hover {
+      transform: rotate(360deg) scale(1.5);
+    }
 
-      #socialicons2 img:hover {
-        transform: rotate(-360deg) scale(0.7);
-      }
-    </style>
-  </head>
-  <body>
-    <h1>顺时针旋转360度放大1.2倍</h1>
-    <ul id="socialicons">
-      <li>
-        <a href="#"
-          ><img src="../img/Tulips.jpg" width="50" height="50" alt=""
-        /></a>
-      </li>
-    </ul>
+    #socialicons2 img:hover {
+      transform: rotate(-360deg) scale(0.7);
+    }
+  </style>
+</head>
+<body>
+<h1>顺时针旋转360度放大1.2倍</h1>
+<ul id="socialicons">
+  <li>
+    <a href="#"
+    ><img src="../img/Tulips.jpg" width="50" height="50" alt=""
+    /></a>
+  </li>
+</ul>
 
-    <ul id="socialicons2">
-      <li>
-        <a href="#"
-          ><img src="../img/Tulips.jpg" width="50" height="50" alt=""
-        /></a>
-      </li>
-    </ul>
-  </body>
+<ul id="socialicons2">
+  <li>
+    <a href="#"
+    ><img src="../img/Tulips.jpg" width="50" height="50" alt=""
+    /></a>
+  </li>
+</ul>
+</body>
 </html>

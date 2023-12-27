@@ -7,34 +7,42 @@
   <title>CSS Selectors</title>
 </head>
 <body>
-  <h1>CSS Selectors</h1>
+<h1>CSS Selectors</h1>
 
-  <h2>Basic selector</h2>
-  <ol>
-    <li>any-selector：<code>* {} </code></li>
-    <li>element selector: <code> h1 p {} </code></li>
-    <li>class selector: <code> .email {} </code></li>
-    <li>identity selector <code> #btn {} </code></li>
-    <li>group selector: <code> h1, p, span {} </code> </li>
-  </ol>
+<h2>Basic selector</h2>
+<ol>
+  <li>any-selector：<code>* {} </code></li>
+  <li>element selector: <code> h1 p {} </code></li>
+  <li>class selector: <code> .email {} </code></li>
+  <li>identity selector <code> #btn {} </code></li>
+  <li>group selector: <code> h1, p, span {} </code></li>
+</ol>
 
-  <h2>Attribute selector</h2>
-  <ol>
-    <li><code> [data-value] { } </code> Attribute exists</li>
-    <li><code> [data-value="foo"] { } </code> Attribute has this exact value</li>
-    <li><code> [data-value*="foo"] { } </code> Attribute value contains this value somewhere in it</li>
-    <li><code> [data-value~="foo"] { } </code> Attribute has this value in a space-separated list somewhere</li>
-    <li><code> [data-value^="foo"] { } </code> Attribute value starts with this</li>
-    <li><code> [data-value|="foo"] { } </code> Attribute value starts with this in a dash-separated list, eg: [data-years|="1990"] select the data-years="1990-2000" but not the data-years="1980-1990"</li>
-    <li><code> [data-value$="foo"] { } </code> Attribute value ends with this</li>
-  </ol>
+<h2>Attribute selector</h2>
+<ol>
+  <li><code> [data-value] { } </code> Attribute exists</li>
+  <li><code> [data-value="foo"] { } </code> Attribute has this exact value</li>
+  <li><code> [data-value*="foo"] { } </code> Attribute value contains this value somewhere in it
+  </li>
+  <li><code> [data-value~="foo"] { } </code> Attribute has this value in a space-separated list
+    somewhere
+  </li>
+  <li><code> [data-value^="foo"] { } </code> Attribute value starts with this</li>
+  <li><code> [data-value|="foo"] { } </code> Attribute value starts with this in a dash-separated
+    list, eg: [data-years|="1990"] select the data-years="1990-2000" but not the
+    data-years="1980-1990"
+  </li>
+  <li><code> [data-value$="foo"] { } </code> Attribute value ends with this</li>
+</ol>
 
-  <h2>hierarchy selector</h2>
-  <ol>
-    <li>sibling selector: <code> p + p {}</code> select the directly after <code>p</code> element</li>
-    <li>sbling selector: <code> img ~ p {}</code> select all the <code>p</code> after <code>img</code> element</li>
-    <li>child selector: <code> div > span {} select span after div</code></li>
-    <li>descendant selector: <code> div span {} select span in div</code></li>
-  </ol>
+<h2>hierarchy selector</h2>
+<ol>
+  <li>sibling selector: <code> p + p {}</code> select the directly after <code>p</code> element</li>
+  <li>sbling selector: <code> img ~ p {}</code> select all the <code>p</code> after <code>img</code>
+    element
+  </li>
+  <li>child selector: <code> div > span {} select span after div</code></li>
+  <li>descendant selector: <code> div span {} select span in div</code></li>
+</ol>
 </body>
 </html>

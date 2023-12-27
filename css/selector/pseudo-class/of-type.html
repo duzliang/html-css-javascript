@@ -1,72 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>first-of-type vs last-of-type</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>first-of-type vs last-of-type</title>
 
-    <style>
-      .title {
-        display: flex;
-        align-items: center;
-        background-color: #f1f1f1;
-      }
+  <style>
+    .title {
+      display: flex;
+      align-items: center;
+      background-color: #f1f1f1;
+    }
 
-      .titleText {
+    .titleText {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0 1rem;
+    }
+
+    .titleText:first-of-type {
+      color: red;
+    }
+
+    .titleText::before {
+      content: "👉";
+      margin-right: 0.5rem;
+      background-color: aquamarine;
+    }
+
+    .titleText:last-of-type::before {
+      background-color: green;
+    }
+  </style>
+
+  <!-- less example -->
+  <style type="less">
+    .title {
+      display: flex;
+      align-items: center;
+      background-color: #f1f1f1;
+
+      .label {
         font-size: 2rem;
         font-weight: 700;
         margin: 0 1rem;
-      }
 
-      .titleText:first-of-type {
-        color: red;
-      }
-      .titleText::before {
-        content: "👉";
-        margin-right: 0.5rem;
-        background-color: aquamarine;
-      }
-      .titleText:last-of-type::before {
-        background-color: green;
-      }
-    </style>
+        &::before {
+          content: "👉";
+          margin-right: 0.5rem;
+          background-color: aquamarine;
+        }
 
-    <!-- less example -->
-    <style type="less">
-      .title {
-        display: flex;
-        align-items: center;
-        background-color: #f1f1f1;
-        
-        .label {
-          font-size: 2rem;
-          font-weight: 700;
-          margin: 0 1rem;
+        &:last-of-type {
+          margin-left: 2rem;
 
           &::before {
-            content: "👉";
-            margin-right: 0.5rem;
-            background-color: aquamarine;
-          }
-          
-          &:last-of-type {
-            margin-left: 2rem;
-            
-            &::before {
-              background-color: green; 
-            }
+            background-color: green;
           }
         }
       }
-    </style>
-  </head>
-  <body>
-    <div class="title">
-      <div class="titleText">first</div>
-      <p>content</p>
-      <div class="titleText">second</div>
-      <p>content2</p>
-    </div>
-  </body>
+    }
+  </style>
+</head>
+<body>
+<div class="title">
+  <div class="titleText">first</div>
+  <p>content</p>
+  <div class="titleText">second</div>
+  <p>content2</p>
+</div>
+</body>
 </html>
