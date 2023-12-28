@@ -5,19 +5,19 @@
 // es5 iterator
 
 function createIterator(items) {
-    var i = 0;
+  var i = 0;
 
-    return {
-        next: function () {
-            var done = i >= items.length;
-            var value = !done ? items[i++] : undefined;
+  return {
+    next: function() {
+      var done = i >= items.length;
+      var value = !done ? items[i++] : undefined;
 
-            return {
-                done: done,
-                value: value,
-            }
-        }
-    }
+      return {
+        done: done,
+        value: value,
+      };
+    },
+  };
 }
 
 var iterator = createIterator([1, 2, 3]);
@@ -27,7 +27,7 @@ console.log(iterator.next());
 console.log(iterator.next());
 console.log(iterator.next()); // {done: true, value: undefined}
 
-console.log(iterator.next()); 
+console.log(iterator.next());
 
 /**
  * 生成器是一种返回迭代器的函数
@@ -35,10 +35,10 @@ console.log(iterator.next());
  * 2. 生成器中使用yield关键字，且只能用在生成器中
  */
 
-fucntion * createIterator() {
-    yield 1;
-    yield 2;
-    yield 3;
+function* createIterator() {
+  yield 1;
+  yield 2;
+  yield 3;
 }
 
 var iterator = createIterator();
@@ -53,9 +53,9 @@ console.log(iterator.next().value); // undefined
  */
 
 function* createIterator(items) {
-    for (let i = 0; i < items.length; i++) {
-        yield items[i];
-    }
+  for (let i = 0; i < items.length; i++) {
+    yield items[i];
+  }
 }
 
 var iterator = createIterator([1, 2, 3]);
@@ -70,10 +70,10 @@ console.log(iterator.next()); // {done: true, value: undefined}
  */
 
 var createIterator = function* (items) {
-    for (let i = 0; i < items.length; i++) {
-        yield items[i];
-    }
-}
+  for (let i = 0; i < items.length; i++) {
+    yield items[i];
+  }
+};
 
 var iterator = createIterator([1, 2, 3]);
 
@@ -85,20 +85,21 @@ console.log(iterator.next()); // {done: true, value: undefined}
 /**
  * 箭头函数不能创建生成器
  */
-var createIterator = () => { };
+var createIterator = () => {
+};
 
 /**
  * 可迭代对象和for-of循环
- * 
+ *
  * @desc 可迭代对象具有Symbol.iterator属性，是一种与迭代器密切相关的对象
  * es6中，所有的集合对象(Array, Set, Map)和字符串都是可迭代的
- * 
+ *
  * 生成器默认为Symbol.iterator属性赋值，所以所有通过生成器创建的迭代器都是可迭代对象
  */
 
 var values = [1, 2, 3];
 for (let num of values) {
-    console.log(num);
+  console.log(num);
 }
 
 /**
@@ -118,7 +119,7 @@ console.log(iterator.next()); // {value: undefined, done: true}
  */
 
 function isIterable(obj) {
-    return typeof obj[Symbol.iterator] === 'function';
+  return typeof obj[Symbol.iterator] === 'function';
 }
 
 console.log(isIterable([1, 2, 3]));
@@ -130,26 +131,26 @@ console.log(isIterable(new WeakSet())); // false
 
 /**
  * 创建可迭代对象
- * 
+ *
  * 默认情况下，自定义的对象都是不可迭代的，
  * 但是如果给Symbol.iterator属性添加一个生成器，则可将其变为可迭代对象
  */
 
 var collection = {
-    items: [],
-    *[Symbol.iterator]() {
-        for (let item of this.items) {
-            yield item;
-        }
+  items: [],
+  * [Symbol.iterator]() {
+    for (let item of this.items) {
+      yield item;
     }
-}
+  },
+};
 
 collection.items.push(1);
 collection.items.push(2);
 collection.items.push(3);
 
 for (let c of collection) {
-    console.log(c);
+  console.log(c);
 }
 
 /**
@@ -168,62 +169,62 @@ data.set('type', 'js');
 
 // 1.entries()
 for (let entry of colors.entries()) {
-    console.log('array entries=>', entry);
+  console.log('array entries=>', entry);
 }
 // array entries=> (2) [0, "red"]
 // array entries=> (2) [1, "green"]
 // array entries=> (2) [2, "blue"]
 
 for (let entry of tracking.entries()) {
-    console.log('set entries=>', entry);
+  console.log('set entries=>', entry);
 }
 // set entries=> (2) [11, 11]
 // set entries=> (2) [22, 22]
 // set entries=> (2) [33, 33]
 
 for (let entry of data.entries()) {
-    console.log('map entries=>', entry);
+  console.log('map entries=>', entry);
 }
 // map entries=> (2) ["title", "es6"]
 // map entries=> (2) ["type", "js"]
 
 // 2. values() todo Array.values()好像暂时不支持
 for (let value of colors.values()) {
-    console.log('array values=>', value);
+  console.log('array values=>', value);
 }
 
 for (let value of tracking.values()) {
-    console.log('set values=>', value);
+  console.log('set values=>', value);
 }
 // set values=> 11
 // set values=> 22
 // set values=> 33
 
 for (let value of data.values()) {
-    console.log('map values=>', value);
+  console.log('map values=>', value);
 }
 // map values=> es6
 // map values=> js
 
 // 3. keys()
 for (let key of colors.keys()) {
-    // typeof key => 'number'
-    // for-in 迭代数组的属性，而不是数字类型的索引 ？？
-    console.log('array keys=>', key);
+  // typeof key => 'number'
+  // for-in 迭代数组的属性，而不是数字类型的索引 ？？
+  console.log('array keys=>', key);
 }
 // array keys=> 0
 // array keys=> 1
 // array keys=> 2
 
 for (let key of tracking.keys()) {
-    console.log('set keys=>', key);
+  console.log('set keys=>', key);
 }
 // set keys=> 11
 // set keys=> 22
 // set keys=> 33
 
 for (let key of data.keys()) {
-    console.log('map keys=>', key);
+  console.log('map keys=>', key);
 }
 // map keys=> title
 // map keys=> type
@@ -238,7 +239,7 @@ data.set('title', 'es6');
 data.set('type', 'js');
 
 for (let [key, value] of data) {
-    console.log(key + '=' + value);
+  console.log(key + '=' + value);
 }
 
 /**
@@ -247,7 +248,7 @@ for (let [key, value] of data) {
 
 var divs = document.getElementsByTagName('div');
 for (let div of divs) {
-    console.log(div.id);
+  console.log(div.id);
 }
 
 /**
@@ -256,9 +257,9 @@ for (let div of divs) {
  */
 
 function* createIterator() {
-    let first = yield 1;
-    let second = yield first + 2;
-    yield second + 3;
+  let first = yield 1;
+  let second = yield first + 2;
+  yield second + 3;
 }
 
 let iterator = createIterator();
@@ -274,7 +275,7 @@ console.log(iterator.next());
 
 /**
  * 在迭代器中抛出错误
- * 
+ *
  * 模拟函数结束执行的两种方法
  * 1. 返回值
  * 2. 抛出错误
@@ -282,15 +283,15 @@ console.log(iterator.next());
  */
 
 function* createIterator() {
-    let first = yield 1;
-    let second;
+  let first = yield 1;
+  let second;
 
-    try {
-        second = yield first + 2;
-    } catch (ex) {
-        second = 6;
-    }
-    yield second + 3;
+  try {
+    second = yield first + 2;
+  } catch (ex) {
+    second = 6;
+  }
+  yield second + 3;
 }
 
 var iterator = createIterator();
@@ -301,18 +302,18 @@ console.log(iterator.next());
 
 /**
  * 生成器返回语句
- * 
+ *
  * 在生成器中，return表示所有操作都已完成，done会被自动设为true
  * return的值也会被赋给value
- * 
+ *
  */
 
 function* createIterator() {
-    yield 1;
-    //  return;
-    return 22;
-    yield 2;
-    yield 3;
+  yield 1;
+  //  return;
+  return 22;
+  yield 2;
+  yield 3;
 }
 
 var iterator = createIterator();
@@ -320,14 +321,14 @@ console.log(iterator.next());
 console.log(iterator.next()); // {value: undefined, done: true} reutrn 22=>{value: 22, done: true}
 console.log(iterator.next()); // {value: undefined, done: true}
 
-
 /**
  * note：展开运算符和for-of语句会直接忽略通过return语句返回的任何值，
  * 只要done一变为ture就立即停止读取其他值
  */
 for (let item of iterator) {
-    console.log(item);
+  console.log(item);
 }
+
 // 只打印一次 => 1
 
 /**
@@ -335,19 +336,19 @@ for (let item of iterator) {
  */
 
 function* createNumberItetator() {
-    yield 1;
-    yield 2;
+  yield 1;
+  yield 2;
 }
 
 function* createColorIterator() {
-    yield 'red';
-    yield 'green';
+  yield 'red';
+  yield 'green';
 }
 
 function* createCombinedIterator() {
-    yield* createNumberItetator();
-    yield* createColorIterator();
-    yield true;
+  yield* createNumberItetator();
+  yield* createColorIterator();
+  yield true;
 }
 
 var iterator = createCombinedIterator();
@@ -362,22 +363,22 @@ console.log(iterator.next()); // {value: true, done: false}
  * 有返回值
  */
 function* createNumberItetator() {
-    yield 1;
-    yield 2;
-    return 3; // 无论使用何种方式，3都无法被返回，只存在与生成器内部
+  yield 1;
+  yield 2;
+  return 3; // 无论使用何种方式，3都无法被返回，只存在与生成器内部
 }
 
 function* createReaptingIterator(count) {
-    for (let i = 0; i < count; i++) {
-        yield 'repeat';
-    }
+  for (let i = 0; i < count; i++) {
+    yield 'repeat';
+  }
 }
 
 function* createCombinedIterator() {
-    let result = yield* createNumberItetator();
-    // 若想返回return的值，需要显示调用yield
-    // yield result;
-    yield* createReaptingIterator(result);
+  let result = yield* createNumberItetator();
+  // 若想返回return的值，需要显示调用yield
+  // yield result;
+  yield* createReaptingIterator(result);
 }
 
 var iterator = createCombinedIterator();
@@ -393,7 +394,7 @@ console.log(iterator.next()); // {value: undefined, done: true}
  * yield * 应用于字符串，调用字符串默认迭代器
  */
 function* createStringIterator() {
-    yield* 'hello';
+  yield* 'hello';
 }
 
 var iterator = createStringIterator();
@@ -405,67 +406,66 @@ console.log(iterator.next()); // {value: undefined, done: true}
 
 /**
  * 异步任务执行
- * 
+ *
  * 1. 简单任务执行器
  */
 function run(taskDef) {
-    // 创建一个无限使用的迭代器
-    let task = taskDef();
+  // 创建一个无限使用的迭代器
+  let task = taskDef();
 
-    // 开始执行任务
-    let result = task.next();
+  // 开始执行任务
+  let result = task.next();
 
-    // 如果任务未完成，继续执行
-    function step() {
-        if (!result.done) {
-            result = task.next();
-            step();
-        }
+  // 如果任务未完成，继续执行
+  function step() {
+    if (!result.done) {
+      result = task.next();
+      step();
     }
+  }
 
-    // 开始执行
-    step();
+  // 开始执行
+  step();
 }
 
 run(function* () {
-    console.log(1);
-    yield;
-    console.log(2);
-    yield;
-    console.log(3);
-    yield;
+  console.log(1);
+  yield;
+  console.log(2);
+  yield;
+  console.log(3);
+  yield;
 });
 
 /**
  * 异步任务执行器
  */
 function run(taskDef) {
-    // 创建一个无限使用的迭代器
-    let task = taskDef();
+  // 创建一个无限使用的迭代器
+  let task = taskDef();
 
-    // 开始执行任务
-    let result = task.next();
+  // 开始执行任务
+  let result = task.next();
 
-    // 如果任务未完成，继续执行
-    function step() {
-        if (!result.done) {
-            if (typeof result.value === 'function') {
-                result.value(function (err, data) {
-                    if (err) {
-                        result = task.throw(err);
-                        return;
-                    }
-                })
-                result = task.next(data);
-                step();
-            } else {
-                result = task.next(result.value);
-                step();
-            }
-        }
+  // 如果任务未完成，继续执行
+  function step() {
+    if (!result.done) {
+      if (typeof result.value === 'function') {
+        result.value(function(err, data) {
+          if (err) {
+            result = task.throw(err);
+            return;
+          }
+        });
+        result = task.next(data);
+        step();
+      } else {
+        result = task.next(result.value);
+        step();
+      }
     }
+  }
 
-    // 开始执行
-    step();
+  // 开始执行
+  step();
 }
- 
