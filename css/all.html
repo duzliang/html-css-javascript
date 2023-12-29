@@ -1,67 +1,70 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>css all</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>css all</title>
 
-  <style>
-    .card {
-      width: 200px;
-      height: 200px;
-      border: 3px solid green;
-      text-align: center;
-      font-size: 22px;
-      color: red;
-      margin-right: 15px;
-      float: left;
-    }
+    <style>
+      .card {
+        width: 200px;
+        height: 200px;
+        border: 3px solid green;
+        text-align: center;
+        font-size: 22px;
+        color: red;
+        margin-right: 15px;
+        float: left;
+      }
 
-    .card .title {
-      font-size: 24px;
-      font-weight: bold;
-    }
+      .card .title {
+        font-size: 24px;
+        font-weight: bold;
+      }
 
-    .card .content1 {
-      font-size: 16px;
-      text-align: left;
-      all: initial;
-    }
+      .card .content1 {
+        font-size: 16px;
+        text-align: left;
+        all: initial;
+      }
 
-    .card .content2 {
-      font-size: 16px;
-      text-align: left;
-      all: inherit;
-    }
+      .card .content2 {
+        font-size: 16px;
+        text-align: left;
+        all: inherit;
+      }
 
-    .card .content3 {
-      font-size: 28px;
-      text-align: left;
-      all: unset;
-    }
+      .card .content3 {
+        font-size: 28px;
+        text-align: left;
+        all: unset;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CSS3 all 属性</h1>
+    <p>
+      重置所有选中元素的属性值,除了<em>direction</em> 和 <em>unicode-bidi</em>
+    </p>
+    <ol>
+      <li><em>initial</em>: 重置为css定义的初始值</li>
+      <li><em>inherit</em>: 继承所有父元素的样式</li>
+      <li>
+        <em>unset</em
+        >:继承所有父元素传递下来的样式,如果没有可以继承的样式,则重置为css定义的默认值,如没有默认值,则为浏览器的默认值,如font-size,font-family
+      </li>
+    </ol>
 
-  </style>
-</head>
-<body>
-<h1>CSS3 all 属性</h1>
-<p>重置所有选中元素的属性值,除了<em>direction</em> 和 <em>unicode-bidi</em></p>
-<ol>
-  <li><em>initial</em>: 重置为css定义的初始值</li>
-  <li><em>inherit</em>: 继承所有父元素的样式</li>
-  <li><em>unset</em>:继承所有父元素传递下来的样式,如果没有可以继承的样式,则重置为css定义的默认值,如没有默认值,则为浏览器的默认值,如font-size,font-family
-  </li>
-</ol>
-
-<div class="card">
-  <h3 class="title">I'm a card!!</h3>
-  <div class="content1">I'm content all: initial</div>
-</div>
-<div class="card">
-  <h3 class="title">I'm a card!!</h3>
-  <div class="content2">I'm content all: inherit</div>
-</div>
-<div class="card">
-  <h3 class="title">I'm a card!!</h3>
-  <div class="content3">I'm content all: unset</div>
-</div>
-</body>
+    <div class="card">
+      <h3 class="title">I'm a card!!</h3>
+      <div class="content1">I'm content all: initial</div>
+    </div>
+    <div class="card">
+      <h3 class="title">I'm a card!!</h3>
+      <div class="content2">I'm content all: inherit</div>
+    </div>
+    <div class="card">
+      <h3 class="title">I'm a card!!</h3>
+      <div class="content3">I'm content all: unset</div>
+    </div>
+  </body>
 </html>

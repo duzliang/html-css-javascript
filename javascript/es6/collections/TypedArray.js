@@ -20,4 +20,26 @@
     return new Int16Array(buffer)[0] === 256;
   })();
   console.log('log=>littleEndian', isLittleEndian);
+
+  // 多视图，单个 buffer 可以关联多个视图
+  let buf2 = new ArrayBuffer(2);
+  let view8 = new Uint8Array(buf2);
+
+  let view16 = new Uint16Array(buf2);
+
+  view16[0] = 3085;
+  console.log('log=>v8 0', view8[0]); // 13
+  console.log('log=>v8 1', view8[1]); // 12
+
+  console.log('log=>v8 s', view8[0].toString(16)); // d
+  console.log('log=>v8 s', view8[1].toString(16)); // c
+
+  // 交换
+  let tmp = view8[0];
+  view8[0] = view8[1];
+  view8[1] = tmp;
+  console.log('log=>v8 0', view8[0]); // 12
+  console.log('log=>v8 1', view8[1]); // 13
+
+  console.log('log=>v16 0', view16[0]); // 3340
 })();
