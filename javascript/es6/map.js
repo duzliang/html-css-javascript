@@ -1,7 +1,9 @@
 /**
  * 原始实现
  */
-(function() {
+(function(isRun) {
+  if (!isRun) return;
+
   // 1, 使用对象，但是只能设置字符串作为键
   var mapObj = Object.create(null);
   mapObj.count = 1;
@@ -9,6 +11,13 @@
   if (mapObj.count) {
     console.log('map has count property');
   }
+
+  var keyObj = {};
+  var id1 = { id: 1 };
+  var id2 = { id: 2 };
+  keyObj[id1] = 'name';
+  keyObj[id2] = 'age';
+  console.log('log=>keyObj', keyObj); // 被转化成字符串，覆盖了，所以只有一个建，age
 
   // 2，使用平行数组模拟实现 Map 功能
   let MapLike = function() {
@@ -37,20 +46,33 @@
   let mapLike = new MapLike();
   mapLike.set('name', 'duzl');
   mapLike.set('age', 1);
+  mapLike.set(id1, 'id1'); // 可以使用任意类型作为键
+  mapLike.set(id2, 'id2');
   console.log('log=>name', mapLike.get('name'));
   console.log('log=>age', mapLike.get('age'));
-});
+  console.log('log=>id1', mapLike.get(id1));
+  console.log('log=>id2', mapLike.get(id2));
+})(false);
 
 /**
  * ES6
  */
-(function() {
+(function(isRun) {
+  if (!isRun) return;
+
   var map = new Map();
+  var id1 = { id: 1 };
+  var id2 = { id: 2 };
+
   map.set('name', 'duzl');
   map.set('age', 1);
+  map.set(id1, 'id1');
+  map.set(id2, 'id2');
 
   console.log('log=>name', map.get('name'));
   console.log('log=>age', map.get('age'));
+  console.log('log=>id1', map.get(id1));
+  console.log('log=>id2', map.get(id2));
   console.log('log=>m size', map.size);
 
   // map.delete('age');
@@ -107,4 +129,4 @@
 
     return Person;
   })();
-})();
+})(true);

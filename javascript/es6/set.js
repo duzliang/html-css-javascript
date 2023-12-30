@@ -1,8 +1,15 @@
+/**
+ * set是一个值的集合，其中的值唯一（重复会被忽略
+ */
+
 let set = new Set();
 set.add(1);
 set.add('1');
 
 console.log(set.size);
+console.log('log=>', set.has(1));
+set.delete('1');
+console.log('log=>', set.has('1'));
 
 /**
  * set forEach与array forEach方法参数不同
@@ -14,6 +21,7 @@ set.forEach((value, key, ownerSet) => {
 
 /**
  * WeekSet
+ * 值必须是对象
  */
 
 let wset = new WeakSet(),
