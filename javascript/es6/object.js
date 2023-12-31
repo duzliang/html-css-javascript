@@ -68,4 +68,28 @@
 
   o.name = 'duke2';
   console.log('log=>o.name:', o.name);
+});
+
+/**
+ * ES6新增的静态方法
+ * 1. Object.is()
+ * 2. Object.assign()
+ * 3. Object.setPrototypeOf()
+ */
+(function() {
+  let x = 0;
+  let y = -0;
+  let z = NaN;
+
+  console.log('log=>1', x === y);
+  console.log('log=>2', x === z);
+  console.log('log=>zz1', z === z);
+  console.log('log=>3', x == y);
+  console.log('log=>4', x == z);
+  console.log('log=>zz2', z == z);
+
+  console.log('log=>5', Object.is(x, y));
+  console.log('log=>6', Object.is(x, z));
+  console.log('log=>7', Object.is(z, z));
+  console.log('log=>zz3', Object.is(z, z));
 })();
