@@ -1,5 +1,5 @@
 interface Square {
-  kind: 'squqre';
+  kind: 'square';
   size: number;
 }
 
@@ -17,7 +17,7 @@ interface Area {
 type Shape = Square | Rectangle | Area;
 
 function area(s: Shape) {
-  if (s.kind === 'squqre') {
+  if (s.kind === 'square') {
     return s.size * s.size;
   } else if (s.kind === 'rectangle') {
     return s.width * s.height;
@@ -31,7 +31,7 @@ function area(s: Shape) {
 /** use switch */
 function areaWidthSwitch(s: Shape) {
   switch (s.kind) {
-    case 'squqre':
+    case 'square':
       return s.size * s.size;
     case 'rectangle':
       return s.width * s.height;

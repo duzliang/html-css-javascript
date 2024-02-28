@@ -29,6 +29,7 @@ function deleteUser(user: User) {
 
 /**
  * Composing Types
+ * 联合类型
  */
 
 type myBool = true | false;
@@ -119,6 +120,8 @@ function getFirstThree(x: number[] | string) {
 
 /**
  * type aliases
+ * 类型别名
+ * @note 更倾向使用类型注解的语义化名称，或简单类型，使用 type
  */
 type Point = {
     x: number,
@@ -131,8 +134,49 @@ function printCoordAliases(px: Point) {
 
 /**
  * interface
+ * 接口
+ * @note 更倾向使用类型注解的层次结构，使用 interface
  */
 interface PointInterface {
     x: number,
     y: number,
 }
+
+/**
+ * extend
+ * 交叉类型
+ */
+function extend<T extends object, U extends object>(first: T, second: U): T & U {
+    const result = <T & U>{};
+    for (let id in first) {
+        (<T>result)[id] = first[id];
+    }
+    for (let id in second) {
+        if (!result.hasOwnProperty(id)) {
+            (<U>result)[id] = second[id];
+        }
+    }
+
+    return result;
+}
+
+const x = extend({ a: 'hello' }, { b: 42 });
+
+// 现在 x 拥有了 a 属性与 b 属性
+const a = x.a;
+const b = x.b;
+
+/**
+ * tuple
+ * 元组
+ */
+let nameNumber: [string, number];
+
+// ok
+nameNumber = ['duke', 22];
+// error
+// nameNumber = ['duke', '22'];
+
+// use
+const [nameStr, ageNum] = nameNumber;
+
