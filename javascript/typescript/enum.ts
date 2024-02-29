@@ -84,6 +84,7 @@ enum Weekday {
   Sunday,
 }
 
+// 通过 namespace 向枚举添加静态方法
 namespace Weekday {
   export function isBusinessDay(day: Weekday) {
     switch (day) {
@@ -98,3 +99,16 @@ namespace Weekday {
 
 console.log('monday is weekday:', Weekday.isBusinessDay(Weekday.Monday)); // false
 console.log('sunday is weekday:', Weekday.isBusinessDay(Weekday.Sunday)); // true
+
+enum Color {
+  Red = 1,
+  Green,
+  Blue,
+}
+
+enum Color {
+  DarkRed,
+  DarkGreen,
+  DarkBlue,
+}
+console.log('log=>', Color.DarkRed);
