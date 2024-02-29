@@ -7,7 +7,7 @@ const foo = {};
 foo.bar = 123;
 foo.bas = 'hello';
 
-// convert to 
+// convert to
 interface Foo {
   bar: number;
   bas: string;
@@ -24,3 +24,8 @@ foo1.bas = 'hello';
  */
 let fooOriginal: any;
 let barOriginal = <string>fooOriginal; // string
+
+// 更好的方式
+let foo2: Foo = {
+
+};
