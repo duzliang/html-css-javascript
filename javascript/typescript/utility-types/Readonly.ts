@@ -33,3 +33,9 @@ const fooReadonly: FooReadonly<Foo> = { bar: 1, baz: 2 };
 foo.bar = 3;
 fooReadonly.bar = 3; // error bar is readonly
 
+/**
+ * ReadonlyArray
+ */
+let arr: ReadonlyArray<number> = [1, 2, 3];
+console.log(arr[0]);
+arr.push(4); // error
