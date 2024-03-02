@@ -1,3 +1,7 @@
+/**
+ * union type
+ * 联合类型
+ */
 interface Square {
   kind: 'square';
   size: number;
@@ -14,8 +18,10 @@ interface Area {
   radius: number;
 }
 
+// union type
 type Shape = Square | Rectangle | Area;
 
+// narrow type 类型缩小
 function area(s: Shape) {
   if (s.kind === 'square') {
     return s.size * s.size;
