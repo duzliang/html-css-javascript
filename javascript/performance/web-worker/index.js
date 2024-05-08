@@ -12,4 +12,9 @@ console.log('log=>uInt8Array before:', uInt8Array.byteLength);
 worker.postMessage(uInt8Array, [uInt8Array.buffer]);
 console.log('log=>uInt8Array after:', uInt8Array.byteLength);
 
-// postMessage('message from index');
+worker.postMessage('a message from index');
+
+let shareWorker = new SharedWorker('./share-worker.js');
+shareWorker.addEventListener('message', function(evt) {
+  console.log('log=>index share worker receive:', evt.data);
+});
