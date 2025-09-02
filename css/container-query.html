@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Container Query</title>
+    <style>
+      .wrapper {
+        container: item / normal;
+      }
+
+      .content {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .item {
+        flex: 1;
+        padding: 10px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+      }
+
+      @container item (width < 30cqw) {
+        .content {
+          flex-direction: row;
+        }
+      }
+
+      @container item (width >= 30cqw) {
+        .content {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CSS Container Query</h1>
+    <p>
+      CSS Container Query 是一种 CSS
+      特性，允许开发者根据容器元素的尺寸来应用不同的样式。
+    </p>
+    <h4>Demo</h4>
+    <div class="wrapper">
+      <div class="content">
+        <div class="item">第一</div>
+        <div class="item">第二</div>
+        <div class="item">第三</div>
+      </div>
+    </div>
+  </body>
+</html>

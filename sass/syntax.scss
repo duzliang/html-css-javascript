@@ -1,0 +1,96 @@
+// 变量
+$font-size: 12px;
+$line-height: $font-size * 1.5;
+// 计算
+div {
+  width: 100px / 2;
+}
+
+// 嵌套
+div {
+  width: 100px;
+  a {
+    color: red;
+  }
+}
+
+// 混合
+@mixin center-block {
+  margin-left: auto;
+  margin-right: auto;
+}
+.block {
+  @include center-block;
+}
+
+// 继承
+.message {
+  border: 1px solid #ccc;
+}
+.warning {
+  @extend .message;
+  color: white;
+  background-color: #f00;
+}
+
+// 占位符
+%message-shared {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+.message {
+  @extend %message-shared;
+}
+.warning {
+  @extend %message-shared;
+}
+
+// 函数
+@function pow($x, $y) {
+  @return $x * $y;
+}
+div {
+  width: pow(3, 2);
+}
+
+// 操作符
+div {
+  width: 10px + 5px;
+}
+div {
+  width: 10px - 5px;
+}
+div {
+  width: 10px * 5px;
+}
+div {
+  width: 10px / 2px;
+}
+
+// 条件语句
+@if lightness($color) > 50% {
+  background-color: #000;
+} @else {
+  background-color: #fff;
+}
+
+// 循环语句
+@for $i from 1 through 3 {
+  .item-#{$i} {
+    width: 2em * $i;
+  }
+}
+
+// 导入
+@import "reset.scss";
+
+// 注释
+/* 这是一个注释
+  多行注释 */
+div {
+  color: red;
+}
+// 这是一个注释
+div {
+  color: blue;
+}

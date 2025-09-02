@@ -1,0 +1,7 @@
+@use 'base';
+
+.message-box {
+  color: base.$color_gray;
+  font-size: base.$size_default;
+  font-weight: 500;
+}
