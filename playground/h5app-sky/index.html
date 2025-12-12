@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>h5app-sky</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>h5app-sky</h1>
+        </header>
+        
+        <main class="app-main">
+            <div class="chat-container">
+                <!-- 响应式展示区域 -->
+                <div class="response-area" id="responseArea">
+                    <div class="welcome-message">
+                        <p>欢迎使用 h5app-sky！请输入您的问题或上传图片/文件。</p>
+                    </div>
+                </div>
+                
+                <!-- 输入区域 -->
+                <div class="input-container">
+                    <!-- 文本输入 -->
+                    <textarea 
+                        class="text-input" 
+                        id="textInput" 
+                        placeholder="请输入您的问题..."
+                        rows="3"
+                    ></textarea>
+                    
+                    <!-- 上传区域 -->
+                    <div class="upload-area">
+                        <!-- 图片上传 -->
+                        <div class="upload-item">
+                            <label for="imageUpload" class="upload-label">
+                                <span class="upload-icon">📷</span>
+                                <span>图片</span>
+                            </label>
+                            <input 
+                                type="file" 
+                                id="imageUpload" 
+                                accept="image/*" 
+                                class="upload-input"
+                            >
+                        </div>
+                    </div>
+                    
+                    <!-- 预览区域 -->
+                    <div class="preview-area" id="previewArea">
+                        <!-- 图片预览将显示在这里 -->
+                    </div>
+                    
+                    <!-- 发送按钮 -->
+                    <button class="send-button" id="sendButton">发送</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
