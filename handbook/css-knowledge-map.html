@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS 知识体系全图 · 面试备战</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Code+Pro:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:       #0d0f14;
+  --bg2:      #13161e;
+  --bg3:      #1a1e2a;
+  --border:   #252a38;
+  --border2:  #2e3548;
+  --text:     #dde2ee;
+  --text2:    #8890aa;
+  --text3:    #555f7a;
+  --mono:     'Source Code Pro', monospace;
+  --serif:    'Playfair Display', serif;
+  --sans:     'Noto Sans SC', sans-serif;
+
+  /* 8 category colors */
+  --c1: #e8714a; /* 盒模型 */
+  --c2: #4a9eff; /* 布局 */
+  --c3: #50d4a0; /* 选择器 */
+  --c4: #c07aff; /* 变量与函数 */
+  --c5: #f5c842; /* 动画 */
+  --c6: #ff6b9d; /* 响应式 */
+  --c7: #4acfcf; /* 现代特性 */
+  --c8: #a0b4d0; /* 规范&易混 */
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 13.5px;
+  line-height: 1.75;
+}
+
+/* Subtle noise texture */
+body::before {
+  content:'';
+  position:fixed;
+  inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events:none;
+  z-index:0;
+  opacity:.4;
+}
+
+.page {
+  position:relative;
+  z-index:1;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 60px 28px 120px;
+}
+
+/* ── MASTHEAD ── */
+.masthead {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 20px;
+  margin-bottom: 52px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border2);
+  position: relative;
+}
+.masthead::after {
+  content:'';
+  position:absolute;
+  bottom:-1px; left:0;
+  width:220px; height:2px;
+  background: linear-gradient(90deg, var(--c2), var(--c5), transparent);
+}
+.masthead-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+.masthead h1 {
+  font-family: var(--serif);
+  font-size: clamp(32px, 5vw, 54px);
+  font-weight: 900;
+  line-height: 1.1;
+  color: var(--text);
+  letter-spacing: -.02em;
+}
+.masthead h1 em { font-style:normal; color: var(--c2); }
+.masthead-meta {
+  text-align: right;
+  font-size: 11.5px;
+  color: var(--text3);
+  line-height: 2;
+  font-family: var(--mono);
+}
+.masthead-meta strong { color: var(--text2); font-weight:500; }
+
+/* ── TOC ── */
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 52px;
+}
+.toc-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 13px;
+  border-radius: 2px;
+  border: 1px solid;
+  font-size: 11px;
+  font-family: var(--mono);
+  letter-spacing: .06em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all .16s;
+  white-space: nowrap;
+}
+.toc-pill:hover { color:#fff !important; }
+.toc-pill .dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+/* ── SECTION ── */
+.section { margin-bottom: 64px; scroll-margin-top: 20px; }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border2);
+}
+.section-num {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  letter-spacing: .15em;
+}
+.section-icon {
+  width: 30px; height: 30px;
+  border-radius: 4px;
+  display: flex; align-items:center; justify-content:center;
+  font-size: 15px;
+  flex-shrink:0;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+}
+.section-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .18em;
+  padding: 2px 8px;
+  border-radius: 2px;
+  margin-left: auto;
+  text-transform: uppercase;
+}
+
+/* ── DIVIDER ── */
+.divider-label {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin: 20px 0 11px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.divider-label::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* ── CARDS ── */
+.cards { display: grid; gap: 10px; }
+.cards-2 { grid-template-columns: repeat(2,1fr); }
+.cards-3 { grid-template-columns: repeat(3,1fr); }
+.cards-4 { grid-template-columns: repeat(4,1fr); }
+.cards-auto { grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); }
+
+@media(max-width:700px){
+  .cards-2,.cards-3,.cards-4,.cards-auto{grid-template-columns:1fr;}
+  .masthead{grid-template-columns:1fr;}
+  .masthead-meta{text-align:left;}
+  .vs-grid,.two-col{grid-template-columns:1fr;}
+}
+
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 15px 17px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .2s;
+}
+.card:hover { border-color: var(--border2); }
+.card::before {
+  content:'';
+  position:absolute;
+  left:0;top:0;bottom:0;
+  width:3px;
+  border-radius:3px 0 0 3px;
+}
+.card-title {
+  font-weight: 700;
+  font-size: 13px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  letter-spacing: .02em;
+}
+.card-body {
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.72;
+}
+.card-body code {
+  font-family: var(--mono);
+  font-size: 11px;
+  background: var(--bg3);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--text);
+}
+.card-body ul { list-style:none; padding:0; }
+.card-body ul li { padding:1.5px 0; display:flex; gap:6px; }
+.card-body ul li::before { content:'›'; color:var(--text3); flex-shrink:0; }
+.card-body strong { color:var(--text); font-weight:500; }
+
+/* ── TABLE ── */
+.compare-wrap {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.compare-table {
+  width:100%;
+  border-collapse:collapse;
+  font-size: 12px;
+}
+.compare-table th {
+  background: var(--bg3);
+  padding: 9px 13px;
+  text-align: left;
+  font-size: 9.5px;
+  font-family: var(--mono);
+  letter-spacing: .14em;
+  color: var(--text3);
+  border-bottom: 1px solid var(--border2);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.compare-table td {
+  padding: 9px 13px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.6;
+  color: var(--text2);
+}
+.compare-table tr:last-child td { border-bottom:none; }
+.compare-table tr:hover td { background: var(--bg3); }
+.compare-table td:first-child {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--text);
+}
+.compare-table td code {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  background: var(--bg3);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--text);
+}
+
+/* ── HIGHLIGHT BOXES ── */
+.hbox {
+  border-radius: 5px;
+  padding: 11px 15px;
+  font-size: 12px;
+  line-height: 1.65;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  border: 1px solid;
+}
+.hbox-icon { flex-shrink:0; font-size:14px; margin-top:1px; }
+.hbox-body { color: var(--text2); }
+.hbox-body strong { color: var(--text); }
+.hbox.warn  { background:rgba(245,200,66,.05);  border-color:rgba(245,200,66,.2); }
+.hbox.tip   { background:rgba(80,212,160,.05);  border-color:rgba(80,212,160,.2); }
+.hbox.info  { background:rgba(74,158,255,.05);  border-color:rgba(74,158,255,.2); }
+.hbox.danger{ background:rgba(255,107,157,.05); border-color:rgba(255,107,157,.2);}
+
+/* ── CODE BLOCK ── */
+.code-block {
+  background: #0a0c12;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  padding: 13px 15px;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.8;
+  color: #c9d1e8;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+.code-block .cm { color: #3d4566; }
+.code-block .kw { color: #4a9eff; }
+.code-block .pr { color: #c07aff; }
+.code-block .vl { color: #50d4a0; }
+.code-block .fn { color: #f5c842; }
+.code-block .at { color: #ff6b9d; }
+.code-block .un { color: #e8714a; }
+
+/* ── STAR badge ── */
+.star {
+  display:inline-flex;
+  align-items:center;
+  gap:2px;
+  font-family:var(--mono);
+  font-size:8.5px;
+  color:#f5c842;
+  background:rgba(245,200,66,.1);
+  border:1px solid rgba(245,200,66,.25);
+  border-radius:2px;
+  padding:1px 5px;
+  vertical-align:middle;
+  margin-left:4px;
+}
+
+/* ── VS GRID ── */
+.vs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.vs-card {
+  border-radius: 6px;
+  padding: 13px 15px;
+  border: 1px solid;
+}
+.vs-card .vs-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  font-family: var(--mono);
+  margin-bottom: 7px;
+  display:flex; align-items:center; gap:5px;
+}
+.vs-card .vs-body {
+  font-size: 11.5px;
+  color: var(--text2);
+  line-height: 1.65;
+}
+.vs-card .vs-body li { list-style:none; padding:1.5px 0; display:flex; gap:5px; }
+.vs-card .vs-body li::before { content:'·'; color:var(--text3); }
+
+/* ── FULL CARD ── */
+.full-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.full-card-head {
+  padding: 9px 15px;
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  display:flex; align-items:center; gap:8px;
+}
+.full-card-body { padding: 13px 15px; }
+
+/* ── TWO-COL ── */
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+
+/* ── Color helpers (same pattern as HTML sheet) ── */
+.c1{color:var(--c1);} .c2{color:var(--c2);} .c3{color:var(--c3);}
+.c4{color:var(--c4);} .c5{color:var(--c5);} .c6{color:var(--c6);}
+.c7{color:var(--c7);} .c8{color:var(--c8);}
+
+.icon1{background:rgba(232,113,74,.12);} .icon2{background:rgba(74,158,255,.12);}
+.icon3{background:rgba(80,212,160,.12);} .icon4{background:rgba(192,122,255,.12);}
+.icon5{background:rgba(245,200,66,.12);} .icon6{background:rgba(255,107,157,.12);}
+.icon7{background:rgba(74,207,207,.12);} .icon8{background:rgba(160,180,208,.12);}
+
+.badge1{background:rgba(232,113,74,.1);  color:var(--c1); border:1px solid rgba(232,113,74,.25);}
+.badge2{background:rgba(74,158,255,.1);  color:var(--c2); border:1px solid rgba(74,158,255,.25);}
+.badge3{background:rgba(80,212,160,.1);  color:var(--c3); border:1px solid rgba(80,212,160,.25);}
+.badge4{background:rgba(192,122,255,.1); color:var(--c4); border:1px solid rgba(192,122,255,.25);}
+.badge5{background:rgba(245,200,66,.1);  color:var(--c5); border:1px solid rgba(245,200,66,.25);}
+.badge6{background:rgba(255,107,157,.1); color:var(--c6); border:1px solid rgba(255,107,157,.25);}
+.badge7{background:rgba(74,207,207,.1);  color:var(--c7); border:1px solid rgba(74,207,207,.25);}
+.badge8{background:rgba(160,180,208,.1); color:var(--c8); border:1px solid rgba(160,180,208,.25);}
+
+.accent1::before{background:var(--c1);} .accent2::before{background:var(--c2);}
+.accent3::before{background:var(--c3);} .accent4::before{background:var(--c4);}
+.accent5::before{background:var(--c5);} .accent6::before{background:var(--c6);}
+.accent7::before{background:var(--c7);} .accent8::before{background:var(--c8);}
+
+.pill1{border-color:var(--c1);color:var(--c1);} .pill1:hover{background:var(--c1);}
+.pill2{border-color:var(--c2);color:var(--c2);} .pill2:hover{background:var(--c2);}
+.pill3{border-color:var(--c3);color:var(--c3);} .pill3:hover{background:var(--c3);}
+.pill4{border-color:var(--c4);color:var(--c4);} .pill4:hover{background:var(--c4);}
+.pill5{border-color:var(--c5);color:var(--c5);} .pill5:hover{background:var(--c5);}
+.pill6{border-color:var(--c6);color:var(--c6);} .pill6:hover{background:var(--c6);}
+.pill7{border-color:var(--c7);color:var(--c7);} .pill7:hover{background:var(--c7);}
+.pill8{border-color:var(--c8);color:var(--c8);} .pill8:hover{background:var(--c8);}
+.dot1{background:var(--c1);} .dot2{background:var(--c2);} .dot3{background:var(--c3);}
+.dot4{background:var(--c4);} .dot5{background:var(--c5);} .dot6{background:var(--c6);}
+.dot7{background:var(--c7);} .dot8{background:var(--c8);}
+
+.footer {
+  text-align:center;
+  padding-top:36px;
+  border-top:1px solid var(--border);
+  font-family:var(--mono);
+  font-size:9.5px;
+  color:var(--text3);
+  letter-spacing:.18em;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div>
+    <div class="masthead-tag">Senior Frontend · CSS Mastery · Interview Prep 2025</div>
+    <h1><em>CSS</em> 知识体系全图</h1>
+  </div>
+  <div class="masthead-meta">
+    <div>适用：<strong>13年 资深前端</strong></div>
+    <div>覆盖：<strong>盒模型 · 布局 · 动画 · 现代特性</strong></div>
+    <div>含：<strong>规范细节 · 对比 · 面试高频</strong></div>
+    <div style="margin-top:4px; color:var(--text3);">CSS Cascading & Inheritance Lv.5 · W3C</div>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <a href="#s1" class="toc-pill pill1"><span class="dot dot1"></span>盒模型 & 视觉格式化</a>
+  <a href="#s2" class="toc-pill pill2"><span class="dot dot2"></span>布局系统</a>
+  <a href="#s3" class="toc-pill pill3"><span class="dot dot3"></span>选择器 & 层叠</a>
+  <a href="#s4" class="toc-pill pill4"><span class="dot dot4"></span>变量 & 函数</a>
+  <a href="#s5" class="toc-pill pill5"><span class="dot dot5"></span>动画 & 过渡</a>
+  <a href="#s6" class="toc-pill pill6"><span class="dot dot6"></span>响应式 & 媒体查询</a>
+  <a href="#s7" class="toc-pill pill7"><span class="dot dot7"></span>现代新特性</a>
+  <a href="#s8" class="toc-pill pill8"><span class="dot dot8"></span>规范 & 易混点</a>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S1 · 盒模型 & 视觉格式化
+══════════════════════════════════ -->
+<div class="section" id="s1">
+  <div class="section-head">
+    <div class="section-num">01</div>
+    <div class="section-icon icon1">📦</div>
+    <div class="section-title c1">盒模型 & 视觉格式化模型</div>
+    <div class="section-badge badge1">Box Model</div>
+  </div>
+
+  <div class="divider-label">box-sizing 对比 <span class="star">★ 高频</span></div>
+  <div class="vs-grid">
+    <div class="vs-card" style="background:rgba(232,113,74,.06);border-color:rgba(232,113,74,.2);">
+      <div class="vs-title c1">content-box（W3C 默认）</div>
+      <div class="vs-body">
+        <ul>
+          <li>width/height = 内容区，不含 padding/border</li>
+          <li>实际占宽 = width + padding×2 + border×2</li>
+          <li>动态计算容易出错，不推荐</li>
+        </ul>
+        <div style="margin-top:8px;font-family:var(--mono);font-size:10.5px;color:var(--text2);">
+          width:200px + padding:20px + border:2px<br>→ 实占 <strong style="color:var(--c1);">244px</strong>
+        </div>
+      </div>
+    </div>
+    <div class="vs-card" style="background:rgba(74,158,255,.06);border-color:rgba(74,158,255,.2);">
+      <div class="vs-title c2">border-box（推荐）</div>
+      <div class="vs-body">
+        <ul>
+          <li>width/height 包含 padding + border</li>
+          <li>实际占宽 = 设定 width（直觉友好）</li>
+          <li>全局 <code>* { box-sizing: border-box }</code> 最佳实践</li>
+        </ul>
+        <div style="margin-top:8px;font-family:var(--mono);font-size:10.5px;color:var(--text2);">
+          width:200px + padding:20px + border:2px<br>→ 实占 <strong style="color:var(--c2);">200px</strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider-label">视觉格式化模型（BFC / IFC / FFC / GFC）<span class="star">★ 高频</span></div>
+  <div class="cards cards-2">
+    <div class="card accent1">
+      <div class="card-title c1">BFC — 块级格式化上下文</div>
+      <div class="card-body">
+        <strong>触发条件：</strong><code>overflow≠visible</code>、<code>float</code>、<code>position:absolute/fixed</code>、<code>display:flow-root</code>（最干净）、<code>flex/grid</code> 子项、<code>contain:layout</code><br><br>
+        <strong>效果：</strong>
+        <ul>
+          <li>内部浮动元素参与高度计算（清除浮动）</li>
+          <li>阻止外边距折叠（margin collapse）</li>
+          <li>不被外部浮动元素覆盖（自适应两栏）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent1">
+      <div class="card-title c1">Margin Collapse（外边距折叠）</div>
+      <div class="card-body">
+        <strong>折叠条件（三种场景）：</strong>
+        <ul>
+          <li>相邻兄弟元素：上下 margin 取最大值</li>
+          <li>父子元素：子 margin-top 与父融合（无 border/padding/BFC 隔离时）</li>
+          <li>空块：自身 margin-top + margin-bottom 折叠</li>
+        </ul>
+        <strong>阻止折叠：</strong>BFC、border、padding、<code>display:flex/grid</code> 的子项不折叠
+      </div>
+    </div>
+    <div class="card accent1">
+      <div class="card-title c1">Stacking Context（层叠上下文）<span class="star">★ 高频</span></div>
+      <div class="card-body">
+        <strong>触发条件：</strong>root、<code>position+z-index≠auto</code>、<code>opacity&lt;1</code>、<code>transform/filter/clip-path≠none</code>、<code>will-change</code>、<code>isolation:isolate</code>、<code>mix-blend-mode≠normal</code>、<code>contain:paint</code><br><br>
+        <strong>层叠顺序（从下到上）：</strong>背景/边框 → 负z-index → 块级盒 → 浮动盒 → 行内盒 → z-index:0/auto → 正z-index
+      </div>
+    </div>
+    <div class="card accent1">
+      <div class="card-title c1">contain 属性</div>
+      <div class="card-body">
+        隔离元素对页面其余部分的影响，优化渲染性能：
+        <ul>
+          <li><code>contain:layout</code> — 布局隔离，触发 BFC</li>
+          <li><code>contain:paint</code> — 绘制裁剪，触发层叠上下文</li>
+          <li><code>contain:size</code> — 尺寸隔离（不依赖内容尺寸）</li>
+          <li><code>contain:strict</code> = layout + paint + size</li>
+          <li><code>content-visibility:auto</code> — 视口外元素跳过渲染</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider-label">display 值对照</div>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <tr><th>display</th><th>生成盒类型</th><th>特点</th><th>典型元素</th></tr>
+      <tr><td>block</td><td>块级盒</td><td>独占一行，可设宽高，margin/padding 全生效</td><td>div, p, h1-h6</td></tr>
+      <tr><td>inline</td><td>行内盒</td><td>不独占行，宽高无效，水平 margin/padding 生效，垂直不影响行高</td><td>span, a, strong</td></tr>
+      <tr><td>inline-block</td><td>行内块</td><td>行内排列但可设宽高，baseline 对齐</td><td>img, button（默认）</td></tr>
+      <tr><td>flex</td><td>弹性容器（块级）</td><td>一维布局，主轴/交叉轴模型</td><td>现代布局主力</td></tr>
+      <tr><td>inline-flex</td><td>弹性容器（行内）</td><td>行内排列的 flex 容器</td><td>行内按钮组</td></tr>
+      <tr><td>grid</td><td>网格容器（块级）</td><td>二维布局，行列同时控制</td><td>页面整体结构</td></tr>
+      <tr><td>contents</td><td>无盒（穿透）</td><td>自身不生成盒，子元素提升，常用于 flex/grid 穿透</td><td>中间包装层</td></tr>
+      <tr><td>flow-root</td><td>块级盒 + 新 BFC</td><td>清除浮动最佳方式，无副作用</td><td>替代 overflow:hidden</td></tr>
+      <tr><td>table / table-cell…</td><td>表格盒</td><td>模拟表格布局（旧时代垂直居中）</td><td>兼容旧方案</td></tr>
+      <tr><td>none</td><td>无</td><td>不在渲染树，不占空间，无障碍不可见</td><td>切换隐藏</td></tr>
+    </table>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S2 · 布局系统
+══════════════════════════════════ -->
+<div class="section" id="s2">
+  <div class="section-head">
+    <div class="section-num">02</div>
+    <div class="section-icon icon2">⚙️</div>
+    <div class="section-title c2">布局系统全对比</div>
+    <div class="section-badge badge2">Layout</div>
+  </div>
+
+  <div class="divider-label">Flexbox 核心属性速查 <span class="star">★ 高频</span></div>
+  <div class="two-col">
+    <div class="full-card">
+      <div class="full-card-head c2">容器属性 (flex container)</div>
+      <div class="full-card-body">
+        <div class="compare-wrap" style="margin-bottom:0;border:none;border-radius:0;">
+          <table class="compare-table">
+            <tr><th>属性</th><th>值 / 说明</th></tr>
+            <tr><td>flex-direction</td><td>row | row-reverse | column | column-reverse</td></tr>
+            <tr><td>flex-wrap</td><td>nowrap | wrap | wrap-reverse</td></tr>
+            <tr><td>justify-content</td><td>flex-start | center | flex-end | space-between | space-around | space-evenly</td></tr>
+            <tr><td>align-items</td><td>stretch | flex-start | center | flex-end | baseline</td></tr>
+            <tr><td>align-content</td><td>多行时控制行间距（同 justify-content 值集合）</td></tr>
+            <tr><td>gap</td><td>row-gap + column-gap，替代 margin hack</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="full-card">
+      <div class="full-card-head c2">子项属性 (flex item)</div>
+      <div class="full-card-body">
+        <div class="compare-wrap" style="margin-bottom:0;border:none;border-radius:0;">
+          <table class="compare-table">
+            <tr><th>属性</th><th>值 / 说明</th></tr>
+            <tr><td>flex-grow</td><td>放大比例，0=不放大，默认0</td></tr>
+            <tr><td>flex-shrink</td><td>缩小比例，0=不缩小，默认1</td></tr>
+            <tr><td>flex-basis</td><td>初始主轴尺寸，auto | 具体值</td></tr>
+            <tr><td>flex</td><td>简写：<code>flex:1</code>=1 1 0%；<code>flex:auto</code>=1 1 auto；<code>flex:none</code>=0 0 auto</td></tr>
+            <tr><td>align-self</td><td>覆盖容器 align-items</td></tr>
+            <tr><td>order</td><td>排列顺序，默认0，可负数</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hbox warn" style="margin-top:4px;">
+    <span class="hbox-icon">⚠️</span>
+    <div class="hbox-body">
+      <strong>flex:1 陷阱：</strong><code>flex:1</code> = <code>flex: 1 1 0%</code>，flex-basis 为 0，内容最小尺寸被忽略。<code>flex:auto</code> = <code>flex: 1 1 auto</code>，flex-basis 为内容大小。若子项有最小宽度需求用 <code>min-width:0</code> 允许收缩（text overflow 常见原因）。
+    </div>
+  </div>
+
+  <div class="divider-label">CSS Grid 核心概念 <span class="star">★ 高频</span></div>
+  <div class="cards cards-2">
+    <div class="card accent2">
+      <div class="card-title c2">轨道定义</div>
+      <div class="card-body">
+        <ul>
+          <li><code>grid-template-columns: repeat(3, 1fr)</code> 等分三列</li>
+          <li><code>repeat(auto-fill, minmax(200px, 1fr))</code> 响应式自动列</li>
+          <li><code>auto-fill</code> vs <code>auto-fit</code>：fill 保留空轨道，fit 折叠空轨道（影响最后行对齐）</li>
+          <li><code>fr</code> 单位：可用空间的比例（先扣除固定宽度和 gap）</li>
+          <li><code>subgrid</code>：子元素参与父网格对齐（CSS Grid Level 2）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent2">
+      <div class="card-title c2">位置控制</div>
+      <div class="card-body">
+        <ul>
+          <li><code>grid-column: 1 / 3</code> 跨两列（或 <code>span 2</code>）</li>
+          <li><code>grid-area: header</code> 命名区域放置</li>
+          <li><code>grid-template-areas</code> 可视化布局定义</li>
+          <li><code>grid-auto-flow: dense</code> 自动填充空洞</li>
+          <li>隐式网格：<code>grid-auto-rows / grid-auto-columns</code> 控制尺寸</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent2">
+      <div class="card-title c2">对齐属性（Grid vs Flex 对比）</div>
+      <div class="card-body">
+        <ul>
+          <li><code>justify-items</code> — 单元格内水平对齐（Grid 独有）</li>
+          <li><code>align-items</code> — 单元格内垂直对齐</li>
+          <li><code>justify-content</code> — 整体网格水平位置</li>
+          <li><code>align-content</code> — 整体网格垂直位置</li>
+          <li><code>place-items: center</code> — align+justify 简写，两行居中神器</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent2">
+      <div class="card-title c2">subgrid <span class="star">★ 新</span></div>
+      <div class="card-body">
+        <ul>
+          <li><code>grid-template-columns: subgrid</code> 继承父 grid 的列轨道</li>
+          <li>解决卡片组件内部元素跨卡片对齐问题</li>
+          <li>Chrome 117+、Firefox 71+、Safari 16+ 支持</li>
+          <li>典型用：表单标签+输入框多行对齐</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider-label">定位体系 <span class="star">★ 高频</span></div>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <tr><th>position</th><th>脱离文档流</th><th>定位参考</th><th>关键行为</th></tr>
+      <tr><td>static</td><td>否</td><td>-</td><td>默认，top/left 无效，z-index 无效</td></tr>
+      <tr><td>relative</td><td>否（占位）</td><td>自身原始位置</td><td>偏移但原空间保留；创建层叠上下文（z-index≠auto）</td></tr>
+      <tr><td>absolute</td><td>是</td><td>最近 position≠static 祖先</td><td>无祖先则相对 initial containing block（视口）</td></tr>
+      <tr><td>fixed</td><td>是</td><td>视口</td><td>transform/filter 祖先会改变包含块为该祖先！</td></tr>
+      <tr><td>sticky</td><td>否（混合）</td><td>滚动容器</td><td>relative + fixed 混合；overflow:hidden 祖先会使其失效</td></tr>
+    </table>
+  </div>
+
+  <div class="hbox warn">
+    <span class="hbox-icon">⚠️</span>
+    <div class="hbox-body"><strong>fixed 定位陷阱：</strong>祖先元素有 <code>transform</code>、<code>filter</code>、<code>perspective</code>、<code>will-change:transform</code> 时，fixed 子元素的包含块变为该祖先而非视口，导致"fixed 失效"。</div>
+  </div>
+  <div class="hbox warn">
+    <span class="hbox-icon">⚠️</span>
+    <div class="hbox-body"><strong>sticky 失效常见原因：</strong>父容器 <code>overflow:hidden/auto/scroll</code>、父容器高度不足无法滚动、未设定 top/left/right/bottom 阈值。</div>
+  </div>
+
+  <div class="divider-label">多列 & 传统布局</div>
+  <div class="cards cards-3">
+    <div class="card accent2">
+      <div class="card-title c2">Multi-column Layout</div>
+      <div class="card-body">
+        <ul>
+          <li><code>column-count</code> / <code>column-width</code> / <code>columns</code> 简写</li>
+          <li><code>column-gap</code>、<code>column-rule</code>（分隔线）</li>
+          <li><code>column-span: all</code> 元素跨所有列</li>
+          <li><code>break-inside: avoid</code> 防止跨列断行</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent2">
+      <div class="card-title c2">Float（遗留）</div>
+      <div class="card-body">
+        <ul>
+          <li>脱离文档流，文字环绕</li>
+          <li>清除浮动：<code>display:flow-root</code>（推荐）、clearfix hack、<code>overflow:hidden</code></li>
+          <li><code>clear:both/left/right</code> 在兄弟元素上使用</li>
+          <li>现代布局中几乎只用于文字环绕图片</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent2">
+      <div class="card-title c2">Table Layout</div>
+      <div class="card-body">
+        <ul>
+          <li><code>table-layout:fixed</code>：列宽由第一行决定，性能更好</li>
+          <li><code>border-collapse:collapse</code> vs <code>separate</code></li>
+          <li><code>vertical-align</code> 仅在 table-cell 中完全生效</li>
+          <li>现代 <code>display:table-cell</code> 仍用于垂直居中兼容</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S3 · 选择器 & 层叠
+══════════════════════════════════ -->
+<div class="section" id="s3">
+  <div class="section-head">
+    <div class="section-num">03</div>
+    <div class="section-icon icon3">🎯</div>
+    <div class="section-title c3">选择器 & 层叠 & 继承</div>
+    <div class="section-badge badge3">Cascade</div>
+  </div>
+
+  <div class="divider-label">优先级（Specificity）计算规则 <span class="star">★ 高频</span></div>
+  <div class="cards cards-2">
+    <div class="card accent3">
+      <div class="card-title c3">优先级权重</div>
+      <div class="card-body">
+        <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:4px 0;color:var(--text);">!important + 行内</td>
+            <td style="padding:4px;font-family:var(--mono);color:var(--c1);">最高（覆盖一切）</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:4px 0;color:var(--text);">行内样式 style=""</td>
+            <td style="padding:4px;font-family:var(--mono);color:var(--c1);">(1,0,0,0)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:4px 0;color:var(--text);">ID 选择器 #id</td>
+            <td style="padding:4px;font-family:var(--mono);color:var(--c5);">(0,1,0,0)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:4px 0;color:var(--text);">类/.class 属性[attr] 伪类:hover</td>
+            <td style="padding:4px;font-family:var(--mono);color:var(--c2);">(0,0,1,0)</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border);">
+            <td style="padding:4px 0;color:var(--text);">元素 div 伪元素::before</td>
+            <td style="padding:4px;font-family:var(--mono);color:var(--c3);">(0,0,0,1)</td>
+          </tr>
+          <tr>
+            <td style="padding:4px 0;color:var(--text);">通配符 * 关系符 + > ~</td>
+            <td style="padding:4px;font-family:var(--mono);color:var(--text3);">(0,0,0,0)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="card accent3">
+      <div class="card-title c3">特殊优先级规则</div>
+      <div class="card-body">
+        <ul>
+          <li><code>:is() / :not() / :has()</code> 优先级 = 参数列表中最高选择器</li>
+          <li><code>:where()</code> 优先级永远为 0（0,0,0,0），便于覆盖</li>
+          <li><code>@layer</code> 引入层级：layer 内样式优先级低于非 layer 样式（无论权重）；多个 layer 按声明顺序后者优先</li>
+          <li><code>:not(.a, .b)</code> Level 4 语法：多参数取非</li>
+          <li>伪元素 <code>::slotted / ::part</code> 穿透 Shadow DOM</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider-label">现代选择器（Level 3/4）<span class="star">★ 新</span></div>
+  <div class="cards cards-3">
+    <div class="card accent3">
+      <div class="card-title c3">:has() 关系伪类</div>
+      <div class="card-body">
+        "父选择器"正式到来。<code>div:has(> img)</code> 选含直接子图片的 div。<code>label:has(+ input:invalid)</code> 选后面有非法输入的 label。Chrome 105+、Safari 15.4+、Firefox 121+。
+      </div>
+    </div>
+    <div class="card accent3">
+      <div class="card-title c3">:is() / :where()</div>
+      <div class="card-body">
+        简化复杂选择器：<code>:is(h1,h2,h3) a</code> 代替三行规则。<code>:where()</code> 同功能但权重为 0，适合写基础样式库（方便用户覆盖）。
+      </div>
+    </div>
+    <div class="card accent3">
+      <div class="card-title c3">逻辑伪类</div>
+      <div class="card-body">
+        <ul>
+          <li><code>:nth-child(2n+1 of .item)</code> Level 4：按类型计数</li>
+          <li><code>:user-invalid</code> — 用户交互后才显示错误（比 :invalid 更友好）</li>
+          <li><code>:focus-visible</code> — 键盘焦点环（鼠标点击不显示）</li>
+          <li><code>:focus-within</code> — 子元素 focus 时激活</li>
+          <li><code>:any-link</code> — 匹配所有链接（:link + :visited）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent3">
+      <div class="card-title c3">CSS 嵌套（原生）<span class="star">★ 新</span></div>
+      <div class="card-body">
+        无需预处理器：
+        <div class="code-block" style="margin-top:6px;">
+<span class="pr">.card</span> {
+  <span class="kw">color</span>: <span class="vl">red</span>;
+  <span class="cm">/* 直接嵌套（需 & 或选择器）*/</span>
+  <span class="kw">&</span>:hover { <span class="kw">color</span>: <span class="vl">blue</span>; }
+  <span class="pr">.title</span> { <span class="kw">font-size</span>: <span class="vl">1.2em</span>; }
+  <span class="kw">@media</span> (width > 600px) { ... }
+}</div>
+      </div>
+    </div>
+    <div class="card accent3">
+      <div class="card-title c3">@scope <span class="star">★ 新</span></div>
+      <div class="card-body">
+        限定选择器作用域：<code>@scope (.card) { .title { color:red } }</code>。可设上下界：<code>@scope (.card) to (.slot)</code> 精确控制范围，替代 BEM 命名方案。Chrome 118+。
+      </div>
+    </div>
+    <div class="card accent3">
+      <div class="card-title c3">::part() & ::slotted()</div>
+      <div class="card-body">
+        Web Components 样式穿透：<code>::part(button)</code> 选择 Shadow DOM 中有 <code>part="button"</code> 的元素。<code>::slotted(p)</code> 选择插槽中分发的 p 元素。<code>exportparts</code> 传递 part 到外层。
+      </div>
+    </div>
+  </div>
+
+  <div class="divider-label">@layer 层叠层 <span class="star">★ 新高频</span></div>
+  <div class="hbox info">
+    <span class="hbox-icon">💡</span>
+    <div class="hbox-body">
+      <strong>@layer 解决的核心问题：</strong>管理样式优先级不再依赖权重竞争。Layer 内样式统一低于非 Layer 样式；多 Layer 按声明顺序，后者优先。<br>
+      <code>@layer reset, base, components, utilities;</code>（先声明顺序，后填充内容）<br>
+      <code>!important</code> 在 layer 中的行为与普通样式相反：越早的 layer，!important 优先级越高。
+    </div>
+  </div>
+
+  <div class="divider-label">继承与初始值</div>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <tr><th>关键字</th><th>含义</th><th>典型用途</th></tr>
+      <tr><td>inherit</td><td>强制继承父元素值</td><td>border 不继承，强制 <code>border:inherit</code></td></tr>
+      <tr><td>initial</td><td>重置为规范初始值（非浏览器默认）</td><td>color initial = black（非 user-agent 蓝）</td></tr>
+      <tr><td>unset</td><td>继承属性=inherit，非继承=initial</td><td>重置表单样式</td></tr>
+      <tr><td>revert</td><td>回退到 user-agent 默认样式</td><td>在组件库中安全重置</td></tr>
+      <tr><td>revert-layer</td><td>回退到上一个 @layer 的值</td><td>@layer 体系内样式撤销</td></tr>
+      <tr><td>all: unset / revert</td><td>重置所有属性</td><td>彻底重置按钮/输入框样式</td></tr>
+    </table>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S4 · 变量 & 函数
+══════════════════════════════════ -->
+<div class="section" id="s4">
+  <div class="section-head">
+    <div class="section-num">04</div>
+    <div class="section-icon icon4">🔮</div>
+    <div class="section-title c4">CSS 变量 & 函数</div>
+    <div class="section-badge badge4">Variables & Functions</div>
+  </div>
+
+  <div class="divider-label">CSS 自定义属性（变量）<span class="star">★ 高频</span></div>
+  <div class="cards cards-2">
+    <div class="card accent4">
+      <div class="card-title c4">核心特性</div>
+      <div class="card-body">
+        <ul>
+          <li>作用域：继承机制（可在 :root 全局定义，也可局部覆盖）</li>
+          <li><code>var(--color, fallback)</code> 第二参数为回退值</li>
+          <li>可存任何值（包括空格、无效值）；无效值不会报错，使用 initial</li>
+          <li>JS 读取：<code>getComputedStyle(el).getPropertyValue('--x')</code></li>
+          <li>JS 设置：<code>el.style.setProperty('--x', val)</code></li>
+          <li>不参与计算（calc 需在 var 外包计算）</li>
+          <li><code>@property</code> 注册类型：支持动画、语法约束、初始值</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent4">
+      <div class="card-title c4">@property 注册自定义属性 <span class="star">★ 新</span></div>
+      <div class="card-body">
+        <div class="code-block">
+<span class="at">@property</span> <span class="pr">--hue</span> {
+  <span class="kw">syntax</span>: <span class="vl">'&lt;angle&gt;'</span>;
+  <span class="kw">inherits</span>: <span class="vl">false</span>;
+  <span class="kw">initial-value</span>: <span class="vl">0deg</span>;
+}
+<span class="cm">/* 现在 --hue 可以被 transition 动画！*/</span>
+<span class="pr">.el</span> {
+  <span class="kw">transition</span>: <span class="vl">--hue 1s</span>;
+}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider-label">数学函数</div>
+  <div class="cards cards-3">
+    <div class="card accent4">
+      <div class="card-title c4">calc() / min() / max() / clamp()</div>
+      <div class="card-body">
+        <ul>
+          <li><code>calc(100% - 2rem)</code> 混合单位计算</li>
+          <li><code>min(50%, 300px)</code> 取小（响应式上限）</li>
+          <li><code>max(200px, 30%)</code> 取大（响应式下限）</li>
+          <li><code>clamp(min, val, max)</code> = max(min, min(val, max))。经典字体：<code>clamp(1rem, 2.5vw, 2rem)</code></li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent4">
+      <div class="card-title c4">三角 & 高级数学 <span class="star">★ 新</span></div>
+      <div class="card-body">
+        <ul>
+          <li><code>sin() cos() tan() asin() acos() atan() atan2()</code></li>
+          <li><code>pow() sqrt() log() exp()</code></li>
+          <li><code>abs() round() mod() rem() sign()</code></li>
+          <li>用途：纯 CSS 时钟、轮播角度计算、无JS动画</li>
+          <li>Chrome 111+、Firefox 108+</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent4">
+      <div class="card-title c4">颜色函数 <span class="star">★ 新</span></div>
+      <div class="card-body">
+        <ul>
+          <li><code>oklch(L C H)</code> 感知均匀色彩空间（推荐）</li>
+          <li><code>color-mix(in oklch, red 50%, blue)</code> 颜色混合</li>
+          <li><code>color(display-p3 1 0 0)</code> 广色域</li>
+          <li><code>light-dark(light-val, dark-val)</code> 自动适配主题</li>
+          <li><code>oklch</code> 比 hsl 更一致（不同色相亮度感知相同）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent4">
+      <div class="card-title c4">变换函数</div>
+      <div class="card-body">
+        <ul>
+          <li><code>translate(x,y)</code> / <code>translateX/Y/Z</code></li>
+          <li><code>scale(x,y)</code> / <code>rotate(deg)</code></li>
+          <li><code>skew(x,y)</code> / <code>matrix(a,b,c,d,e,f)</code></li>
+          <li><code>perspective()</code> 在 transform 内使用影响单元素</li>
+          <li>新：<code>translate: x y</code>（独立属性，可独立 transition）</li>
+          <li>新：<code>rotate: 45deg</code> / <code>scale: 1.2</code> 独立属性</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent4">
+      <div class="card-title c4">图形函数（clip-path / shape）</div>
+      <div class="card-body">
+        <ul>
+          <li><code>clip-path: polygon(0 0, 100% 0, 100% 80%, 0 100%)</code></li>
+          <li><code>clip-path: circle(50%)</code> / <code>ellipse()</code> / <code>inset()</code></li>
+          <li><code>shape-outside</code>：文字环绕自定义形状</li>
+          <li>新：CSS Shapes Level 2 <code>shape()</code> 函数（路径命令）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent4">
+      <div class="card-title c4">滤镜函数</div>
+      <div class="card-body">
+        <ul>
+          <li><code>filter: blur() brightness() contrast() saturate() grayscale() hue-rotate() drop-shadow()</code></li>
+          <li><code>backdrop-filter</code> 模糊背后内容（毛玻璃效果）</li>
+          <li><code>filter:drop-shadow</code> vs <code>box-shadow</code>：前者跟随 PNG 透明轮廓</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S5 · 动画 & 过渡
+══════════════════════════════════ -->
+<div class="section" id="s5">
+  <div class="section-head">
+    <div class="section-num">05</div>
+    <div class="section-icon icon5">✨</div>
+    <div class="section-title c5">动画 & 过渡</div>
+    <div class="section-badge badge5">Animation</div>
+  </div>
+
+  <div class="divider-label">transition vs animation 对比 <span class="star">★ 高频</span></div>
+  <div class="vs-grid">
+    <div class="vs-card" style="background:rgba(245,200,66,.05);border-color:rgba(245,200,66,.2);">
+      <div class="vs-title c5">transition（过渡）</div>
+      <div class="vs-body">
+        <ul>
+          <li>需要状态触发（:hover、class切换、JS）</li>
+          <li>从 A 到 B 的单次过渡，不循环</li>
+          <li><code>transition: property duration timing-function delay</code></li>
+          <li>多属性用逗号分隔；<code>all</code> 性能差（避免）</li>
+          <li>transition-behavior: allow-discrete（切换 display 的过渡，2023+）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="vs-card" style="background:rgba(245,200,66,.05);border-color:rgba(245,200,66,.2);">
+      <div class="vs-title c5">animation（关键帧动画）</div>
+      <div class="vs-body">
+        <ul>
+          <li>独立运行，可循环、延迟、暂停</li>
+          <li><code>animation: name duration timing iteration direction fill-mode play-state</code></li>
+          <li><code>animation-fill-mode: forwards</code> 保持最终状态</li>
+          <li><code>animation-iteration-count: infinite</code></li>
+          <li><code>animation-play-state: paused</code> JS 控制暂停</li>
+          <li>Web Animations API（JS）可获取 Animation 对象控制</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider-label">缓动函数深解</div>
+  <div class="cards cards-2">
+    <div class="card accent5">
+      <div class="card-title c5">timing-function 类型</div>
+      <div class="card-body">
+        <ul>
+          <li><code>linear</code> — 匀速</li>
+          <li><code>ease / ease-in / ease-out / ease-in-out</code> — 预设贝塞尔</li>
+          <li><code>cubic-bezier(x1,y1,x2,y2)</code> — 自定义贝塞尔，y 可超出 0-1（弹性效果）</li>
+          <li><code>steps(n, start|end)</code> — 阶梯动画（精灵图翻页）</li>
+          <li><code>step-start</code> = steps(1, start)；<code>step-end</code> = steps(1, end)</li>
+          <li>新：<code>linear(0, 0.5 25%, 1)</code> 多点线性（模拟 spring 弹簧）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent5">
+      <div class="card-title c5">可动画属性 & GPU 加速</div>
+      <div class="card-body">
+        <ul>
+          <li>只走 Composite（最快）：<code>transform</code>、<code>opacity</code></li>
+          <li>仅 Paint：<code>color</code>、<code>background-color</code>、<code>box-shadow</code></li>
+          <li>触发 Layout+Paint+Composite（最慢）：<code>width</code>、<code>height</code>、<code>top/left</code>、<code>margin</code>、<code>padding</code></li>
+          <li><code>will-change: transform</code> 提示浏览器提升合成层（勿滥用）</li>
+          <li>新可动画：<code>display</code>（需 allow-discrete）、<code>height: auto</code>（calc-size）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider-label">Scroll-driven Animation <span class="star">★ 新高频</span></div>
+  <div class="cards cards-2">
+    <div class="card accent5">
+      <div class="card-title c5">滚动驱动动画</div>
+      <div class="card-body">
+        无需 JS 监听 scroll 事件，纯 CSS 实现滚动联动：
+        <div class="code-block" style="margin-top:8px;">
+<span class="at">@keyframes</span> <span class="fn">fadeIn</span> { <span class="kw">from</span> { <span class="kw">opacity</span>:<span class="vl">0</span> } }
+<span class="pr">.el</span> {
+  <span class="kw">animation</span>: <span class="vl">fadeIn linear</span>;
+  <span class="kw">animation-timeline</span>: <span class="vl">scroll()</span>;
+  <span class="cm">/* 或 view() — 元素进入视口 */</span>
+  <span class="kw">animation-timeline</span>: <span class="vl">view()</span>;
+  <span class="kw">animation-range</span>: <span class="vl">entry 0% entry 100%</span>;
+}</div>
+        Chrome 115+，Firefox 2024+
+      </div>
+    </div>
+    <div class="card accent5">
+      <div class="card-title c5">View Transition（CSS 部分）<span class="star">★ 新</span></div>
+      <div class="card-body">
+        <ul>
+          <li><code>view-transition-name: hero</code> 标记参与过渡的元素</li>
+          <li><code>::view-transition-old(hero)</code> 旧状态截图伪元素</li>
+          <li><code>::view-transition-new(hero)</code> 新状态伪元素</li>
+          <li>默认淡入淡出；可自定义 <code>@keyframes</code> 覆盖</li>
+          <li>MPA 跨页面过渡需 <code>@view-transition { navigation: auto }</code></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider-label">@starting-style & allow-discrete <span class="star">★ 新</span></div>
+  <div class="hbox tip">
+    <span class="hbox-icon">💡</span>
+    <div class="hbox-body">
+      <strong>2023 新特性组合：元素进入/退出动画。</strong><br>
+      <code>@starting-style</code> 定义元素首次渲染时的起始样式（解决 <code>display:none → block</code> 无法 transition 问题）。配合 <code>transition-behavior: allow-discrete</code> 实现 display 属性的过渡。Chrome 117+、Safari 17.5+。
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S6 · 响应式 & 媒体查询
+══════════════════════════════════ -->
+<div class="section" id="s6">
+  <div class="section-head">
+    <div class="section-num">06</div>
+    <div class="section-icon icon6">📱</div>
+    <div class="section-title c6">响应式 & 媒体/容器查询</div>
+    <div class="section-badge badge6">Responsive</div>
+  </div>
+
+  <div class="divider-label">媒体查询特性全览 <span class="star">★ 高频</span></div>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <tr><th>特性</th><th>常用值</th><th>说明</th></tr>
+      <tr><td>width / height</td><td>min- / max- / 范围语法</td><td>视口尺寸（Level 4：<code>(width >= 600px)</code> 替代 min-width）</td></tr>
+      <tr><td>prefers-color-scheme</td><td>light | dark</td><td>系统深色/浅色模式</td></tr>
+      <tr><td>prefers-reduced-motion</td><td>reduce | no-preference</td><td>减少动画（无障碍，应强制检测）</td></tr>
+      <tr><td>prefers-contrast</td><td>more | less | forced</td><td>高对比度偏好</td></tr>
+      <tr><td>prefers-reduced-data</td><td>reduce</td><td>省流模式（不加载高清图）</td></tr>
+      <tr><td>display-mode</td><td>standalone | fullscreen | browser | minimal-ui</td><td>PWA 安装状态检测</td></tr>
+      <tr><td>orientation</td><td>portrait | landscape</td><td>设备方向</td></tr>
+      <tr><td>hover / pointer</td><td>none|hover / none|coarse|fine</td><td>输入设备能力（触摸/鼠标）</td></tr>
+      <tr><td>forced-colors</td><td>active | none</td><td>Windows 高对比度强制模式</td></tr>
+      <tr><td>update</td><td>none | slow | fast</td><td>屏幕刷新率（电子墨水=slow）</td></tr>
+      <tr><td>color-gamut</td><td>srgb | p3 | rec2020</td><td>屏幕色域支持</td></tr>
+    </table>
+  </div>
+
+  <div class="divider-label">容器查询（Container Queries）<span class="star">★ 新高频</span></div>
+  <div class="cards cards-2">
+    <div class="card accent6">
+      <div class="card-title c6">尺寸容器查询</div>
+      <div class="card-body">
+        <div class="code-block">
+<span class="pr">.card-wrapper</span> {
+  <span class="kw">container-type</span>: <span class="vl">inline-size</span>;
+  <span class="kw">container-name</span>: <span class="vl">card</span>;
+}
+<span class="at">@container</span> <span class="fn">card</span> (width > 400px) {
+  <span class="pr">.card</span> { <span class="kw">flex-direction</span>: <span class="vl">row</span>; }
+}</div>
+        <ul style="margin-top:8px;">
+          <li><code>container-type: size</code>（双轴）/ <code>inline-size</code>（宽度，推荐）</li>
+          <li>容器查询单位：<code>cqi cqb cqw cqh cqmin cqmax</code></li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent6">
+      <div class="card-title c6">样式容器查询 <span class="star">★ 新</span></div>
+      <div class="card-body">
+        <div class="code-block">
+<span class="at">@container</span> style(<span class="kw">--variant</span>: <span class="vl">compact</span>) {
+  <span class="pr">.card</span> { <span class="kw">padding</span>: <span class="vl">8px</span>; }
+}</div>
+        按 CSS 自定义属性的值条件切换样式。无需 JS 传递状态，父组件通过 CSS 变量驱动子组件。目前 Chrome 111+，其他浏览器跟进中。
+      </div>
+    </div>
+  </div>
+
+  <div class="divider-label">相对单位体系 <span class="star">★ 高频</span></div>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <tr><th>单位</th><th>参照</th><th>典型用途</th></tr>
+      <tr><td>em</td><td>当前元素 font-size（用于 font-size 时参照父元素）</td><td>组件内间距（随字体缩放）</td></tr>
+      <tr><td>rem</td><td>根元素（html）font-size（默认16px）</td><td>全局排版尺寸</td></tr>
+      <tr><td>vw / vh</td><td>视口宽/高的1%</td><td>全屏布局；vh 在移动端不含地址栏</td></tr>
+      <tr><td>svh / lvh / dvh</td><td>小/大/动态视口高度</td><td>dvh 最准确（随地址栏动态变化）</td></tr>
+      <tr><td>vmin / vmax</td><td>vw/vh 中较小/大者</td><td>字体跟随最小视口方向</td></tr>
+      <tr><td>cqi / cqb</td><td>容器行内/块尺寸1%</td><td>容器查询内部</td></tr>
+      <tr><td>ch</td><td>当前字体 "0" 字符宽度</td><td>文本输入框宽度（约等于字符数）</td></tr>
+      <tr><td>ex</td><td>当前字体 x 字高</td><td>精细排版</td></tr>
+      <tr><td>lh / rlh</td><td>当前/根 line-height</td><td>行高相关间距</td></tr>
+    </table>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S7 · 现代新特性
+══════════════════════════════════ -->
+<div class="section" id="s7">
+  <div class="section-head">
+    <div class="section-num">07</div>
+    <div class="section-icon icon7">🚀</div>
+    <div class="section-title c7">现代新特性（2022—2025）</div>
+    <div class="section-badge badge7">Modern CSS</div>
+  </div>
+
+  <div class="divider-label">布局新能力</div>
+  <div class="cards cards-3">
+    <div class="card accent7">
+      <div class="card-title c7">Masonry Layout <span class="star">★ 草案</span></div>
+      <div class="card-body">
+        瀑布流布局。<code>grid-template-rows: masonry</code>（Chrome 实验/Safari TP）。无需 JS 计算高度，浏览器自动填充最短列。规范争议：Chrome 推 grid 扩展，Firefox 提独立属性。
+      </div>
+    </div>
+    <div class="card accent7">
+      <div class="card-title c7">anchor positioning <span class="star">★ 新</span></div>
+      <div class="card-body">
+        将元素定位相对于任意"锚点"元素：<code>anchor-name: --btn</code> + <code>position-anchor: --btn</code> + <code>top: anchor(bottom)</code>。彻底解决 tooltip/popover 相对定位问题。Chrome 125+。
+      </div>
+    </div>
+    <div class="card accent7">
+      <div class="card-title c7">calc-size() <span class="star">★ 新</span></div>
+      <div class="card-body">
+        支持 <code>height: auto</code> 参与计算：<code>height: calc-size(auto, size + 20px)</code>。可对 auto/min-content/max-content 进行动画过渡，解决"展开折叠"动画的历史难题。Chrome 129+。
+      </div>
+    </div>
+  </div>
+
+  <div class="divider-label">样式与主题</div>
+  <div class="cards cards-3">
+    <div class="card accent7">
+      <div class="card-title c7">color-scheme & prefers</div>
+      <div class="card-body">
+        <ul>
+          <li><code>color-scheme: light dark</code> 让浏览器 UA 样式也跟随主题</li>
+          <li><code>:root { color-scheme: light dark }</code> 全局启用</li>
+          <li><code>light-dark(#fff, #000)</code> 单行实现主题色</li>
+          <li>表单控件、滚动条也自动适配暗色</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent7">
+      <div class="card-title c7">CSS 嵌套（原生）+ @scope</div>
+      <div class="card-body">
+        <ul>
+          <li>原生嵌套全主流浏览器支持（2023+）</li>
+          <li>不再依赖 Sass/Less 进行嵌套</li>
+          <li><code>@scope</code> 提供真正的局部样式作用域</li>
+          <li>两者组合 ≈ CSS Modules 效果，无需构建工具</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent7">
+      <div class="card-title c7">新文本特性</div>
+      <div class="card-body">
+        <ul>
+          <li><code>text-wrap: balance</code> — 多行标题自动均衡换行</li>
+          <li><code>text-wrap: pretty</code> — 优化段落最后行孤字</li>
+          <li><code>overflow-wrap: anywhere</code> — 任意字符换行</li>
+          <li><code>hanging-punctuation</code> — 标点悬挂（Safari）</li>
+          <li><code>initial-letter</code> — 首字下沉</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent7">
+      <div class="card-title c7">逻辑属性 <span class="star">★ 高频</span></div>
+      <div class="card-body">
+        <ul>
+          <li>物理 → 逻辑：<code>margin-left</code> → <code>margin-inline-start</code></li>
+          <li><code>padding-block</code>（上下）/ <code>padding-inline</code>（左右）</li>
+          <li><code>inset-inline-start</code> 替代 <code>left</code></li>
+          <li><code>block-size</code> = height；<code>inline-size</code> = width</li>
+          <li>支持 RTL 语言自动翻转，国际化必备</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent7">
+      <div class="card-title c7">font 新特性</div>
+      <div class="card-body">
+        <ul>
+          <li><code>font-display: swap|block|fallback|optional</code></li>
+          <li><code>font-variation-settings</code> — 可变字体轴控制</li>
+          <li><code>font-palette</code> / <code>@font-palette-values</code> — 彩色字体主题</li>
+          <li><code>size-adjust / ascent-override / descent-override</code> — 回退字体指标匹配（减少 CLS）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent7">
+      <div class="card-title c7">其他新属性</div>
+      <div class="card-body">
+        <ul>
+          <li><code>field-sizing: content</code> — input/textarea 自动撑高</li>
+          <li><code>overflow: clip</code> — 裁剪但不创建滚动容器（比 hidden 更安全）</li>
+          <li><code>overscroll-behavior: contain</code> — 防止滚动链（modal 常用）</li>
+          <li><code>scroll-behavior: smooth</code> — 原生平滑滚动</li>
+          <li><code>scroll-snap-type / scroll-snap-align</code> — 滚动吸附</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S8 · 规范 & 易混点
+══════════════════════════════════ -->
+<div class="section" id="s8">
+  <div class="section-head">
+    <div class="section-num">08</div>
+    <div class="section-icon icon8">📐</div>
+    <div class="section-title c8">规范细节 & 易混淆点</div>
+    <div class="section-badge badge8">Spec & Gotchas</div>
+  </div>
+
+  <div class="divider-label">经典易混对比 <span class="star">★ 高频</span></div>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <tr><th>概念 A</th><th>vs</th><th>概念 B</th><th>核心差异</th></tr>
+      <tr>
+        <td>visibility:hidden</td><td>vs</td><td>opacity:0</td>
+        <td>visibility:hidden 子元素可单独 visible；opacity:0 整体透明且子元素无法覆盖，但仍可捕获事件（需加 pointer-events:none）</td>
+      </tr>
+      <tr>
+        <td>display:none</td><td>vs</td><td>visibility:hidden</td>
+        <td>display:none 脱离渲染树（不占空间，不可捕获事件）；visibility:hidden 在渲染树中（占空间，触发 Paint）</td>
+      </tr>
+      <tr>
+        <td>em</td><td>vs</td><td>rem</td>
+        <td>em 相对于当前元素 font-size（复合继承，嵌套时容易失控）；rem 始终相对 :root font-size（可预测）</td>
+      </tr>
+      <tr>
+        <td>padding %</td><td>vs</td><td>margin %</td>
+        <td>padding/margin 的百分比值均相对于<strong>包含块的宽度</strong>（不是高度），这是等比例正方形技巧的原理（现已被 aspect-ratio 取代）</td>
+      </tr>
+      <tr>
+        <td>position:absolute</td><td>vs</td><td>position:fixed</td>
+        <td>absolute 相对最近定位祖先；fixed 相对视口——但有 transform/filter 祖先时 fixed 变为相对该祖先</td>
+      </tr>
+      <tr>
+        <td>overflow:hidden</td><td>vs</td><td>overflow:clip</td>
+        <td>hidden 创建 BFC（影响布局）、创建滚动容器；clip 仅裁剪，不创建 BFC 和滚动容器，不影响布局流（更安全）</td>
+      </tr>
+      <tr>
+        <td>:nth-child(n)</td><td>vs</td><td>:nth-of-type(n)</td>
+        <td>nth-child 在所有兄弟中按位置计数；nth-of-type 只在同标签兄弟中计数。混用时极易出错</td>
+      </tr>
+      <tr>
+        <td>transition: all</td><td>vs</td><td>指定属性</td>
+        <td>all 会尝试过渡所有可动画属性，性能差且无法控制；应明确指定属性列表</td>
+      </tr>
+      <tr>
+        <td>flex-basis:auto</td><td>vs</td><td>flex-basis:0</td>
+        <td>auto 以内容/width 为初始尺寸；0 忽略内容尺寸，按 flex-grow 纯比例分配（<code>flex:1</code> 的行为）</td>
+      </tr>
+      <tr>
+        <td>z-index 失效</td><td>vs</td><td>有效</td>
+        <td>z-index 只在 position≠static 或 flex/grid 子项上生效；且层叠上下文内的 z-index 不能与上下文外比较</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="divider-label">性能优化 & 避坑</div>
+  <div class="cards cards-2">
+    <div class="card accent8">
+      <div class="card-title c8">CSS 性能最佳实践</div>
+      <div class="card-body">
+        <ul>
+          <li>动画只用 <code>transform</code> + <code>opacity</code>（Compositor 线程，不阻塞主线程）</li>
+          <li>避免 <code>@import</code>（串行加载），改用 <code>&lt;link&gt;</code> 或打包</li>
+          <li>大量节点用 <code>content-visibility:auto</code> 跳过视口外渲染</li>
+          <li><code>contain:strict</code> 隔离昂贵组件的布局/绘制</li>
+          <li>关键 CSS 内联，非关键异步加载（Critical CSS）</li>
+          <li>用 <code>will-change</code> 提前创建合成层，但避免滥用（显存压力）</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card accent8">
+      <div class="card-title c8">选择器性能</div>
+      <div class="card-body">
+        <ul>
+          <li>CSS 选择器从右往左匹配（关键选择器优化最重要）</li>
+          <li>避免通配符 <code>* { ... }</code> 在深层（匹配所有元素）</li>
+          <li>避免超长选择器链：<code>.a .b .c .d .e</code></li>
+          <li><code>:has()</code> 在大型文档中可能有性能影响（浏览器持续优化）</li>
+          <li>BEM 命名的性能优势：扁平单类选择器，匹配最快</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider-label">面试高频原理题速查</div>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <tr><th>问题</th><th>核心答案</th></tr>
+      <tr>
+        <td>清除浮动几种方式</td>
+        <td>① <code>display:flow-root</code>（最推荐，无副作用）② clearfix 伪元素 ③ <code>overflow:hidden/auto</code>（创建BFC，有副作用）④ 额外 clear:both 元素（不推荐）</td>
+      </tr>
+      <tr>
+        <td>垂直居中方案</td>
+        <td>① <code>display:flex; align-items:center</code> ② <code>display:grid; place-items:center</code> ③ <code>position:absolute; top:50%; transform:translateY(-50%)</code> ④ <code>margin:auto</code>（absolute + inset:0）⑤ <code>line-height</code>（单行文字）</td>
+      </tr>
+      <tr>
+        <td>CSS 加载阻塞渲染吗</td>
+        <td>CSS 是渲染阻塞资源（必须下载+解析完才构建渲染树）。JS 执行会等 CSSOM 就绪（CSS 间接阻塞 JS）。link 并行加载但阻塞渲染；@import 串行，加剧阻塞。</td>
+      </tr>
+      <tr>
+        <td>什么触发 GPU 合成层</td>
+        <td><code>transform/opacity</code> 动画（有 will-change 或浏览器判断）、<code>will-change: transform</code>、video/canvas/iframe、有 CSS filter、<code>position:fixed</code>（部分情况）</td>
+      </tr>
+      <tr>
+        <td>CSS 变量 vs Sass 变量</td>
+        <td>CSS 变量：运行时（JS可改、响应媒体查询、可继承作用域）。Sass 变量：编译时（静态替换，无运行时能力）。两者可互补使用。</td>
+      </tr>
+      <tr>
+        <td>如何实现主题切换</td>
+        <td>① CSS 变量 + <code>[data-theme="dark"]</code> 切换根选择器 ② <code>prefers-color-scheme</code> 自动跟随系统 ③ <code>color-scheme</code> 属性让 UA 样式也适配 ④ <code>light-dark()</code> 函数单行声明</td>
+      </tr>
+      <tr>
+        <td>1px 问题</td>
+        <td>设备像素比（DPR）>1 时，1px CSS = 多个物理像素。方案：<code>transform:scaleY(0.5)</code>、<code>border-image</code>、<code>box-shadow: 0 0.5px</code>、<code>@media (-webkit-min-device-pixel-ratio:2)</code> + SVG/图片边框</td>
+      </tr>
+      <tr>
+        <td>CSS Houdini 是什么</td>
+        <td>浏览器暴露渲染引擎底层 API 给开发者：Paint Worklet（自定义背景/边框绘制）、Layout Worklet（自定义布局算法）、Animation Worklet（自定义动画）、@property（类型化变量）。目前 @property 最成熟。</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="hbox tip" style="margin-top:16px;">
+    <span class="hbox-icon">🎯</span>
+    <div class="hbox-body">
+      <strong>13 年经验面试加分项：</strong>深入讲解 Cascade Level 5（@layer / @scope）对工程架构的影响；能对比不同 CSS-in-JS 方案与原生 CSS 变量/Modules 的权衡；熟悉浏览器渲染流水线中 CSS 各属性的精确触发阶段；能结合 Web Vitals（CLS/INP）解释 CSS 对性能指标的具体影响路径。
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  CSS CASCADING &amp; INHERITANCE LEVEL 5 · W3C · 8 MODULES · 70+ KNOWLEDGE POINTS · 2025
+</div>
+
+</div><!-- /page -->
+</body>
+</html>

@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TypeScript 知识体系全图 · 面试备战</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:    #0b1622;
+  --bg2:   #0f1e2e;
+  --bg3:   #152436;
+  --bg4:   #1a2d42;
+  --grid:  rgba(30,120,200,.06);
+  --bdr:   rgba(30,120,200,.18);
+  --bdr2:  rgba(30,120,200,.32);
+  --text:  #c8dff0;
+  --text2: #7aa8cc;
+  --text3: #3d6080;
+  --mono:  'IBM Plex Mono', monospace;
+  --display: 'Bebas Neue', sans-serif;
+  --sans:  'Noto Sans SC', sans-serif;
+
+  --c1: #38bdf8; /* 基础类型 */
+  --c2: #34d399; /* 类型操作 */
+  --c3: #a78bfa; /* 泛型 */
+  --c4: #fb923c; /* 类型推断 */
+  --c5: #f472b6; /* 高级类型 */
+  --c6: #facc15; /* 类 & 装饰器 */
+  --c7: #22d3ee; /* 模块 & 声明 */
+  --c8: #86efac; /* 工程实践 */
+  --c9: #fca5a5; /* 规范&易混 */
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.75;
+  /* Blueprint grid */
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px),
+    linear-gradient(rgba(30,120,200,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30,120,200,.025) 1px, transparent 1px);
+  background-size: 80px 80px, 80px 80px, 16px 16px, 16px 16px;
+}
+
+.page {
+  position: relative;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 56px 28px 120px;
+}
+
+/* ── MASTHEAD ── */
+.masthead {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 20px;
+  margin-bottom: 44px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--bdr2);
+  position: relative;
+}
+.mh-corner {
+  position: absolute;
+  top: -12px; left: -12px;
+  width: 28px; height: 28px;
+  border-left: 2px solid var(--c1);
+  border-top: 2px solid var(--c1);
+}
+.mh-corner-br {
+  position: absolute;
+  bottom: -1px; right: -1px;
+  width: 20px; height: 20px;
+  border-right: 1px solid var(--c1);
+  border-bottom: 1px solid var(--c1);
+}
+.mh-tag {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: .32em;
+  text-transform: uppercase;
+  color: var(--text3);
+  margin-bottom: 10px;
+}
+.mh-tag span { color: var(--c1); }
+.masthead h1 {
+  font-family: var(--display);
+  font-size: clamp(44px, 7vw, 80px);
+  font-weight: 400;
+  line-height: .95;
+  letter-spacing: .06em;
+  color: var(--text);
+  text-transform: uppercase;
+}
+.masthead h1 em { font-style: normal; color: var(--c1); }
+.mh-meta {
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  color: var(--text3);
+  line-height: 2;
+}
+.mh-meta strong { color: var(--text2); font-weight: 500; }
+.mh-version {
+  display: inline-block;
+  background: var(--c1);
+  color: var(--bg);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  padding: 2px 8px;
+  margin-top: 6px;
+}
+
+/* ── TOC ── */
+.toc { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 48px; }
+.toc-pill {
+  display: flex; align-items: center; gap: 5px;
+  padding: 4px 12px; border: 1px solid;
+  font-family: var(--mono); font-size: 10px; letter-spacing: .06em;
+  cursor: pointer; text-decoration: none; transition: all .15s;
+  white-space: nowrap; border-radius: 1px;
+}
+.toc-pill:hover { background: rgba(255,255,255,.05); }
+.toc-pill .dot { width: 5px; height: 5px; flex-shrink: 0; }
+
+/* ── SECTION ── */
+.section { margin-bottom: 64px; scroll-margin-top: 20px; }
+.section-head {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 18px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--bdr);
+  position: relative;
+}
+.section-head::before {
+  content: '';
+  position: absolute;
+  bottom: -1px; left: 0;
+  width: 60px; height: 1px;
+}
+.s-num {
+  font-family: var(--mono); font-size: 9px;
+  color: var(--text3); letter-spacing: .2em;
+  border: 1px solid var(--bdr); padding: 1px 6px;
+}
+.s-icon {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; flex-shrink: 0;
+  border: 1px solid var(--bdr);
+}
+.s-title {
+  font-family: var(--display);
+  font-size: 26px; font-weight: 400;
+  letter-spacing: .08em; text-transform: uppercase;
+}
+.s-badge {
+  font-family: var(--mono); font-size: 8.5px;
+  letter-spacing: .18em; padding: 2px 8px;
+  margin-left: auto; text-transform: uppercase;
+  border: 1px solid; border-radius: 1px;
+}
+
+/* ── DIVIDER ── */
+.div-label {
+  font-family: var(--mono); font-size: 9px;
+  letter-spacing: .24em; text-transform: uppercase;
+  color: var(--text3); margin: 18px 0 10px;
+  display: flex; align-items: center; gap: 10px;
+}
+.div-label::before { content: '//'; color: var(--text3); }
+.div-label::after { content: ''; flex: 1; height: 1px; background: var(--bdr); }
+
+/* ── CARDS ── */
+.cards { display: grid; gap: 9px; }
+.c2g { grid-template-columns: repeat(2,1fr); }
+.c3g { grid-template-columns: repeat(3,1fr); }
+.c4g { grid-template-columns: repeat(4,1fr); }
+.cauto { grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); }
+@media(max-width:720px){
+  .c2g,.c3g,.c4g,.cauto{grid-template-columns:1fr;}
+  .masthead{grid-template-columns:1fr;}
+  .mh-meta{text-align:left;}
+  .vsg{grid-template-columns:1fr;}
+}
+
+.card {
+  background: var(--bg2);
+  border: 1px solid var(--bdr);
+  padding: 14px 16px;
+  position: relative; overflow: hidden;
+  transition: border-color .18s;
+}
+.card:hover { border-color: var(--bdr2); }
+.card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2px;
+}
+/* corner decoration */
+.card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 8px; height: 8px;
+  border-right: 1px solid var(--bdr2);
+  border-bottom: 1px solid var(--bdr2);
+}
+.ct {
+  font-family: var(--mono); font-size: 11.5px; font-weight: 600;
+  margin-bottom: 8px; display: flex; align-items: center; gap: 5px;
+  letter-spacing: .04em;
+}
+.cb { font-size: 12px; color: var(--text2); line-height: 1.72; }
+.cb code {
+  font-family: var(--mono); font-size: 10.5px;
+  background: var(--bg3); padding: 1px 5px;
+  border-radius: 1px; color: var(--text);
+}
+.cb ul { list-style: none; padding: 0; }
+.cb ul li { padding: 2px 0; display: flex; gap: 6px; }
+.cb ul li::before { content: '—'; color: var(--text3); flex-shrink: 0; font-family: var(--mono); font-size: 10px; }
+.cb strong { color: var(--text); font-weight: 600; }
+
+/* ── TABLE ── */
+.tw {
+  background: var(--bg2); border: 1px solid var(--bdr);
+  overflow: hidden; margin-bottom: 10px;
+}
+.ctab { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+.ctab th {
+  background: var(--bg3); padding: 8px 12px; text-align: left;
+  font-size: 8.5px; font-family: var(--mono); letter-spacing: .18em;
+  color: var(--text3); border-bottom: 1px solid var(--bdr2);
+  text-transform: uppercase; font-weight: 600;
+}
+.ctab td {
+  padding: 9px 12px; vertical-align: top;
+  border-bottom: 1px solid var(--bdr);
+  line-height: 1.6; color: var(--text2);
+}
+.ctab tr:last-child td { border-bottom: none; }
+.ctab tr:hover td { background: var(--bg3); }
+.ctab td:first-child {
+  font-family: var(--mono); font-size: 10.5px;
+  font-weight: 600; white-space: nowrap; color: var(--text);
+}
+.ctab td code {
+  font-family: var(--mono); font-size: 10px;
+  background: var(--bg3); padding: 1px 4px; color: var(--text);
+}
+.ctab td strong { color: var(--text); font-weight: 600; }
+
+/* ── CODE BLOCK ── */
+.cblk {
+  background: #060d14;
+  border: 1px solid var(--bdr2);
+  padding: 12px 15px;
+  font-family: var(--mono); font-size: 11px;
+  line-height: 1.9; color: #9ec8e8;
+  overflow-x: auto; margin: 8px 0;
+  position: relative;
+}
+.cblk::before {
+  content: 'TS';
+  position: absolute; top: 4px; right: 8px;
+  font-size: 8px; letter-spacing: .1em;
+  color: var(--text3); font-family: var(--mono);
+}
+.cblk .cm { color: #2a4a62; }
+.cblk .kw { color: #38bdf8; }
+.cblk .tp { color: #34d399; }
+.cblk .st { color: #86d996; }
+.cblk .fn { color: #a78bfa; }
+.cblk .nm { color: #fb923c; }
+.cblk .op { color: #f472b6; }
+.cblk .dc { color: #facc15; }
+.cblk .er { color: #f87171; text-decoration: wavy underline #f87171; }
+
+/* ── HBOX ── */
+.hbox {
+  padding: 10px 14px; font-size: 11.5px;
+  line-height: 1.65; margin-bottom: 10px;
+  display: flex; gap: 10px; align-items: flex-start;
+  border: 1px solid;
+}
+.hbox-i { flex-shrink: 0; font-size: 13px; margin-top: 1px; }
+.hbox-b { color: var(--text2); }
+.hbox-b strong { color: var(--text); }
+.hbox-b code { font-family: var(--mono); font-size: 10px; background: var(--bg3); padding: 1px 4px; }
+.warn  { background: rgba(250,204,21,.04); border-color: rgba(250,204,21,.2); }
+.tip   { background: rgba(52,211,153,.04); border-color: rgba(52,211,153,.2); }
+.info  { background: rgba(56,189,248,.04); border-color: rgba(56,189,248,.2); }
+.danger{ background: rgba(248,113,113,.04); border-color: rgba(248,113,113,.2); }
+
+/* ── VS GRID ── */
+.vsg { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; margin-bottom: 9px; }
+.vs-card { padding: 13px 14px; border: 1px solid; }
+.vs-title { font-family: var(--mono); font-size: 11px; font-weight: 600; margin-bottom: 7px; display: flex; align-items: center; gap: 5px; }
+.vs-body { font-size: 11.5px; color: var(--text2); line-height: 1.65; }
+.vs-body li { list-style: none; padding: 1.5px 0; display: flex; gap: 5px; }
+.vs-body li::before { content: '·'; color: var(--text3); }
+.vs-body code { font-family: var(--mono); font-size: 10px; background: var(--bg3); padding: 1px 4px; }
+
+/* ── STAR ── */
+.star {
+  display: inline-flex; align-items: center;
+  font-family: var(--mono); font-size: 8px;
+  color: var(--c4); background: rgba(251,146,60,.08);
+  border: 1px solid rgba(251,146,60,.22);
+  padding: 1px 5px; vertical-align: middle; margin-left: 4px;
+}
+
+/* ── COLOR SYSTEM ── */
+.c1{color:var(--c1);} .c2{color:var(--c2);} .c3{color:var(--c3);}
+.c4{color:var(--c4);} .c5{color:var(--c5);} .c6{color:var(--c6);}
+.c7{color:var(--c7);} .c8{color:var(--c8);} .c9{color:var(--c9);}
+
+.i1{border-color:rgba(56,189,248,.3);}   .i2{border-color:rgba(52,211,153,.3);}
+.i3{border-color:rgba(167,139,250,.3);}  .i4{border-color:rgba(251,146,60,.3);}
+.i5{border-color:rgba(244,114,182,.3);}  .i6{border-color:rgba(250,204,21,.3);}
+.i7{border-color:rgba(34,211,238,.3);}   .i8{border-color:rgba(134,239,172,.3);}
+.i9{border-color:rgba(252,165,165,.3);}
+
+.b1{background:rgba(56,189,248,.08);color:var(--c1);border-color:rgba(56,189,248,.25);}
+.b2{background:rgba(52,211,153,.08);color:var(--c2);border-color:rgba(52,211,153,.25);}
+.b3{background:rgba(167,139,250,.08);color:var(--c3);border-color:rgba(167,139,250,.25);}
+.b4{background:rgba(251,146,60,.08);color:var(--c4);border-color:rgba(251,146,60,.25);}
+.b5{background:rgba(244,114,182,.08);color:var(--c5);border-color:rgba(244,114,182,.25);}
+.b6{background:rgba(250,204,21,.08);color:var(--c6);border-color:rgba(250,204,21,.25);}
+.b7{background:rgba(34,211,238,.08);color:var(--c7);border-color:rgba(34,211,238,.25);}
+.b8{background:rgba(134,239,172,.08);color:var(--c8);border-color:rgba(134,239,172,.25);}
+.b9{background:rgba(252,165,165,.08);color:var(--c9);border-color:rgba(252,165,165,.25);}
+
+.a1::before{background:var(--c1);} .a2::before{background:var(--c2);}
+.a3::before{background:var(--c3);} .a4::before{background:var(--c4);}
+.a5::before{background:var(--c5);} .a6::before{background:var(--c6);}
+.a7::before{background:var(--c7);} .a8::before{background:var(--c8);}
+.a9::before{background:var(--c9);}
+
+.sh1::before{background:var(--c1);} /* section head line */
+.p1{border-color:var(--c1);color:var(--c1);} .p1:hover{background:rgba(56,189,248,.1);}
+.p2{border-color:var(--c2);color:var(--c2);} .p2:hover{background:rgba(52,211,153,.1);}
+.p3{border-color:var(--c3);color:var(--c3);} .p3:hover{background:rgba(167,139,250,.1);}
+.p4{border-color:var(--c4);color:var(--c4);} .p4:hover{background:rgba(251,146,60,.1);}
+.p5{border-color:var(--c5);color:var(--c5);} .p5:hover{background:rgba(244,114,182,.1);}
+.p6{border-color:var(--c6);color:var(--c6);} .p6:hover{background:rgba(250,204,21,.1);}
+.p7{border-color:var(--c7);color:var(--c7);} .p7:hover{background:rgba(34,211,238,.1);}
+.p8{border-color:var(--c8);color:var(--c8);} .p8:hover{background:rgba(134,239,172,.1);}
+.p9{border-color:var(--c9);color:var(--c9);} .p9:hover{background:rgba(252,165,165,.1);}
+.d1{background:var(--c1);} .d2{background:var(--c2);} .d3{background:var(--c3);}
+.d4{background:var(--c4);} .d5{background:var(--c5);} .d6{background:var(--c6);}
+.d7{background:var(--c7);} .d8{background:var(--c8);} .d9{background:var(--c9);}
+
+.ic1{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.2);}
+.ic2{background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.2);}
+.ic3{background:rgba(167,139,250,.08);border-color:rgba(167,139,250,.2);}
+.ic4{background:rgba(251,146,60,.08);border-color:rgba(251,146,60,.2);}
+.ic5{background:rgba(244,114,182,.08);border-color:rgba(244,114,182,.2);}
+.ic6{background:rgba(250,204,21,.08);border-color:rgba(250,204,21,.2);}
+.ic7{background:rgba(34,211,238,.08);border-color:rgba(34,211,238,.2);}
+.ic8{background:rgba(134,239,172,.08);border-color:rgba(134,239,172,.2);}
+.ic9{background:rgba(252,165,165,.08);border-color:rgba(252,165,165,.2);}
+
+/* section head accent line */
+.sh1::before{background:var(--c1);} .sh2::before{background:var(--c2);}
+.sh3::before{background:var(--c3);} .sh4::before{background:var(--c4);}
+.sh5::before{background:var(--c5);} .sh6::before{background:var(--c6);}
+.sh7::before{background:var(--c7);} .sh8::before{background:var(--c8);}
+.sh9::before{background:var(--c9);}
+
+.footer {
+  text-align: center; padding-top: 32px;
+  border-top: 1px solid var(--bdr);
+  font-family: var(--mono); font-size: 9px;
+  color: var(--text3); letter-spacing: .22em;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- MASTHEAD -->
+<div class="masthead">
+  <div class="mh-corner"></div>
+  <div class="mh-corner-br"></div>
+  <div>
+    <div class="mh-tag"><span>//</span> Senior Frontend · TypeScript Mastery · Interview Prep 2025</div>
+    <h1><em>Type</em>Script<br>知识体系全图</h1>
+  </div>
+  <div class="mh-meta">
+    <div>适用：<strong>13年 资深前端</strong></div>
+    <div>覆盖：<strong>类型系统 · 泛型 · 装饰器 · 工程</strong></div>
+    <div>含：<strong>难点精解 · 易混淆 · 面试高频</strong></div>
+    <div><span class="mh-version">TypeScript 5.x · TC39 Stage 3+</span></div>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <a href="#s1" class="toc-pill p1"><span class="dot d1"></span>基础类型系统</a>
+  <a href="#s2" class="toc-pill p2"><span class="dot d2"></span>类型操作符</a>
+  <a href="#s3" class="toc-pill p3"><span class="dot d3"></span>泛型深解</a>
+  <a href="#s4" class="toc-pill p4"><span class="dot d4"></span>类型推断 & 收窄</a>
+  <a href="#s5" class="toc-pill p5"><span class="dot d5"></span>高级类型编程</a>
+  <a href="#s6" class="toc-pill p6"><span class="dot d6"></span>类 & 装饰器</a>
+  <a href="#s7" class="toc-pill p7"><span class="dot d7"></span>模块 & 声明文件</a>
+  <a href="#s8" class="toc-pill p8"><span class="dot d8"></span>工程配置 & 实践</a>
+  <a href="#s9" class="toc-pill p9"><span class="dot d9"></span>规范 & 易混淆点</a>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S1 · 基础类型系统
+══════════════════════════════════ -->
+<div class="section" id="s1">
+  <div class="section-head sh1">
+    <div class="s-num">01</div>
+    <div class="s-icon ic1">🔷</div>
+    <div class="s-title c1">基础类型系统</div>
+    <div class="s-badge b1">Type System</div>
+  </div>
+
+  <div class="div-label">原始类型 & 字面量类型</div>
+  <div class="tw">
+    <table class="ctab">
+      <tr><th>类型</th><th>示例</th><th>要点 / 易混</th></tr>
+      <tr><td>string</td><td><code>let s: string = 'hi'</code></td><td>小写 string（TS 类型）≠ 大写 String（JS 包装对象构造器）。永远用小写。</td></tr>
+      <tr><td>number</td><td><code>let n: number = 42</code></td><td>整数/浮点统一。NaN 和 Infinity 均为 number 类型。</td></tr>
+      <tr><td>boolean</td><td><code>let b: boolean = true</code></td><td>不接受 0/'' 作为 boolean（与 JS 隐式转换不同）。</td></tr>
+      <tr><td>bigint</td><td><code>let big: bigint = 100n</code></td><td>需 target ≥ ES2020；不能与 number 混合运算。</td></tr>
+      <tr><td>symbol</td><td><code>const s = Symbol('id')</code></td><td><code>symbol</code> vs <code>unique symbol</code>：后者是单例类型，const 才能推断为 unique symbol。</td></tr>
+      <tr><td>null / undefined</td><td><code>let x: null = null</code></td><td>strictNullChecks=false 时，二者是所有类型的子类型（可赋给任意类型）。开启后须显式处理。</td></tr>
+      <tr><td>字面量类型</td><td><code>let d: 'GET' | 'POST'</code></td><td>字符串/数字/布尔字面量均可作为类型。<code>as const</code> 推断字面量。</td></tr>
+      <tr><td>模板字面量类型</td><td><code>`${string}-${number}`</code></td><td>TS 4.1+，可用类型参数组合字符串模式，类型安全的字符串模板。</td></tr>
+    </table>
+  </div>
+
+  <div class="div-label">特殊类型完整对比 <span class="star">★ 高频 难点</span></div>
+  <div class="tw">
+    <table class="ctab">
+      <tr><th>类型</th><th>含义</th><th>赋值能力</th><th>典型用途</th><th>关键区别</th></tr>
+      <tr><td>any</td><td>关闭类型检查</td><td>可赋给任何类型，接受任何类型</td><td>迁移旧代码、紧急绕过</td><td>类型系统"黑洞"，传染性强（any op = any）</td></tr>
+      <tr><td>unknown</td><td>类型安全的 any</td><td>只能赋给 unknown/any；读取前须收窄</td><td>外部输入、JSON.parse 返回值</td><td>必须类型守卫后才能使用，不传染</td></tr>
+      <tr><td>never</td><td>不可达类型（空集）</td><td>可赋给任何类型；无值能赋给它</td><td>穷举检查、死代码、抛错函数返回</td><td>联合类型中被自动去除；条件类型的底部</td></tr>
+      <tr><td>void</td><td>函数无有效返回值</td><td>可赋 undefined（strictNullChecks 下）</td><td>函数返回类型标注</td><td>void 函数可以有 return（返回 undefined）；never 函数永不返回</td></tr>
+      <tr><td>object</td><td>非原始值类型</td><td>接受对象/数组/函数（排除原始值）</td><td>极少直接使用</td><td>{}（空对象类型）≠ object：{} 接受一切非 null/undefined</td></tr>
+      <tr><td>{}</td><td>有属性的对象（空约束）</td><td>接受所有非 null/undefined（包括原始值）</td><td>不推荐直接用</td><td>与 object 的微妙区别：原始值字符串符合 {} 但不符合 object</td></tr>
+    </table>
+  </div>
+
+  <div class="hbox warn">
+    <span class="hbox-i">⚠️</span>
+    <div class="hbox-b"><strong>any vs unknown 核心区别：</strong><code>any</code> 让你对值做任何操作，错误推迟到运行时；<code>unknown</code> 强制你在使用前做类型检查，错误在编译期暴露。处理外部数据（API响应、JSON.parse、用户输入）应始终用 <code>unknown</code>，不用 <code>any</code>。</div>
+  </div>
+
+  <div class="div-label">复合类型</div>
+  <div class="cards c2g">
+    <div class="card a1">
+      <div class="ct c1">数组 & 元组</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// 数组（两种等价写法）</span>
+<span class="kw">let</span> a: <span class="tp">string</span>[] = [];
+<span class="kw">let</span> b: <span class="tp">Array</span>&lt;<span class="tp">string</span>&gt; = [];
+
+<span class="cm">// 元组（固定长度 + 位置类型）</span>
+<span class="kw">type</span> <span class="tp">Point</span> = [<span class="tp">number</span>, <span class="tp">number</span>];
+<span class="kw">type</span> <span class="tp">Named</span> = [<span class="tp">string</span>, ...<span class="tp">number</span>[]]; <span class="cm">// 可变元组</span>
+
+<span class="cm">// 具名元组（TS4.0+，调试更友好）</span>
+<span class="kw">type</span> <span class="tp">RGB</span> = [r: <span class="tp">number</span>, g: <span class="tp">number</span>, b: <span class="tp">number</span>];
+
+<span class="cm">// readonly 元组</span>
+<span class="kw">const</span> point: <span class="kw">readonly</span> [<span class="tp">number</span>, <span class="tp">number</span>] = [<span class="nm">1</span>, <span class="nm">2</span>];
+</div>
+      </div>
+    </div>
+    <div class="card a1">
+      <div class="ct c1">接口 vs 类型别名 <span class="star">★ 高频</span></div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// interface：声明合并，适合公共 API</span>
+<span class="kw">interface</span> <span class="tp">User</span> { name: <span class="tp">string</span>; }
+<span class="kw">interface</span> <span class="tp">User</span> { age: <span class="tp">number</span>; } <span class="cm">// 自动合并</span>
+
+<span class="cm">// type alias：更灵活，适合复杂类型</span>
+<span class="kw">type</span> <span class="tp">ID</span> = <span class="tp">string</span> | <span class="tp">number</span>;        <span class="cm">// 联合</span>
+<span class="kw">type</span> <span class="tp">Point</span> = { x: <span class="tp">number</span> } & { y: <span class="tp">number</span> }; <span class="cm">// 交叉</span>
+<span class="kw">type</span> <span class="tp">Fn</span> = (x: <span class="tp">number</span>) => <span class="tp">string</span>; <span class="cm">// 函数</span>
+<span class="kw">type</span> <span class="tp">Mapped</span> = { [K <span class="kw">in</span> <span class="tp">Keys</span>]: <span class="tp">Val</span> }; <span class="cm">// 映射</span>
+<span class="kw">type</span> <span class="tp">Cond</span> = <span class="tp">T</span> <span class="kw">extends</span> <span class="tp">U</span> ? <span class="tp">X</span> : <span class="tp">Y</span>;   <span class="cm">// 条件</span>
+<span class="cm">// type 不能声明合并，interface 不能做条件/映射类型</span>
+</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="div-label">枚举（Enum）深解 <span class="star">★ 易混</span></div>
+  <div class="cards c3g">
+    <div class="card a1">
+      <div class="ct c1">数字枚举</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="kw">enum</span> <span class="tp">Dir</span> { Up, Down, Left, Right }
+<span class="cm">// Up=0, Down=1, Left=2, Right=3</span>
+<span class="cm">// 反向映射：Dir[0] === 'Up'</span>
+Dir.Up        <span class="cm">// 0</span>
+Dir[<span class="nm">0</span>]       <span class="cm">// 'Up'（数字枚举独有）</span>
+
+<span class="kw">enum</span> <span class="tp">Status</span> { Active = <span class="nm">1</span>, Inactive = <span class="nm">10</span> }
+</div>
+        会生成 JS 代码（双向映射对象），有运行时开销。
+      </div>
+    </div>
+    <div class="card a1">
+      <div class="ct c1">字符串枚举 & const 枚举</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// 字符串枚举：无反向映射，更语义化</span>
+<span class="kw">enum</span> <span class="tp">Color</span> { Red = <span class="st">'RED'</span>, Blue = <span class="st">'BLUE'</span> }
+
+<span class="cm">// const enum：编译时内联，零运行时</span>
+<span class="kw">const enum</span> <span class="tp">Size</span> { S=<span class="nm">1</span>, M=<span class="nm">2</span>, L=<span class="nm">3</span> }
+<span class="kw">let</span> s = Size.M; <span class="cm">// 编译为 let s = 2</span>
+
+<span class="cm">// ⚠️ const enum 跨模块使用有风险</span>
+<span class="cm">// isolatedModules=true 时禁止</span>
+</div>
+      </div>
+    </div>
+    <div class="card a1">
+      <div class="ct c1">枚举替代方案（推荐）</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// as const 对象（更灵活，无运行时开销）</span>
+<span class="kw">const</span> Direction = {
+  Up: <span class="st">'UP'</span>, Down: <span class="st">'DOWN'</span>
+} <span class="kw">as const</span>;
+
+<span class="kw">type</span> <span class="tp">Direction</span> = <span class="kw">typeof</span> Direction[<span class="kw">keyof typeof</span> Direction];
+<span class="cm">// type Direction = 'UP' | 'DOWN'</span>
+
+<span class="cm">// 字面量联合类型（最轻量）</span>
+<span class="kw">type</span> <span class="tp">Dir</span> = <span class="st">'UP'</span> | <span class="st">'DOWN'</span> | <span class="st">'LEFT'</span> | <span class="st">'RIGHT'</span>;
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S2 · 类型操作符
+══════════════════════════════════ -->
+<div class="section" id="s2">
+  <div class="section-head sh2">
+    <div class="s-num">02</div>
+    <div class="s-icon ic2">🔧</div>
+    <div class="s-title c2">类型操作符全解</div>
+    <div class="s-badge b2">Type Operators</div>
+  </div>
+
+  <div class="div-label">核心操作符对比 <span class="star">★ 高频</span></div>
+  <div class="tw">
+    <table class="ctab">
+      <tr><th>操作符</th><th>语法</th><th>作用</th><th>典型用法</th></tr>
+      <tr><td>typeof</td><td><code>typeof expr</code></td><td>获取变量/表达式的类型</td><td><code>type T = typeof myObj</code>；与 ReturnType 配合</td></tr>
+      <tr><td>keyof</td><td><code>keyof T</code></td><td>获取类型所有键的联合</td><td><code>keyof User</code> = <code>'name' | 'age'</code>；实现类型安全的属性访问</td></tr>
+      <tr><td>索引访问</td><td><code>T[K]</code></td><td>获取属性值的类型</td><td><code>User['name']</code>；<code>Arr[number]</code> 获取数组元素类型</td></tr>
+      <tr><td>in（映射）</td><td><code>[K in Keys]</code></td><td>遍历联合类型构建新类型</td><td>自定义 Partial/Required/Record</td></tr>
+      <tr><td>infer</td><td><code>infer R</code>（条件类型内）</td><td>推断并捕获类型</td><td>ReturnType/Parameters/Awaited 内部实现</td></tr>
+      <tr><td>extends（约束）</td><td><code>T extends U</code></td><td>泛型约束 / 条件类型判断</td><td><code>&lt;T extends string&gt;</code>；<code>T extends U ? X : Y</code></td></tr>
+      <tr><td>satisfies</td><td><code>expr satisfies T</code></td><td>验证类型但保留字面量推断</td><td>TS4.9+；既检查类型又保持精确推断</td></tr>
+      <tr><td>as</td><td><code>expr as T</code></td><td>类型断言（强制）</td><td>慎用；优先用类型守卫；双重断言 <code>as unknown as T</code></td></tr>
+      <tr><td>!</td><td><code>expr!</code></td><td>非空断言（去除 null/undefined）</td><td>确保不为空时使用；滥用会隐藏 bug</td></tr>
+      <tr><td>readonly</td><td><code>readonly T</code></td><td>只读修饰（浅层）</td><td>不可变数据；Readonly&lt;T&gt; 工具类型</td></tr>
+    </table>
+  </div>
+
+  <div class="div-label">联合类型 & 交叉类型精解 <span class="star">★ 高频</span></div>
+  <div class="vsg">
+    <div class="vs-card ic2" style="background:rgba(52,211,153,.04);">
+      <div class="vs-title c2">联合类型（Union）A | B</div>
+      <div class="vs-body">
+        <li>值是 A 或 B（或两者）；类型"或"关系</li>
+        <li>只能访问共有成员（交集属性）</li>
+        <li>使用前须收窄（typeof/instanceof/in/字面量）</li>
+        <li>可辨识联合：共有字面量字段作为标签</li>
+        <li>分布式特性：条件类型中联合各成员独立计算</li>
+        <div class="cblk" style="margin-top:8px;">
+<span class="kw">type</span> <span class="tp">Shape</span> =
+  | { kind: <span class="st">'circle'</span>; r: <span class="tp">number</span> }
+  | { kind: <span class="st">'rect'</span>; w: <span class="tp">number</span>; h: <span class="tp">number</span> };
+<span class="cm">// kind 是辨识字段</span></div>
+      </div>
+    </div>
+    <div class="vs-card ic2" style="background:rgba(52,211,153,.04);">
+      <div class="vs-title c2">交叉类型（Intersection）A & B</div>
+      <div class="vs-body">
+        <li>值同时满足 A 和 B；类型"与"关系</li>
+        <li>拥有所有成员（并集属性）</li>
+        <li>同名属性类型冲突 → never（两个原始类型相交）</li>
+        <li>常用于 Mixin 模式合并多个接口</li>
+        <li>与 interface extends 的区别：& 同名属性取交叉（可能 never），extends 同名类型必须兼容</li>
+        <div class="cblk" style="margin-top:8px;">
+<span class="kw">type</span> <span class="tp">AB</span> = { a: <span class="tp">string</span> } & { b: <span class="tp">number</span> };
+<span class="cm">// { a: string; b: number }</span>
+<span class="kw">type</span> <span class="tp">X</span> = <span class="tp">string</span> & <span class="tp">number</span>; <span class="cm">// never</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="div-label">satisfies 操作符详解 <span class="star">★ TS4.9+ 新</span></div>
+  <div class="cards c2g">
+    <div class="card a2">
+      <div class="ct c2">satisfies vs as vs 类型注解</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="kw">type</span> <span class="tp">Colors</span> = <span class="tp">Record</span>&lt;<span class="tp">string</span>, <span class="tp">string</span> | <span class="tp">number</span>[]&gt;;
+
+<span class="cm">// ❌ 类型注解：丢失字面量信息</span>
+<span class="kw">const</span> p1: <span class="tp">Colors</span> = { red: <span class="st">'#f00'</span> };
+p1.red.toUpperCase(); <span class="er">// Error: string | number[] 无 toUpperCase</span>
+
+<span class="cm">// ✅ satisfies：验证结构但保留具体类型</span>
+<span class="kw">const</span> p2 = {
+  red: <span class="st">'#f00'</span>, blue: [<span class="nm">0</span>,<span class="nm">0</span>,<span class="nm">255</span>]
+} <span class="kw">satisfies</span> <span class="tp">Colors</span>;
+p2.red.toUpperCase(); <span class="cm">// ✅ TS知道red是string</span>
+p2.blue.map(x => x);  <span class="cm">// ✅ TS知道blue是number[]</span></div>
+      </div>
+    </div>
+    <div class="card a2">
+      <div class="ct c2">as const 深解</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// as const：将可变类型变为只读字面量类型</span>
+<span class="kw">const</span> config = {
+  url: <span class="st">'https://api.com'</span>,
+  methods: [<span class="st">'GET'</span>, <span class="st">'POST'</span>]
+} <span class="kw">as const</span>;
+<span class="cm">// config.url: 'https://api.com'（字面量）</span>
+<span class="cm">// config.methods: readonly ['GET', 'POST']</span>
+
+<span class="cm">// as const 数组 → 元组</span>
+<span class="kw">const</span> arr = [<span class="nm">1</span>, <span class="nm">2</span>, <span class="nm">3</span>] <span class="kw">as const</span>; <span class="cm">// readonly [1,2,3]</span>
+
+<span class="cm">// const 断言 vs 类型注解</span>
+<span class="kw">const</span> a = <span class="st">'GET'</span>;           <span class="cm">// 'GET'（const 推断字面量）</span>
+<span class="kw">let</span> b = <span class="st">'GET'</span>;             <span class="cm">// string（let 推断宽类型）</span>
+<span class="kw">let</span> c = <span class="st">'GET'</span> <span class="kw">as const</span>;    <span class="cm">// 'GET'（强制字面量）</span>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S3 · 泛型深解
+══════════════════════════════════ -->
+<div class="section" id="s3">
+  <div class="section-head sh3">
+    <div class="s-num">03</div>
+    <div class="s-icon ic3">⬡</div>
+    <div class="s-title c3">泛型深解</div>
+    <div class="s-badge b3">Generics</div>
+  </div>
+
+  <div class="div-label">泛型基础 & 约束 <span class="star">★ 最高频</span></div>
+  <div class="cards c2g">
+    <div class="card a3">
+      <div class="ct c3">泛型约束（extends）</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// 基础约束</span>
+<span class="kw">function</span> <span class="fn">getLen</span>&lt;<span class="tp">T</span> <span class="kw">extends</span> { length: <span class="tp">number</span> }&gt;(v: <span class="tp">T</span>): <span class="tp">number</span> {
+  <span class="kw">return</span> v.length; <span class="cm">// 安全访问 length</span>
+}
+
+<span class="cm">// keyof 约束（类型安全属性访问）</span>
+<span class="kw">function</span> <span class="fn">get</span>&lt;<span class="tp">T</span>, <span class="tp">K</span> <span class="kw">extends keyof</span> <span class="tp">T</span>&gt;(obj: <span class="tp">T</span>, key: <span class="tp">K</span>): <span class="tp">T</span>[<span class="tp">K</span>] {
+  <span class="kw">return</span> obj[key]; <span class="cm">// 返回类型精确</span>
+}
+
+<span class="cm">// 多个类型参数 + 默认值</span>
+<span class="kw">function</span> <span class="fn">pair</span>&lt;<span class="tp">A</span>, <span class="tp">B</span> = <span class="tp">A</span>&gt;(a: <span class="tp">A</span>, b: <span class="tp">B</span>): [<span class="tp">A</span>, <span class="tp">B</span>] {
+  <span class="kw">return</span> [a, b];
+}
+
+<span class="cm">// 泛型接口</span>
+<span class="kw">interface</span> <span class="tp">Repo</span>&lt;<span class="tp">T</span>&gt; {
+  findById(id: <span class="tp">number</span>): <span class="tp">Promise</span>&lt;<span class="tp">T</span>&gt;;
+  save(item: <span class="tp">T</span>): <span class="tp">Promise</span>&lt;<span class="tp">void</span>&gt;;
+}
+</div>
+      </div>
+    </div>
+    <div class="card a3">
+      <div class="ct c3">泛型函数 vs 泛型箭头函数</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// 函数声明泛型</span>
+<span class="kw">function</span> <span class="fn">identity</span>&lt;<span class="tp">T</span>&gt;(x: <span class="tp">T</span>): <span class="tp">T</span> { <span class="kw">return</span> x; }
+
+<span class="cm">// 箭头函数泛型（.tsx 中 &lt;T,&gt; 避免 JSX 歧义）</span>
+<span class="kw">const</span> identity = &lt;<span class="tp">T</span>,&gt;(x: <span class="tp">T</span>): <span class="tp">T</span> => x;
+
+<span class="cm">// 泛型类型别名（延迟求值）</span>
+<span class="kw">type</span> <span class="tp">Identity</span>&lt;<span class="tp">T</span>&gt; = (x: <span class="tp">T</span>) => <span class="tp">T</span>;
+
+<span class="cm">// 泛型类</span>
+<span class="kw">class</span> <span class="tp">Stack</span>&lt;<span class="tp">T</span>&gt; {
+  <span class="kw">private</span> items: <span class="tp">T</span>[] = [];
+  push(item: <span class="tp">T</span>) { <span class="kw">this</span>.items.push(item); }
+  pop(): <span class="tp">T</span> | <span class="kw">undefined</span> { <span class="kw">return this</span>.items.pop(); }
+}
+
+<span class="cm">// 实例化时指定或推断类型</span>
+<span class="kw">const</span> numStack = <span class="kw">new</span> <span class="tp">Stack</span>&lt;<span class="tp">number</span>&gt;();
+</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="div-label">条件类型 & infer <span class="star">★ 高频 难点</span></div>
+  <div class="cards c2g">
+    <div class="card a3">
+      <div class="ct c3">条件类型基础</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// T extends U ? X : Y</span>
+<span class="kw">type</span> <span class="tp">IsString</span>&lt;<span class="tp">T</span>&gt; = <span class="tp">T</span> <span class="kw">extends</span> <span class="tp">string</span> ? <span class="st">'yes'</span> : <span class="st">'no'</span>;
+
+<span class="cm">// 分布式条件类型（naked type parameter）</span>
+<span class="kw">type</span> <span class="tp">ToArray</span>&lt;<span class="tp">T</span>&gt; = <span class="tp">T</span> <span class="kw">extends</span> <span class="kw">any</span> ? <span class="tp">T</span>[] : <span class="kw">never</span>;
+<span class="kw">type</span> <span class="tp">R</span> = <span class="tp">ToArray</span>&lt;<span class="tp">string</span> | <span class="tp">number</span>&gt;;
+<span class="cm">// string[] | number[]（各自计算后合并）</span>
+
+<span class="cm">// 阻止分布：包裹 tuple</span>
+<span class="kw">type</span> <span class="tp">NoDistrib</span>&lt;<span class="tp">T</span>&gt; = [<span class="tp">T</span>] <span class="kw">extends</span> [<span class="kw">any</span>] ? <span class="tp">T</span>[] : <span class="kw">never</span>;
+<span class="kw">type</span> <span class="tp">R2</span> = <span class="tp">NoDistrib</span>&lt;<span class="tp">string</span> | <span class="tp">number</span>&gt;;
+<span class="cm">// (string | number)[]（整体计算）</span></div>
+      </div>
+    </div>
+    <div class="card a3">
+      <div class="ct c3">infer 类型推断</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// infer 在 extends 子句中捕获类型</span>
+<span class="kw">type</span> <span class="tp">ReturnType</span>&lt;<span class="tp">T</span>&gt; =
+  <span class="tp">T</span> <span class="kw">extends</span> (...args: <span class="kw">any</span>[]) => <span class="kw">infer</span> <span class="tp">R</span> ? <span class="tp">R</span> : <span class="kw">never</span>;
+
+<span class="kw">type</span> <span class="tp">Awaited</span>&lt;<span class="tp">T</span>&gt; =
+  <span class="tp">T</span> <span class="kw">extends</span> <span class="tp">Promise</span>&lt;<span class="kw">infer</span> <span class="tp">U</span>&gt; ? <span class="tp">Awaited</span>&lt;<span class="tp">U</span>&gt; : <span class="tp">T</span>;
+
+<span class="cm">// 推断函数参数类型</span>
+<span class="kw">type</span> <span class="tp">FirstArg</span>&lt;<span class="tp">T</span>&gt; =
+  <span class="tp">T</span> <span class="kw">extends</span> (<span class="kw">infer</span> <span class="tp">A</span>, ...<span class="kw">any</span>[]) => <span class="kw">any</span> ? <span class="tp">A</span> : <span class="kw">never</span>;
+
+<span class="cm">// TS5.4：infer 中使用 extends 约束</span>
+<span class="kw">type</span> <span class="tp">Str</span>&lt;<span class="tp">T</span>&gt; =
+  <span class="tp">T</span> <span class="kw">extends</span> { val: <span class="kw">infer</span> <span class="tp">V</span> <span class="kw">extends</span> <span class="tp">string</span> }
+  ? <span class="tp">V</span> : <span class="kw">never</span>;</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="div-label">内置工具类型实现原理 <span class="star">★ 高频</span></div>
+  <div class="tw">
+    <table class="ctab">
+      <tr><th>工具类型</th><th>实现原理</th><th>作用</th></tr>
+      <tr><td>Partial&lt;T&gt;</td><td><code>{ [K in keyof T]?: T[K] }</code></td><td>所有属性变为可选</td></tr>
+      <tr><td>Required&lt;T&gt;</td><td><code>{ [K in keyof T]-?: T[K] }</code></td><td>所有属性变为必选（-? 去除可选）</td></tr>
+      <tr><td>Readonly&lt;T&gt;</td><td><code>{ readonly [K in keyof T]: T[K] }</code></td><td>所有属性只读（浅层）</td></tr>
+      <tr><td>Record&lt;K,V&gt;</td><td><code>{ [P in K]: V }</code></td><td>构建键值类型的字典</td></tr>
+      <tr><td>Pick&lt;T,K&gt;</td><td><code>{ [P in K]: T[P] }</code>（K extends keyof T）</td><td>从 T 中挑选属性 K</td></tr>
+      <tr><td>Omit&lt;T,K&gt;</td><td><code>Pick&lt;T, Exclude&lt;keyof T, K&gt;&gt;</code></td><td>从 T 中排除属性 K</td></tr>
+      <tr><td>Exclude&lt;T,U&gt;</td><td><code>T extends U ? never : T</code>（分布式）</td><td>从联合 T 中排除可赋给 U 的类型</td></tr>
+      <tr><td>Extract&lt;T,U&gt;</td><td><code>T extends U ? T : never</code>（分布式）</td><td>从联合 T 中提取可赋给 U 的类型</td></tr>
+      <tr><td>NonNullable&lt;T&gt;</td><td><code>T extends null | undefined ? never : T</code></td><td>去除 null 和 undefined</td></tr>
+      <tr><td>ReturnType&lt;T&gt;</td><td><code>T extends (...args: any) => infer R ? R : any</code></td><td>获取函数返回类型</td></tr>
+      <tr><td>Parameters&lt;T&gt;</td><td><code>T extends (...args: infer P) => any ? P : never</code></td><td>获取函数参数元组类型</td></tr>
+      <tr><td>InstanceType&lt;T&gt;</td><td><code>T extends new (...args: any) => infer R ? R : any</code></td><td>获取构造函数实例类型</td></tr>
+      <tr><td>Awaited&lt;T&gt;</td><td>递归解包 Promise（TS4.5+）</td><td>获取 Promise 解析后的类型</td></tr>
+      <tr><td>NoInfer&lt;T&gt;</td><td>阻止 T 参与类型推断（TS5.4+）</td><td>防止推断位置影响泛型推断结果</td></tr>
+    </table>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S4 · 类型推断 & 收窄
+══════════════════════════════════ -->
+<div class="section" id="s4">
+  <div class="section-head sh4">
+    <div class="s-num">04</div>
+    <div class="s-icon ic4">🔍</div>
+    <div class="s-title c4">类型推断 & 类型收窄</div>
+    <div class="s-badge b4">Inference & Narrowing</div>
+  </div>
+
+  <div class="div-label">类型守卫全览 <span class="star">★ 高频</span></div>
+  <div class="cards c3g">
+    <div class="card a4">
+      <div class="ct c4">内置收窄手段</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// typeof 守卫</span>
+<span class="kw">if</span> (<span class="kw">typeof</span> x === <span class="st">'string'</span>) { x.toUpperCase(); }
+
+<span class="cm">// instanceof 守卫</span>
+<span class="kw">if</span> (err <span class="kw">instanceof</span> Error) { err.message; }
+
+<span class="cm">// in 操作符</span>
+<span class="kw">if</span> (<span class="st">'swim'</span> <span class="kw">in</span> animal) { animal.swim(); }
+
+<span class="cm">// 等值收窄</span>
+<span class="kw">if</span> (x === <span class="kw">null</span>) { <span class="cm">/* x is null */</span> }
+
+<span class="cm">// 真值收窄（排除 falsy）</span>
+<span class="kw">if</span> (x) { <span class="cm">/* x 非 null/undefined/0... */</span> }
+
+<span class="cm">// 赋值收窄</span>
+<span class="kw">let</span> x: <span class="tp">string</span> | <span class="tp">number</span>;
+x = <span class="st">'hello'</span>; <span class="cm">// x: string</span></div>
+      </div>
+    </div>
+    <div class="card a4">
+      <div class="ct c4">自定义类型守卫（is）</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// 返回 paramName is Type 的谓词</span>
+<span class="kw">function</span> <span class="fn">isString</span>(v: <span class="kw">unknown</span>): v <span class="kw">is</span> <span class="tp">string</span> {
+  <span class="kw">return typeof</span> v === <span class="st">'string'</span>;
+}
+
+<span class="kw">function</span> <span class="fn">isUser</span>(v: <span class="kw">unknown</span>): v <span class="kw">is</span> <span class="tp">User</span> {
+  <span class="kw">return</span> (
+    <span class="kw">typeof</span> v === <span class="st">'object'</span> && v !== <span class="kw">null</span> &&
+    <span class="st">'name'</span> <span class="kw">in</span> v && <span class="st">'age'</span> <span class="kw">in</span> v
+  );
+}
+
+<span class="cm">// 使用：收窄后安全访问</span>
+<span class="kw">if</span> (isUser(data)) { data.name; }
+
+<span class="cm">// assertion functions（抛出而非返回false）</span>
+<span class="kw">function</span> <span class="fn">assert</span>(v: <span class="kw">unknown</span>): <span class="kw">asserts</span> v <span class="kw">is</span> <span class="tp">string</span> {
+  <span class="kw">if</span> (<span class="kw">typeof</span> v !== <span class="st">'string'</span>) <span class="kw">throw new</span> Error();
+}</div>
+      </div>
+    </div>
+    <div class="card a4">
+      <div class="ct c4">可辨识联合 & 穷举 <span class="star">★ 高频</span></div>
+      <div class="cb">
+        <div class="cblk">
+<span class="kw">type</span> <span class="tp">Shape</span> =
+  | { kind: <span class="st">'circle'</span>; r: <span class="tp">number</span> }
+  | { kind: <span class="st">'rect'</span>; w: <span class="tp">number</span>; h: <span class="tp">number</span> }
+  | { kind: <span class="st">'tri'</span>; base: <span class="tp">number</span>; height: <span class="tp">number</span> };
+
+<span class="kw">function</span> <span class="fn">area</span>(s: <span class="tp">Shape</span>) {
+  <span class="kw">switch</span> (s.kind) {
+    <span class="kw">case</span> <span class="st">'circle'</span>: <span class="kw">return</span> Math.PI * s.r**<span class="nm">2</span>;
+    <span class="kw">case</span> <span class="st">'rect'</span>:   <span class="kw">return</span> s.w * s.h;
+    <span class="kw">case</span> <span class="st">'tri'</span>:    <span class="kw">return</span> s.base * s.height / <span class="nm">2</span>;
+    <span class="kw">default</span>: <span class="cm">// 穷举检查</span>
+      <span class="kw">const</span> _: <span class="tp">never</span> = s; <span class="cm">// 漏掉分支→编译错误</span>
+      <span class="kw">throw new</span> Error();
+  }
+}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="div-label">类型推断规则 & 上下文类型</div>
+  <div class="cards c2g">
+    <div class="card a4">
+      <div class="ct c4">推断规则</div>
+      <div class="cb">
+        <ul>
+          <li><strong>最宽泛推断：</strong><code>let x = [1, 'a']</code> → <code>(string | number)[]</code></li>
+          <li><strong>最佳公共类型：</strong>多个候选类型取兼容的上层类型</li>
+          <li><strong>const 推断字面量：</strong><code>const x = 'GET'</code> → <code>'GET'</code>（不是 string）</li>
+          <li><strong>函数返回类型：</strong>自动推断，所有 return 分支的联合</li>
+          <li><strong>泛型推断：</strong>从实参推断类型参数，可部分手动指定</li>
+          <li><strong>条件类型延迟：</strong>T 为裸类型参数时不立即求值</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card a4">
+      <div class="ct c4">上下文类型（Contextual Typing）</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// 回调参数从上下文推断类型</span>
+[<span class="nm">1</span>,<span class="nm">2</span>,<span class="nm">3</span>].map(x => x * <span class="nm">2</span>); <span class="cm">// x: number</span>
+
+<span class="cm">// 对象字面量上下文推断</span>
+<span class="kw">const</span> handler: <span class="tp">EventHandler</span> = {
+  onClick(e) { <span class="cm">/* e 被推断 */</span> }
+};
+
+<span class="cm">// 函数赋值给有类型的变量</span>
+<span class="kw">const</span> f: (x: <span class="tp">number</span>) => <span class="tp">string</span> =
+  x => x.toString(); <span class="cm">// x: number，返回推断 string</span>
+
+<span class="cm">// ⚠️ 独立箭头函数不从上下文推断</span>
+<span class="kw">const</span> g = x => x * <span class="nm">2</span>; <span class="er">// Error：x 隐式 any</span>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S5 · 高级类型编程
+══════════════════════════════════ -->
+<div class="section" id="s5">
+  <div class="section-head sh5">
+    <div class="s-num">05</div>
+    <div class="s-icon ic5">🧩</div>
+    <div class="s-title c5">高级类型编程</div>
+    <div class="s-badge b5">Advanced Types</div>
+  </div>
+
+  <div class="div-label">映射类型高级用法 <span class="star">★ 高频 难点</span></div>
+  <div class="cards c2g">
+    <div class="card a5">
+      <div class="ct c5">映射类型修饰符 & 键重映射</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// +/- 修饰符：添加/移除 readonly 和 ?</span>
+<span class="kw">type</span> <span class="tp">Mutable</span>&lt;<span class="tp">T</span>&gt; = {
+  -<span class="kw">readonly</span> [K <span class="kw">in keyof</span> <span class="tp">T</span>]: <span class="tp">T</span>[K];  <span class="cm">// 移除只读</span>
+};
+<span class="kw">type</span> <span class="tp">Required</span>&lt;<span class="tp">T</span>&gt; = {
+  [K <span class="kw">in keyof</span> <span class="tp">T</span>]-?: <span class="tp">T</span>[K];          <span class="cm">// 移除可选</span>
+};
+
+<span class="cm">// 键重映射（TS4.1+）as 子句</span>
+<span class="kw">type</span> <span class="tp">Getters</span>&lt;<span class="tp">T</span>&gt; = {
+  [K <span class="kw">in keyof</span> <span class="tp">T</span> <span class="kw">as</span> <span class="tp">`get${Capitalize&lt;string & K&gt;}`</span>]:
+    () => <span class="tp">T</span>[K]
+};
+<span class="cm">// { getName: () => string; getAge: () => number }</span>
+
+<span class="cm">// 过滤键（as never 排除）</span>
+<span class="kw">type</span> <span class="tp">OnlyStrings</span>&lt;<span class="tp">T</span>&gt; = {
+  [K <span class="kw">in keyof</span> <span class="tp">T</span> <span class="kw">as</span> <span class="tp">T</span>[K] <span class="kw">extends</span> <span class="tp">string</span> ? K : <span class="tp">never</span>]: <span class="tp">T</span>[K]
+};</div>
+      </div>
+    </div>
+    <div class="card a5">
+      <div class="ct c5">模板字面量类型 <span class="star">★ TS4.1+</span></div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// 基础模板字面量类型</span>
+<span class="kw">type</span> <span class="tp">EventName</span> = <span class="tp">`on${Capitalize&lt;string&gt;}`</span>;
+
+<span class="cm">// 与联合类型交叉展开</span>
+<span class="kw">type</span> <span class="tp">Dir</span> = <span class="st">'top'</span> | <span class="st">'bottom'</span>;
+<span class="kw">type</span> <span class="tp">Align</span> = <span class="st">'left'</span> | <span class="st">'right'</span>;
+<span class="kw">type</span> <span class="tp">Pos</span> = <span class="tp">`${Dir}-${Align}`</span>;
+<span class="cm">// 'top-left'|'top-right'|'bottom-left'|'bottom-right'</span>
+
+<span class="cm">// 内置字符串操作类型</span>
+Uppercase&lt;<span class="st">'hello'</span>&gt;   <span class="cm">// 'HELLO'</span>
+Lowercase&lt;<span class="st">'HELLO'</span>&gt;   <span class="cm">// 'hello'</span>
+Capitalize&lt;<span class="st">'hello'</span>&gt;  <span class="cm">// 'Hello'</span>
+Uncapitalize&lt;<span class="st">'Hello'</span>&gt; <span class="cm">// 'hello'</span>
+
+<span class="cm">// 类型安全事件系统</span>
+<span class="kw">type</span> <span class="tp">On</span>&lt;<span class="tp">T</span>&gt; = {
+  [K <span class="kw">in keyof</span> <span class="tp">T</span> <span class="kw">as</span> <span class="tp">`on${Capitalize&lt;string & K&gt;}`</span>]:
+    (<span class="tp">T</span>[K] <span class="kw">extends</span> (...<span class="kw">any</span>[]) => <span class="kw">infer</span> <span class="tp">R</span> ? <span class="tp">R</span> : <span class="tp">T</span>[K]) => <span class="kw">void</span>
+};</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="div-label">递归类型 & 深层工具类型 <span class="star">★ 难点</span></div>
+  <div class="cards c2g">
+    <div class="card a5">
+      <div class="ct c5">递归类型</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// 深度 Readonly</span>
+<span class="kw">type</span> <span class="tp">DeepReadonly</span>&lt;<span class="tp">T</span>&gt; = {
+  <span class="kw">readonly</span> [K <span class="kw">in keyof</span> <span class="tp">T</span>]:
+    <span class="tp">T</span>[K] <span class="kw">extends</span> <span class="tp">object</span> ? <span class="tp">DeepReadonly</span>&lt;<span class="tp">T</span>[K]&gt; : <span class="tp">T</span>[K]
+};
+
+<span class="cm">// 深度 Partial</span>
+<span class="kw">type</span> <span class="tp">DeepPartial</span>&lt;<span class="tp">T</span>&gt; = {
+  [K <span class="kw">in keyof</span> <span class="tp">T</span>]?: <span class="tp">T</span>[K] <span class="kw">extends</span> <span class="tp">object</span>
+    ? <span class="tp">DeepPartial</span>&lt;<span class="tp">T</span>[K]&gt; : <span class="tp">T</span>[K]
+};
+
+<span class="cm">// JSON 类型</span>
+<span class="kw">type</span> <span class="tp">JsonValue</span> =
+  | <span class="tp">string</span> | <span class="tp">number</span> | <span class="tp">boolean</span> | <span class="tp">null</span>
+  | <span class="tp">JsonValue</span>[]
+  | { [k: <span class="tp">string</span>]: <span class="tp">JsonValue</span> };
+
+<span class="cm">// 路径类型（对象键路径）</span>
+<span class="kw">type</span> <span class="tp">Paths</span>&lt;<span class="tp">T</span>&gt; = <span class="tp">T</span> <span class="kw">extends</span> <span class="tp">object</span> ? {
+  [K <span class="kw">in keyof</span> <span class="tp">T</span>]: K <span class="kw">extends string</span>
+    ? K | <span class="tp">`${K}.${Paths&lt;T[K]&gt;}`</span> : <span class="kw">never</span>
+}[<span class="kw">keyof</span> <span class="tp">T</span>] : <span class="kw">never</span>;</div>
+      </div>
+    </div>
+    <div class="card a5">
+      <div class="ct c5">实用高级类型模式</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// XOR：互斥类型（两者不能同时存在）</span>
+<span class="kw">type</span> <span class="tp">XOR</span>&lt;<span class="tp">A</span>, <span class="tp">B</span>&gt; =
+  (<span class="tp">A</span> & { [K <span class="kw">in</span> <span class="kw">keyof</span> <span class="tp">B</span>]?: <span class="kw">never</span> }) |
+  (<span class="tp">B</span> & { [K <span class="kw">in</span> <span class="kw">keyof</span> <span class="tp">A</span>]?: <span class="kw">never</span> });
+
+<span class="cm">// Merge：B 的同名属性覆盖 A</span>
+<span class="kw">type</span> <span class="tp">Merge</span>&lt;<span class="tp">A</span>, <span class="tp">B</span>&gt; = <span class="tp">Omit</span>&lt;<span class="tp">A</span>, <span class="kw">keyof</span> <span class="tp">B</span>&gt; & <span class="tp">B</span>;
+
+<span class="cm">// PickByValue：按值类型筛选属性</span>
+<span class="kw">type</span> <span class="tp">PickByValue</span>&lt;<span class="tp">T</span>, <span class="tp">V</span>&gt; = {
+  [K <span class="kw">in keyof</span> <span class="tp">T</span> <span class="kw">as</span>
+    <span class="tp">T</span>[K] <span class="kw">extends</span> <span class="tp">V</span> ? K : <span class="tp">never</span>]: <span class="tp">T</span>[K]
+};
+
+<span class="cm">// TupleToUnion</span>
+<span class="kw">type</span> <span class="tp">TupleToUnion</span>&lt;<span class="tp">T</span> <span class="kw">extends</span> <span class="kw">any</span>[]&gt; = <span class="tp">T</span>[<span class="tp">number</span>];
+<span class="cm">// [string, number] → string | number</span>
+
+<span class="cm">// UnionToIntersection（逆变技巧）</span>
+<span class="kw">type</span> <span class="tp">U2I</span>&lt;<span class="tp">U</span>&gt; =
+  (<span class="tp">U</span> <span class="kw">extends</span> <span class="kw">any</span> ? (x: <span class="tp">U</span>) => <span class="kw">void</span> : <span class="kw">never</span>) <span class="kw">extends</span>
+  (x: <span class="kw">infer</span> <span class="tp">I</span>) => <span class="kw">void</span> ? <span class="tp">I</span> : <span class="kw">never</span>;</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="div-label">协变 & 逆变 <span class="star">★ 高频 难点</span></div>
+  <div class="cards c2g">
+    <div class="card a5">
+      <div class="ct c5">协变（Covariant）与逆变（Contravariant）</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// 协变：子类型→父类型方向（输出位置）</span>
+<span class="kw">type</span> <span class="tp">Producer</span>&lt;<span class="tp">T</span>&gt; = () => <span class="tp">T</span>;
+<span class="cm">// Producer&lt;Dog&gt; 可赋给 Producer&lt;Animal&gt;（Dog是Animal子类）</span>
+
+<span class="cm">// 逆变：父类型→子类型方向（输入位置）</span>
+<span class="kw">type</span> <span class="tp">Consumer</span>&lt;<span class="tp">T</span>&gt; = (x: <span class="tp">T</span>) => <span class="kw">void</span>;
+<span class="cm">// Consumer&lt;Animal&gt; 可赋给 Consumer&lt;Dog&gt;</span>
+<span class="cm">// （接受Animal的函数，也能处理Dog）</span>
+
+<span class="cm">// 双变（函数参数，strictFunctionTypes=false）</span>
+<span class="cm">// 方法简写 method() 是双变，函数属性是逆变</span>
+<span class="kw">interface</span> <span class="tp">A</span> {
+  fn(x: <span class="tp">string</span>): <span class="kw">void</span>; <span class="cm">// 方法简写：双变</span>
+  fn2: (x: <span class="tp">string</span>) => <span class="kw">void</span>; <span class="cm">// 函数属性：逆变</span>
+}</div>
+      </div>
+    </div>
+    <div class="card a5">
+      <div class="ct c5">结构类型 & 鸭子类型</div>
+      <div class="cb">
+        TS 使用<strong>结构类型系统</strong>（Structural Typing），不是名义类型（Nominal）。<br><br>
+        <div class="cblk">
+<span class="kw">interface</span> <span class="tp">Point</span> { x: <span class="tp">number</span>; y: <span class="tp">number</span>; }
+<span class="kw">class</span> <span class="tp">MyPoint</span> { x = <span class="nm">0</span>; y = <span class="nm">0</span>; }
+
+<span class="cm">// MyPoint 满足 Point 结构，可互相赋值</span>
+<span class="kw">const</span> p: <span class="tp">Point</span> = <span class="kw">new</span> <span class="tp">MyPoint</span>(); <span class="cm">// ✅</span>
+
+<span class="cm">// 超出属性检查（Excess Property Check）</span>
+<span class="cm">// 仅在对象字面量直接赋值时触发</span>
+<span class="kw">const</span> q: <span class="tp">Point</span> = { x:<span class="nm">1</span>, y:<span class="nm">2</span>, z:<span class="nm">3</span> }; <span class="er">// Error</span>
+<span class="kw">const</span> tmp = { x:<span class="nm">1</span>, y:<span class="nm">2</span>, z:<span class="nm">3</span> };
+<span class="kw">const</span> q2: <span class="tp">Point</span> = tmp; <span class="cm">// ✅ 中间变量绕过检查</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S6 · 类 & 装饰器
+══════════════════════════════════ -->
+<div class="section" id="s6">
+  <div class="section-head sh6">
+    <div class="s-num">06</div>
+    <div class="s-icon ic6">🏛</div>
+    <div class="s-title c6">类 & 装饰器</div>
+    <div class="s-badge b6">Class & Decorators</div>
+  </div>
+
+  <div class="div-label">类修饰符全表 <span class="star">★ 高频</span></div>
+  <div class="tw">
+    <table class="ctab">
+      <tr><th>修饰符</th><th>访问范围</th><th>继承</th><th>要点</th></tr>
+      <tr><td>public</td><td>任何地方</td><td>✅</td><td>默认修饰符，可省略</td></tr>
+      <tr><td>private</td><td>仅本类</td><td>❌（编译时）</td><td>TS 语法私有，编译为 JS 后消失；子类不可访问</td></tr>
+      <tr><td>#field（JS 私有）</td><td>仅本类</td><td>❌（运行时）</td><td>真正私有，运行时强制；反射/代理也无法访问</td></tr>
+      <tr><td>protected</td><td>本类 + 子类</td><td>✅</td><td>外部不可访问，子类可访问</td></tr>
+      <tr><td>readonly</td><td>-</td><td>-</td><td>只能在声明或 constructor 中赋值</td></tr>
+      <tr><td>static</td><td>类本身</td><td>✅（子类继承静态）</td><td>实例无法访问；可 <code>static #x</code> 组合私有静态</td></tr>
+      <tr><td>abstract</td><td>-</td><td>必须覆写</td><td>抽象类不可实例化；抽象方法无实现</td></tr>
+      <tr><td>override</td><td>-</td><td>-</td><td>TS4.3+；显式标记覆写父类方法，父类无该方法则报错</td></tr>
+    </table>
+  </div>
+
+  <div class="div-label">装饰器（Decorators）<span class="star">★ TS5.0 正式版</span></div>
+  <div class="cards c2g">
+    <div class="card a6">
+      <div class="ct c6">装饰器类型（TC39 Stage 3 标准）</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// 类装饰器</span>
+<span class="kw">function</span> <span class="fn">sealed</span>(target: <span class="tp">typeof</span> MyClass) {
+  Object.seal(target);
+  Object.seal(target.prototype);
+}
+<span class="dc">@sealed</span>
+<span class="kw">class</span> <span class="tp">MyClass</span> { ... }
+
+<span class="cm">// 方法装饰器</span>
+<span class="kw">function</span> <span class="fn">log</span>(target: <span class="tp">any</span>, ctx: <span class="tp">ClassMethodDecoratorContext</span>) {
+  <span class="kw">return function</span>(<span class="kw">this</span>: <span class="tp">any</span>, ...args: <span class="tp">any</span>[]) {
+    console.log(<span class="tp">`${String(ctx.name)} called`</span>);
+    <span class="kw">return</span> target.call(<span class="kw">this</span>, ...args);
+  };
+}
+
+<span class="cm">// 字段装饰器、getter/setter 装饰器</span>
+<span class="cm">// TS5.0 装饰器与 experimentalDecorators 不兼容</span>
+</div>
+      </div>
+    </div>
+    <div class="card a6">
+      <div class="ct c6">旧版装饰器（experimentalDecorators）</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// tsconfig: "experimentalDecorators": true</span>
+<span class="cm">// Angular/NestJS 仍使用旧版装饰器</span>
+
+<span class="cm">// 旧版方法装饰器签名</span>
+<span class="kw">function</span> <span class="fn">readonly</span>(
+  target: <span class="tp">any</span>,
+  key: <span class="tp">string</span>,
+  descriptor: <span class="tp">PropertyDescriptor</span>
+) {
+  descriptor.writable = <span class="kw">false</span>;
+  <span class="kw">return</span> descriptor;
+}
+
+<span class="cm">// 旧版参数装饰器（新版无对应）</span>
+<span class="kw">function</span> <span class="fn">inject</span>(target: <span class="tp">any</span>, key: <span class="tp">string</span>, idx: <span class="tp">number</span>) {}
+
+<span class="cm">// reflect-metadata：旧版装饰器常配合使用</span>
+<span class="cm">// emitDecoratorMetadata: true</span>
+</div>
+        NestJS/Angular 暂时仍依赖旧版装饰器。新项目区分场景选型。
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S7 · 模块 & 声明文件
+══════════════════════════════════ -->
+<div class="section" id="s7">
+  <div class="section-head sh7">
+    <div class="s-num">07</div>
+    <div class="s-icon ic7">📁</div>
+    <div class="s-title c7">模块 & 声明文件</div>
+    <div class="s-badge b7">Modules & .d.ts</div>
+  </div>
+
+  <div class="div-label">模块类型全对比 <span class="star">★ 高频</span></div>
+  <div class="tw">
+    <table class="ctab">
+      <tr><th>概念</th><th>说明</th><th>关键点</th></tr>
+      <tr><td>ES Module</td><td><code>import/export</code>，静态分析，Tree-shaking</td><td>模块有 import/export 才是模块，否则是脚本（全局作用域）</td></tr>
+      <tr><td>namespace（命名空间）</td><td>TS 特有，旧版模块化方式</td><td>编译为 IIFE；现代 ES Module 替代；避免与 module 混用</td></tr>
+      <tr><td>声明合并</td><td>同名 interface/namespace/function 合并</td><td>给函数添加属性（函数+命名空间合并）；扩展全局类型</td></tr>
+      <tr><td>.d.ts 文件</td><td>纯类型声明，无运行时代码</td><td>为 JS 库提供类型；<code>@types/xxx</code> 社区维护；<code>declare</code> 关键字</td></tr>
+      <tr><td>三斜线指令</td><td><code>/// &lt;reference types="..." /&gt;</code></td><td>旧版依赖声明，现代 import 替代；仍用于全局类型声明文件</td></tr>
+      <tr><td>模块扩充</td><td><code>declare module 'xxx' { }</code></td><td>为第三方模块添加类型（如扩展 Express Request）</td></tr>
+      <tr><td>全局扩充</td><td><code>declare global { }</code>（在模块文件内）</td><td>给全局类型（Window/Array等）添加属性</td></tr>
+    </table>
+  </div>
+
+  <div class="div-label">声明文件编写 <span class="star">★ 高频</span></div>
+  <div class="cards c2g">
+    <div class="card a7">
+      <div class="ct c7">常见声明模式</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// 声明变量/函数/类</span>
+<span class="kw">declare const</span> __DEV__: <span class="tp">boolean</span>;
+<span class="kw">declare function</span> <span class="fn">require</span>(id: <span class="tp">string</span>): <span class="tp">any</span>;
+<span class="kw">declare class</span> <span class="tp">EventEmitter</span> { ... }
+
+<span class="cm">// 扩展 Express Request</span>
+<span class="kw">declare namespace</span> Express {
+  <span class="kw">interface</span> <span class="tp">Request</span> { user?: <span class="tp">User</span>; }
+}
+
+<span class="cm">// 扩展 Window</span>
+<span class="kw">declare global</span> {
+  <span class="kw">interface</span> <span class="tp">Window</span> { analytics: <span class="tp">Analytics</span>; }
+}
+<span class="kw">export</span> {}; <span class="cm">// 使该文件成为模块（必须）</span>
+
+<span class="cm">// 扩展第三方模块</span>
+<span class="kw">declare module</span> <span class="st">'express-serve-static-core'</span> {
+  <span class="kw">interface</span> <span class="tp">Request</span> { user?: <span class="tp">User</span>; }
+}</div>
+      </div>
+    </div>
+    <div class="card a7">
+      <div class="ct c7">模块解析策略</div>
+      <div class="cb">
+        <ul>
+          <li><strong>Node（moduleResolution: node）：</strong>按 Node.js 方式查找 node_modules，逐级向上</li>
+          <li><strong>Bundler（TS5.0+，推荐）：</strong>适配 Vite/webpack，支持 package.json exports 字段</li>
+          <li><strong>Node16/NodeNext：</strong>严格 ESM，import 必须有扩展名（.js/.ts）</li>
+          <li><strong>路径映射：</strong><code>paths: { "@/*": ["src/*"] }</code>，需与构建工具同步配置</li>
+          <li><strong>baseUrl：</strong>绝对路径导入的基础目录</li>
+          <li><strong>rootDirs：</strong>多个目录合并为虚拟根，构建时拼接</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S8 · 工程配置 & 实践
+══════════════════════════════════ -->
+<div class="section" id="s8">
+  <div class="section-head sh8">
+    <div class="s-num">08</div>
+    <div class="s-icon ic8">⚙️</div>
+    <div class="s-title c8">工程配置 & 最佳实践</div>
+    <div class="s-badge b8">Engineering</div>
+  </div>
+
+  <div class="div-label">tsconfig.json 关键选项精解 <span class="star">★ 高频</span></div>
+  <div class="tw">
+    <table class="ctab">
+      <tr><th>选项</th><th>推荐值</th><th>作用 / 影响</th></tr>
+      <tr><td>strict</td><td>true</td><td>启用全部严格检查：strictNullChecks + strictFunctionTypes + strictBindCallApply + noImplicitAny + noImplicitThis + strictPropertyInitialization</td></tr>
+      <tr><td>strictNullChecks</td><td>true</td><td>null/undefined 不可赋给其他类型；最重要的单项配置</td></tr>
+      <tr><td>noImplicitAny</td><td>true</td><td>参数无类型注解且推断不出时报错，禁止隐式 any</td></tr>
+      <tr><td>noUncheckedIndexedAccess</td><td>true</td><td>下标访问返回 T|undefined（arr[0] 的类型为 string|undefined）</td></tr>
+      <tr><td>exactOptionalPropertyTypes</td><td>true</td><td><code>prop?: string</code> 不允许赋值 undefined（只允许省略）</td></tr>
+      <tr><td>target</td><td>ES2020+</td><td>输出 JS 版本；影响降级代码量（async/await → generator 等）</td></tr>
+      <tr><td>module</td><td>NodeNext / ESNext</td><td>输出模块格式；与 moduleResolution 匹配</td></tr>
+      <tr><td>moduleResolution</td><td>Bundler / NodeNext</td><td>模块查找策略；旧项目用 node，新项目用 bundler</td></tr>
+      <tr><td>isolatedModules</td><td>true</td><td>每文件独立编译（Babel/esbuild 要求）；禁止 const enum 跨模块、type-only import 需显式标注</td></tr>
+      <tr><td>verbatimModuleSyntax</td><td>true（TS5.0+）</td><td>import type 必须明确标注；替代 importsNotUsedAsValues</td></tr>
+      <tr><td>declaration + declarationMap</td><td>库项目 true</td><td>生成 .d.ts 和 source map，支持 Go to Definition 到 TS 源码</td></tr>
+      <tr><td>paths</td><td>与构建工具同步</td><td>路径别名；TS 只做类型检查，实际解析靠构建工具</td></tr>
+      <tr><td>skipLibCheck</td><td>true</td><td>跳过 .d.ts 文件类型检查（加速编译；解决三方库类型冲突）</td></tr>
+    </table>
+  </div>
+
+  <div class="div-label">类型安全最佳实践</div>
+  <div class="cards c3g">
+    <div class="card a8">
+      <div class="ct c8">避免 any 的替代方案</div>
+      <div class="cb">
+        <div class="cblk">
+<span class="cm">// unknown 替代 any（必须收窄）</span>
+<span class="kw">function</span> <span class="fn">parse</span>(v: <span class="tp">unknown</span>) {
+  <span class="kw">if</span> (<span class="kw">typeof</span> v === <span class="st">'string'</span>) v.toUpperCase();
+}
+
+<span class="cm">// 泛型替代 any</span>
+<span class="kw">function</span> <span class="fn">first</span>&lt;<span class="tp">T</span>&gt;(arr: <span class="tp">T</span>[]): <span class="tp">T</span> | <span class="tp">undefined</span> {
+  <span class="kw">return</span> arr[<span class="nm">0</span>];
+}
+
+<span class="cm">// 类型断言替代（限于确定的场景）</span>
+<span class="kw">const</span> el = document.getElementById(<span class="st">'app'</span>)
+  <span class="kw">as</span> <span class="tp">HTMLDivElement</span>; <span class="cm">// 比 any 安全</span>
+
+<span class="cm">// eslint-disable-next-line @typescript-eslint/no-explicit-any</span>
+<span class="cm">// 迫不得已用 any 时留注释说明原因</span>
+</div>
+      </div>
+    </div>
+    <div class="card a8">
+      <div class="ct c8">运行时类型验证</div>
+      <div class="cb">
+        TS 类型只在编译期存在，运行时无类型信息。外部数据必须验证：
+        <ul>
+          <li><strong>Zod：</strong><code>z.string().parse(data)</code> — schema 验证 + 类型推断，最流行</li>
+          <li><strong>Valibot：</strong>模块化，更小体积</li>
+          <li><strong>io-ts：</strong>函数式风格，基于 Either</li>
+          <li><strong>class-validator：</strong>装饰器风格，NestJS 集成</li>
+          <li><strong>手写守卫：</strong>轻量场景，is 类型谓词</li>
+        </ul>
+        <div class="cblk">
+<span class="kw">import</span> { z } <span class="kw">from</span> <span class="st">'zod'</span>;
+<span class="kw">const</span> User = z.object({ name: z.string(), age: z.number() });
+<span class="kw">type</span> <span class="tp">User</span> = z.infer&lt;<span class="kw">typeof</span> User&gt;; <span class="cm">// 自动推断类型</span></div>
+      </div>
+    </div>
+    <div class="card a8">
+      <div class="ct c8">类型体操实践原则</div>
+      <div class="cb">
+        <ul>
+          <li>优先用简单类型；避免过度工程化</li>
+          <li>类型复杂度与代码复杂度成正比，要合理权衡</li>
+          <li>使用 <code>type-fest</code>、<code>ts-toolbelt</code> 等库而非自造轮子</li>
+          <li>复杂类型加注释说明意图</li>
+          <li>避免将业务逻辑放入类型系统（类型体操≠类型安全）</li>
+          <li><code>// @ts-expect-error</code> 优于 <code>// @ts-ignore</code>（前者在错误消失后报错，避免遗忘）</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════
+     S9 · 规范 & 易混淆点
+══════════════════════════════════ -->
+<div class="section" id="s9">
+  <div class="section-head sh9">
+    <div class="s-num">09</div>
+    <div class="s-icon ic9">📐</div>
+    <div class="s-title c9">规范细节 & 易混淆点</div>
+    <div class="s-badge b9">Spec & Gotchas</div>
+  </div>
+
+  <div class="div-label">高频易混淆对比 <span class="star">★ 必背</span></div>
+  <div class="tw">
+    <table class="ctab">
+      <tr><th>概念 A</th><th>vs</th><th>概念 B</th><th>核心差异</th></tr>
+      <tr>
+        <td>interface</td><td>vs</td><td>type</td>
+        <td>interface 可声明合并（同名自动合并）；type 可表达联合/条件/映射类型。对象类型两者等价，优先 interface 用于公共 API（可扩展），type 用于复杂类型计算</td>
+      </tr>
+      <tr>
+        <td>any</td><td>vs</td><td>unknown</td>
+        <td>any 关闭检查，可直接操作，传染性强；unknown 类型安全，必须收窄才可操作，不传染。外部输入用 unknown。</td>
+      </tr>
+      <tr>
+        <td>never</td><td>vs</td><td>void</td>
+        <td>never：函数永不返回（抛错/死循环）；void：函数没有有意义的返回值（可以 return undefined）。never 是所有类型的子类型（赋给任何类型）</td>
+      </tr>
+      <tr>
+        <td>type A = B | C</td><td>vs</td><td>type A = B &amp; C</td>
+        <td>联合（|）：A 或 B，只能访问共有属性；交叉（&）：同时满足，拥有全部属性。同名原始类型相交=never</td>
+      </tr>
+      <tr>
+        <td>Exclude&lt;T,U&gt;</td><td>vs</td><td>Omit&lt;T,K&gt;</td>
+        <td>Exclude 操作<strong>联合类型</strong>，排除可赋给 U 的成员；Omit 操作<strong>对象类型</strong>，排除指定属性键。常混淆：Exclude 用于 type A|B|C，Omit 用于 interface</td>
+      </tr>
+      <tr>
+        <td>typeof</td><td>vs</td><td>keyof</td>
+        <td>typeof 获取值的类型（<code>typeof obj</code> → 对象类型）；keyof 获取类型的键联合（<code>keyof Obj</code> → 'a'|'b'|'c'）。组合：<code>keyof typeof obj</code> 获取对象键的联合</td>
+      </tr>
+      <tr>
+        <td>as</td><td>vs</td><td>satisfies</td>
+        <td>as 强制断言（可能不安全，丢失推断）；satisfies 验证兼容性但保留原始字面量类型推断（两全其美，TS4.9+）</td>
+      </tr>
+      <tr>
+        <td>private（TS）</td><td>vs</td><td>#field（JS）</td>
+        <td>TS private：仅编译期检查，JS 输出后变为普通属性；#field：运行时强制私有，完全不可访问，reflect/proxy 也无法穿透</td>
+      </tr>
+      <tr>
+        <td>T extends U（约束）</td><td>vs</td><td>T extends U（条件）</td>
+        <td>泛型约束 <code>&lt;T extends U&gt;</code>：限制 T 必须兼容 U；条件类型 <code>T extends U ? X : Y</code>：判断 T 是否可赋给 U。语法相同，位置不同含义不同</td>
+      </tr>
+      <tr>
+        <td>enum</td><td>vs</td><td>const enum</td>
+        <td>enum 生成运行时代码（双向映射对象）；const enum 编译内联（零运行时），但 isolatedModules=true 时跨文件使用受限。推荐用 as const 对象替代</td>
+      </tr>
+      <tr>
+        <td>import type</td><td>vs</td><td>import</td>
+        <td>import type 纯类型导入，编译后完全删除（用于 isolatedModules 场景，避免副作用）；import 可能保留副作用。verbatimModuleSyntax=true 时强制区分</td>
+      </tr>
+      <tr>
+        <td>declare module</td><td>vs</td><td>declare namespace</td>
+        <td>declare module 扩充已有模块类型（用于为第三方库添加类型）；declare namespace 定义命名空间类型（旧式或全局变量用）</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="div-label">面试高频原理题速查 <span class="star">★ 必背</span></div>
+  <div class="tw">
+    <table class="ctab">
+      <tr><th>问题</th><th>核心答案</th></tr>
+      <tr>
+        <td>TS 类型系统是健全的吗</td>
+        <td>不完全健全（Unsound）。设计决策：any/类型断言/函数双变参数（strictFunctionTypes 前）/协变数组等允许不安全操作。权衡了实用性与安全性。</td>
+      </tr>
+      <tr>
+        <td>如何实现类型安全的 EventEmitter</td>
+        <td>泛型事件 Map + 模板字面量类型：<code>on&lt;K extends keyof Events&gt;(event: K, handler: (data: Events[K]) => void)</code>，事件名和参数全部类型安全。</td>
+      </tr>
+      <tr>
+        <td>分布式条件类型何时触发</td>
+        <td>条件类型中 T 为裸类型参数（未被包裹）且传入联合类型时，自动对每个成员分发计算。用 <code>[T]</code> 包裹可阻止分发。</td>
+      </tr>
+      <tr>
+        <td>逆变在函数类型中的表现</td>
+        <td>函数参数位置逆变：接受父类的函数可赋给接受子类的函数类型（反直觉）。strictFunctionTypes 开启后方法属性（非简写）强制逆变。</td>
+      </tr>
+      <tr>
+        <td>如何实现 DeepReadonly</td>
+        <td>递归映射类型：<code>{ readonly [K in keyof T]: T[K] extends object ? DeepReadonly&lt;T[K]&gt; : T[K] }</code>。注意函数/数组/Date 等 object 子类型需特殊处理。</td>
+      </tr>
+      <tr>
+        <td>infer 的本质是什么</td>
+        <td>在 extends 子句的模式匹配中声明临时类型变量，捕获被匹配位置的类型。类似于正则捕获组，只在条件类型的 true 分支可用。</td>
+      </tr>
+      <tr>
+        <td>结构类型和名义类型的区别</td>
+        <td>TS 用结构类型：只要形状（属性/方法）匹配即兼容，无需同名。可用 brand（品牌类型）模拟名义类型：<code>type UserId = string & { _brand: 'UserId' }</code>。</td>
+      </tr>
+      <tr>
+        <td>noUncheckedIndexedAccess 的作用</td>
+        <td>数组下标访问返回 <code>T | undefined</code>，强制处理越界情况。提升数组操作安全性，但需大量 ?? / 判断，要权衡代码量。</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="hbox tip" style="margin-top:14px;">
+    <span class="hbox-i">🎯</span>
+    <div class="hbox-b">
+      <strong>13 年经验 TypeScript 面试终极加分项：</strong>能手写 Zod/Valibot 风格的 mini schema 验证库（结合条件类型 + 泛型推断）；理解 TS 类型系统的理论基础（结构子类型、Liskov 替换原则在 TS 中的体现）；能解释 TS 编译器 <code>tsc</code>、<code>esbuild</code>、<code>SWC</code>、<code>Babel</code> 的差异（类型检查 vs 纯转译）；熟悉 <code>typescript-eslint</code> 的规则体系和团队类型安全规范制定。
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  TYPESCRIPT 5.x · TC39 STAGE 3+ · 9 MODULES · 80+ KNOWLEDGE POINTS · 2025
+</div>
+
+</div>
+</body>
+</html>

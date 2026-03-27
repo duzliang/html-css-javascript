@@ -1,0 +1,2606 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML5 知识图谱游乐场 · 资深前端查缺补漏</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #131920;
+  --surface2: #1a2330;
+  --surface3: #1f2937;
+  --border: #1e2d3e;
+  --border2: #2d3d4f;
+  --ink: #d8e8f4;
+  --ink2: #7aa2be;
+  --ink3: #38556a;
+  --c1: #f07060;
+  --c2: #5298f8;
+  --c3: #34d48a;
+  --c4: #a87aff;
+  --c5: #f5a030;
+  --c6: #22c8d8;
+  --c7: #f06898;
+  --c8: #8aaac8;
+  --success: #34d48a;
+  --warning: #f5a030;
+  --mono: 'JetBrains Mono', monospace;
+  --serif: 'Noto Serif SC', serif;
+  --sans: 'Noto Sans SC', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(60,150,220,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(60,150,220,.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.page { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 40px 24px 100px; }
+
+/* Header */
+.masthead {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 24px;
+}
+
+.masthead-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 8px;
+}
+
+.masthead h1 {
+  font-family: var(--serif);
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.masthead h1 em { font-style: normal; color: var(--c1); }
+
+.masthead-meta {
+  text-align: right;
+  font-size: 12px;
+  color: var(--ink3);
+  line-height: 1.9;
+}
+
+.masthead-meta strong { color: var(--ink2); font-weight: 500; }
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.search-box {
+  flex: 1;
+  min-width: 200px;
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px 16px 10px 40px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--ink);
+  font-size: 14px;
+  font-family: var(--sans);
+  transition: all 0.2s;
+}
+
+.search-box input:focus {
+  outline: none;
+  border-color: var(--c2);
+  background: var(--surface3);
+}
+
+.search-box::before {
+  content: '🔍';
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+.toolbar-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 8px 16px;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  background: var(--surface2);
+  color: var(--ink2);
+  font-size: 12px;
+  font-family: var(--mono);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  border-color: var(--c2);
+  color: var(--ink);
+  background: var(--surface3);
+}
+
+.btn.active {
+  border-color: var(--c3);
+  color: var(--c3);
+  background: rgba(52, 212, 138, 0.1);
+}
+
+/* Progress Stats */
+.progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 24px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 6px;
+  background: var(--surface2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--c3), var(--c6));
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink2);
+  white-space: nowrap;
+}
+
+/* TOC */
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.toc-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1.5px solid;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+
+.toc-pill:hover { color: #fff; }
+.toc-pill .dot { width: 7px; height: 7px; border-radius: 50%; }
+.toc-pill.completed { opacity: 0.6; }
+.toc-pill.completed::after { content: '✓'; margin-left: 4px; font-size: 10px; }
+
+/* Section */
+.section { margin-bottom: 48px; scroll-margin-top: 24px; }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  transition: opacity 0.2s;
+}
+
+.section-head:hover { opacity: 0.8; }
+
+.section-head.collapsed { margin-bottom: 0; border-bottom-color: transparent; }
+
+.section-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink3);
+  letter-spacing: 0.1em;
+}
+
+.section-icon {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.section-title {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.section-badge {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: auto;
+  text-transform: uppercase;
+}
+
+.section-toggle {
+  font-size: 12px;
+  color: var(--ink3);
+  transition: transform 0.2s;
+}
+
+.section-head.collapsed .section-toggle { transform: rotate(-90deg); }
+
+.section-content {
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.section-content.collapsed {
+  max-height: 0;
+  opacity: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Knowledge Cards */
+.knowledge-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+}
+
+.knowledge-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.2s;
+}
+
+.knowledge-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.knowledge-card.hidden { display: none; }
+
+.knowledge-card.completed {
+  border-color: var(--c3);
+  background: rgba(52, 212, 138, 0.05);
+}
+
+.knowledge-card.completed .card-header {
+  background: rgba(52, 212, 138, 0.1);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--surface2);
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+}
+
+.card-header:hover { background: var(--surface3); }
+
+.card-status {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--ink3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.knowledge-card.completed .card-status {
+  background: var(--c3);
+  border-color: var(--c3);
+  color: #000;
+}
+
+.card-title {
+  flex: 1;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.card-action {
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--ink3);
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+
+.card-action:hover {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.card-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.card-body.expanded {
+  max-height: 2000px;
+}
+
+.card-content {
+  padding: 16px;
+  font-size: 12.5px;
+  color: var(--ink2);
+  line-height: 1.8;
+}
+
+.card-content ul { padding-left: 0; list-style: none; }
+.card-content ul li { padding: 3px 0; display: flex; gap: 8px; }
+.card-content ul li::before { content: '›'; color: var(--ink3); flex-shrink: 0; }
+
+/* Code Block */
+.code-block {
+  background: #1e1e2e;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: #cdd6f4;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+.code-block .cm { color: #6c7086; }
+.code-block .kw { color: #89b4fa; }
+.code-block .str { color: #a6e3a1; }
+.code-block .tag { color: #f38ba8; }
+.code-block .attr { color: #fab387; }
+.code-block .val { color: #a6e3a1; }
+
+/* Interactive Demo */
+.demo-container {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 12px 0;
+  overflow: hidden;
+}
+
+.demo-header {
+  display: flex;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--surface3);
+  border-bottom: 1px solid var(--border);
+}
+
+.demo-tab {
+  padding: 4px 12px;
+  font-size: 11px;
+  font-family: var(--mono);
+  color: var(--ink3);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.15s;
+}
+
+.demo-tab:hover { color: var(--ink); }
+.demo-tab.active {
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.demo-content {
+  padding: 16px;
+  min-height: 100px;
+}
+
+.demo-editor {
+  width: 100%;
+  min-height: 120px;
+  background: #1e1e2e;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 12px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: #cdd6f4;
+  resize: vertical;
+}
+
+.demo-preview {
+  background: #fff;
+  border-radius: 6px;
+  padding: 16px;
+  min-height: 100px;
+}
+
+.demo-preview iframe {
+  width: 100%;
+  border: none;
+  min-height: 150px;
+}
+
+/* Tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid;
+}
+
+.tag.interview {
+  background: rgba(245, 160, 48, 0.1);
+  border-color: rgba(245, 160, 48, 0.3);
+  color: var(--warning);
+}
+
+.tag.new {
+  background: rgba(52, 212, 138, 0.1);
+  border-color: rgba(52, 212, 138, 0.3);
+  color: var(--c3);
+}
+
+/* Quick Test */
+.quick-test {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.quick-test-title {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.test-options {
+  display: grid;
+  gap: 8px;
+}
+
+.test-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.test-option:hover {
+  border-color: var(--c2);
+  background: var(--surface3);
+}
+
+.test-option input[type="radio"] {
+  accent-color: var(--c2);
+}
+
+.test-option.correct {
+  border-color: var(--c3);
+  background: rgba(52, 212, 138, 0.1);
+}
+
+.test-option.wrong {
+  border-color: var(--c1);
+  background: rgba(240, 112, 96, 0.1);
+}
+
+/* Color helpers */
+.c1 { color: var(--c1); } .c2 { color: var(--c2); } .c3 { color: var(--c3); }
+.c4 { color: var(--c4); } .c5 { color: var(--c5); } .c6 { color: var(--c6); }
+.c7 { color: var(--c7); } .c8 { color: var(--c8); }
+
+.bg1 { background: rgba(240, 112, 96, 0.1); border-color: rgba(240, 112, 96, 0.25); }
+.bg2 { background: rgba(82, 152, 248, 0.1); border-color: rgba(82, 152, 248, 0.25); }
+.bg3 { background: rgba(52, 212, 138, 0.1); border-color: rgba(52, 212, 138, 0.25); }
+.bg4 { background: rgba(168, 122, 255, 0.1); border-color: rgba(168, 122, 255, 0.25); }
+.bg5 { background: rgba(245, 160, 48, 0.1); border-color: rgba(245, 160, 48, 0.25); }
+.bg6 { background: rgba(34, 200, 216, 0.1); border-color: rgba(34, 200, 216, 0.25); }
+.bg7 { background: rgba(240, 104, 152, 0.1); border-color: rgba(240, 104, 152, 0.25); }
+.bg8 { background: rgba(138, 170, 200, 0.1); border-color: rgba(138, 170, 200, 0.25); }
+
+.icon1 { background: rgba(240, 112, 96, 0.12); }
+.icon2 { background: rgba(82, 152, 248, 0.12); }
+.icon3 { background: rgba(52, 212, 138, 0.12); }
+.icon4 { background: rgba(168, 122, 255, 0.12); }
+.icon5 { background: rgba(245, 160, 48, 0.12); }
+.icon6 { background: rgba(34, 200, 216, 0.12); }
+.icon7 { background: rgba(240, 104, 152, 0.12); }
+.icon8 { background: rgba(138, 170, 200, 0.12); }
+
+.badge1 { background: rgba(240, 112, 96, 0.1); color: var(--c1); border: 1px solid rgba(240, 112, 96, 0.25); }
+.badge2 { background: rgba(82, 152, 248, 0.1); color: var(--c2); border: 1px solid rgba(82, 152, 248, 0.25); }
+.badge3 { background: rgba(52, 212, 138, 0.1); color: var(--c3); border: 1px solid rgba(52, 212, 138, 0.25); }
+.badge4 { background: rgba(168, 122, 255, 0.1); color: var(--c4); border: 1px solid rgba(168, 122, 255, 0.25); }
+.badge5 { background: rgba(245, 160, 48, 0.1); color: var(--c5); border: 1px solid rgba(245, 160, 48, 0.25); }
+.badge6 { background: rgba(34, 200, 216, 0.1); color: var(--c6); border: 1px solid rgba(34, 200, 216, 0.25); }
+.badge7 { background: rgba(240, 104, 152, 0.1); color: var(--c7); border: 1px solid rgba(240, 104, 152, 0.25); }
+.badge8 { background: rgba(138, 170, 200, 0.1); color: var(--c8); border: 1px solid rgba(138, 170, 200, 0.25); }
+
+.pill1 { border-color: var(--c1); color: var(--c1); } .pill1:hover { background: rgba(240,112,96,.14); }
+.pill2 { border-color: var(--c2); color: var(--c2); } .pill2:hover { background: rgba(82,152,248,.14); }
+.pill3 { border-color: var(--c3); color: var(--c3); } .pill3:hover { background: rgba(52,212,138,.14); }
+.pill4 { border-color: var(--c4); color: var(--c4); } .pill4:hover { background: rgba(168,122,255,.14); }
+.pill5 { border-color: var(--c5); color: var(--c5); } .pill5:hover { background: rgba(245,160,48,.14); }
+.pill6 { border-color: var(--c6); color: var(--c6); } .pill6:hover { background: rgba(34,200,216,.14); }
+.pill7 { border-color: var(--c7); color: var(--c7); } .pill7:hover { background: rgba(240,104,152,.14); }
+.pill8 { border-color: var(--c8); color: var(--c8); } .pill8:hover { background: rgba(138,170,200,.14); }
+
+.dot1{background:var(--c1);} .dot2{background:var(--c2);} .dot3{background:var(--c3);}
+.dot4{background:var(--c4);} .dot5{background:var(--c5);} .dot6{background:var(--c6);}
+.dot7{background:var(--c7);} .dot8{background:var(--c8);}
+
+/* Highlight boxes */
+.hbox {
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  margin: 12px 0;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.hbox-icon { flex-shrink: 0; font-size: 15px; margin-top: 1px; }
+.hbox-body { color: var(--ink2); }
+.hbox-body strong { color: var(--ink); }
+.hbox.warn { background: rgba(245,180,50,.05); border: 1px solid rgba(245,180,50,.22); }
+.hbox.info { background: rgba(82,152,248,.05); border: 1px solid rgba(82,152,248,.22); }
+.hbox.tip  { background: rgba(52,212,138,.05); border: 1px solid rgba(52,212,138,.22); }
+.hbox.danger { background: rgba(240,96,96,.05); border: 1px solid rgba(240,96,96,.22); }
+
+/* Comparison Table */
+.compare-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.compare-table th {
+  background: var(--surface2);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 10px;
+  font-family: var(--mono);
+  letter-spacing: 0.1em;
+  color: var(--ink2);
+  border-bottom: 1px solid var(--border);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.compare-table td {
+  padding: 10px 14px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.6;
+  color: var(--ink2);
+}
+
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:hover td { background: var(--surface2); }
+.compare-table td:first-child {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s;
+}
+
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow: hidden;
+  transform: scale(0.95);
+  transition: transform 0.2s;
+}
+
+.modal-overlay.active .modal {
+  transform: scale(1);
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.modal-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.modal-close {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--ink3);
+  font-size: 20px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.15s;
+}
+
+.modal-close:hover {
+  background: var(--surface2);
+  color: var(--ink);
+}
+
+.modal-body {
+  padding: 20px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page { padding: 20px 16px 60px; }
+  .masthead { grid-template-columns: 1fr; }
+  .masthead-meta { text-align: left; }
+  .toolbar { flex-direction: column; align-items: stretch; }
+  .search-box { min-width: auto; }
+  .knowledge-grid { grid-template-columns: 1fr; }
+}
+
+/* Floating Action Button */
+.fab {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--c2), var(--c6));
+  border: none;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(82, 152, 248, 0.4);
+  transition: all 0.2s;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fab:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 30px rgba(82, 152, 248, 0.5);
+}
+
+/* Export Menu */
+.export-menu {
+  position: fixed;
+  bottom: 90px;
+  right: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.2s;
+  z-index: 99;
+}
+
+.export-menu.active {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.export-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  color: var(--ink2);
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.export-item:hover {
+  background: var(--surface2);
+  color: var(--ink);
+}
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 13px;
+  color: var(--ink);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  opacity: 0;
+  transition: all 0.3s;
+  z-index: 1001;
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+.toast.success { border-color: var(--c3); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="masthead">
+    <div class="masthead-left">
+      <div class="masthead-tag">Senior Frontend · Knowledge Playground · 2025</div>
+      <h1>HTML<em>5</em> 知识图谱游乐场</h1>
+    </div>
+    <div class="masthead-meta">
+      <div>适用：<strong>资深前端工程师</strong></div>
+      <div>模式：<strong>交互式学习 · 查缺补漏</strong></div>
+      <div>功能：<strong>进度追踪 · 代码演示 · 快速测试</strong></div>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="搜索知识点、API、面试题..." />
+    </div>
+    <div class="toolbar-actions">
+      <button class="btn" id="expandAll">展开全部</button>
+      <button class="btn" id="collapseAll">折叠全部</button>
+      <button class="btn" id="showInterview">仅面试高频</button>
+      <button class="btn" id="showNew">仅新特性</button>
+      <button class="btn" id="resetView">重置视图</button>
+    </div>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-bar">
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    </div>
+    <div class="progress-text" id="progressText">0 / 0 知识点</div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc" id="toc">
+    <a class="toc-pill pill1" data-section="s1"><span class="dot dot1"></span>语义化元素</a>
+    <a class="toc-pill pill2" data-section="s2"><span class="dot dot2"></span>表单增强</a>
+    <a class="toc-pill pill3" data-section="s3"><span class="dot dot3"></span>核心 API</a>
+    <a class="toc-pill pill4" data-section="s4"><span class="dot dot4"></span>存储体系</a>
+    <a class="toc-pill pill5" data-section="s5"><span class="dot dot5"></span>多媒体图形</a>
+    <a class="toc-pill pill6" data-section="s6"><span class="dot dot6"></span>性能加载</a>
+    <a class="toc-pill pill7" data-section="s7"><span class="dot dot7"></span>安全隐私</a>
+    <a class="toc-pill pill8" data-section="s8"><span class="dot dot8"></span>规范细节</a>
+  </div>
+
+  <!-- Section 1: 语义化元素 -->
+  <div class="section" id="s1">
+    <div class="section-head">
+      <div class="section-num">01</div>
+      <div class="section-icon icon1">🏗</div>
+      <div class="section-title c1">语义化元素与文档结构</div>
+      <div class="section-badge badge1">Semantics</div>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <div class="knowledge-grid">
+        <!-- Card 1 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s1-1">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">header vs head vs h1-h6</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+              <button class="card-action" title="代码演示" onclick="showDemo('header-demo')">▶</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><code>&lt;header&gt;</code> - 页面或区块的头部，可多次使用</li>
+                <li><code>&lt;head&gt;</code> - 页面元数据容器，不可见</li>
+                <li><code>&lt;h1&gt;-&lt;h6&gt;</code> - 标题层级，每个页面应有唯一 h1</li>
+              </ul>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+              <div class="quick-test">
+                <div class="quick-test-title">🎯 快速测试</div>
+                <div class="test-options">
+                  <label class="test-option">
+                    <input type="radio" name="test-s1-1" value="a">
+                    <span>&lt;header&gt; 每页只能使用一次</span>
+                  </label>
+                  <label class="test-option">
+                    <input type="radio" name="test-s1-1" value="b">
+                    <span>&lt;head&gt; 可以放在 body 内</span>
+                  </label>
+                  <label class="test-option" data-correct="true">
+                    <input type="radio" name="test-s1-1" value="c">
+                    <span>&lt;header&gt; 可以嵌套在 article 中使用</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s1-2">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">article vs section vs div</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+              <button class="card-action" title="代码演示" onclick="showDemo('article-demo')">▶</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><strong>article</strong> - 独立可分发内容单元（博客文章、评论）</li>
+                <li><strong>section</strong> - 按主题分组，通常含标题</li>
+                <li><strong>div</strong> - 无语义，仅用于样式/脚本钩子</li>
+              </ul>
+              <div class="hbox info">
+                <span class="hbox-icon">💡</span>
+                <div class="hbox-body">
+                  <strong>判断技巧：</strong>article 可以独立出现在 RSS/聚合内容中；section 必须有主题；无主题用 div
+                </div>
+              </div>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="knowledge-card" data-id="s1-3">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">nav 的正确使用</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li>用于<strong>主导航链接组</strong>，非所有链接</li>
+                <li>页脚版权链接、社交媒体链接<strong>不应</strong>用 nav</li>
+                <li>页面可以有多个 nav（主导航、面包屑）</li>
+                <li>配合 <code>aria-label</code> 区分多个导航</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s1-4">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">main 元素规范</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li>每页<strong>只能有一个</strong> main 元素</li>
+                <li><strong>不能嵌套</strong>在 article、aside、header、nav 等中</li>
+                <li>是 ARIA landmark，屏幕阅读器可一键跳转</li>
+                <li>IE 不支持，需要 polyfill</li>
+              </ul>
+              <div class="code-block">
+<span class="cm">&lt;!-- 正确用法 --&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+  <span class="tag">&lt;header&gt;</span>...<span class="tag">&lt;/header&gt;</span>
+  <span class="tag">&lt;main&gt;</span>
+    <span class="tag">&lt;article&gt;</span>...<span class="tag">&lt;/article&gt;</span>
+  <span class="tag">&lt;/main&gt;</span>
+  <span class="tag">&lt;footer&gt;</span>...<span class="tag">&lt;/footer&gt;</span>
+<span class="tag">&lt;/body&gt;</span></div>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="knowledge-card" data-id="s1-5">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">details / summary - 原生折叠</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+              <button class="card-action" title="代码演示" onclick="showDemo('details-demo')">▶</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li>无需 JS 实现 accordion 效果</li>
+                <li><code>open</code> 属性控制展开状态</li>
+                <li>支持 <code>toggle</code> 事件监听</li>
+                <li>可配合 CSS <code>[open]</code> 选择器定制样式</li>
+              </ul>
+              <div class="code-block">
+<span class="tag">&lt;details&gt;</span>
+  <span class="tag">&lt;summary&gt;</span>点击展开<span class="tag">&lt;/summary&gt;</span>
+  <span class="tag">&lt;p&gt;</span>这是隐藏内容...<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/details&gt;</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="knowledge-card" data-tags="new" data-id="s1-6">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">dialog - 原生模态框</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+              <button class="card-action" title="代码演示" onclick="showDemo('dialog-demo')">▶</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><code>showModal()</code> - 模态，背景不可交互，自动焦点管理</li>
+                <li><code>show()</code> - 非模态</li>
+                <li><code>close()</code> - 关闭</li>
+                <li>::backdrop 伪元素定制背景</li>
+                <li>ESC 键自动关闭（可阻止）</li>
+              </ul>
+              <div class="code-block">
+<span class="kw">const</span> dialog = document.<span class="attr">querySelector</span>(<span class="str">'dialog'</span>);
+dialog.<span class="attr">showModal</span>(); <span class="cm">// 打开模态框</span></div>
+              <div class="tags">
+                <span class="tag new">新特性</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s1-7">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">ARIA 与语义化协同</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <div class="hbox tip">
+                <span class="hbox-icon">🎯</span>
+                <div class="hbox-body">
+                  <strong>第一原则：优先使用原生语义元素。</strong> 若必须用 div/span，才补 ARIA role。
+                </div>
+              </div>
+              <ul>
+                <li><code>role="button"</code> 需要配合 <code>tabindex="0"</code> 和键盘事件</li>
+                <li>但永远无法完全模拟原生 button（焦点管理、禁用态等）</li>
+                <li>常用 landmark: banner, navigation, main, complementary, contentinfo</li>
+                <li><code>aria-live="polite|assertive"</code> - 动态内容播报</li>
+              </ul>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 8 -->
+        <div class="knowledge-card" data-id="s1-8">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">picture 响应式图片</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+              <button class="card-action" title="代码演示" onclick="showDemo('picture-demo')">▶</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li>Art Direction: 不同尺寸显示不同裁剪</li>
+                <li>格式降级: AVIF → WebP → JPEG</li>
+                <li>最后一个 img 是必须的 fallback</li>
+              </ul>
+              <div class="code-block">
+<span class="tag">&lt;picture&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">type</span>=<span class="str">"image/avif"</span> <span class="attr">srcset</span>=<span class="str">"img.avif"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;source</span> <span class="attr">media</span>=<span class="str">"(max-width:600px)"</span> <span class="attr">srcset</span>=<span class="str">"mobile.jpg"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="str">"fallback.jpg"</span> <span class="attr">alt</span>=<span class="str">"描述"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/picture&gt;</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: 表单增强 -->
+  <div class="section" id="s2">
+    <div class="section-head">
+      <div class="section-num">02</div>
+      <div class="section-icon icon2">📋</div>
+      <div class="section-title c2">表单增强与验证</div>
+      <div class="section-badge badge2">Forms</div>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <div class="knowledge-grid">
+        <!-- Card 1 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s2-1">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Input Type 对比</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+              <button class="card-action" title="代码演示" onclick="showDemo('input-types-demo')">▶</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <div class="compare-wrap">
+                <table class="compare-table">
+                  <tr><th>type</th><th>功能</th><th>特殊属性</th></tr>
+                  <tr><td>email</td><td>邮件格式验证</td><td>multiple 多值</td></tr>
+                  <tr><td>url</td><td>URL 格式验证</td><td>必须含协议头</td></tr>
+                  <tr><td>tel</td><td>电话</td><td>pattern 自定义</td></tr>
+                  <tr><td>number</td><td>数字</td><td>min/max/step</td></tr>
+                  <tr><td>date/time</td><td>日期时间</td><td>Safari 曾不支持</td></tr>
+                  <tr><td>color</td><td>颜色选择</td><td>value = hex</td></tr>
+                </table>
+              </div>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s2-2">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Constraint Validation API</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+              <button class="card-action" title="代码演示" onclick="showDemo('validation-demo')">▶</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><code>el.validity</code> - ValidityState 对象</li>
+                <li><code>el.checkValidity()</code> - 触发验证</li>
+                <li><code>el.reportValidity()</code> - 验证并显示提示</li>
+                <li><code>el.setCustomValidity("msg")</code> - 自定义错误</li>
+                <li><code>:valid / :invalid / :user-invalid</code> CSS 伪类</li>
+              </ul>
+              <div class="code-block">
+<span class="cm">// 自定义验证</span>
+input.<span class="attr">setCustomValidity</span>(<span class="str">"自定义错误信息"</span>);
+input.<span class="attr">reportValidity</span>(); <span class="cm">// 显示气泡</span></div>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="knowledge-card" data-id="s2-3">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">datalist - 自动完成建议</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+              <button class="card-action" title="代码演示" onclick="showDemo('datalist-demo')">▶</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li>通过 <code>list</code> 属性与 input 关联</li>
+                <li>可输入任意值（与 select 的区别）</li>
+                <li>支持 value + label 组合</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="knowledge-card" data-id="s2-4">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">autocomplete 精细控制</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><code>new-password</code> - 阻止自动填充</li>
+                <li><code>one-time-code</code> - 短信验证码自动填充</li>
+                <li><code>cc-number</code> - 信用卡号</li>
+                <li><code>off</code> - 已基本被浏览器忽略</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="knowledge-card" data-id="s2-5">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">inputmode / enterkeyhint</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><code>inputmode</code> - 控制移动端软键盘类型</li>
+                <li><code>enterkeyhint</code> - 回车键显示文字</li>
+              </ul>
+              <div class="code-block">
+<span class="tag">&lt;input</span> <span class="attr">inputmode</span>=<span class="str">"numeric"</span> <span class="attr">enterkeyhint</span>=<span class="str">"search"</span><span class="tag">&gt;</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="knowledge-card" data-id="s2-6">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">form 关联属性</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><code>form="formId"</code> - 跨表单关联</li>
+                <li><code>formaction / formmethod</code> - 按钮级覆盖</li>
+                <li>实现"保存草稿"vs"正式提交"差异化</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: 核心 API -->
+  <div class="section" id="s3">
+    <div class="section-head">
+      <div class="section-num">03</div>
+      <div class="section-icon icon3">⚡</div>
+      <div class="section-title c3">核心浏览器 API</div>
+      <div class="section-badge badge3">APIs</div>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <div class="knowledge-grid">
+        <!-- Card 1 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s3-1">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">通信 API 对比</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <div class="compare-wrap">
+                <table class="compare-table">
+                  <tr><th>API</th><th>方向</th><th>协议</th><th>关键点</th></tr>
+                  <tr><td>Fetch</td><td>双向</td><td>HTTP</td><td>Promise, AbortController</td></tr>
+                  <tr><td>WebSocket</td><td>全双工</td><td>ws://</td><td>长连接, ping/pong</td></tr>
+                  <tr><td>SSE</td><td>服务器→客户端</td><td>HTTP</td><td>自动重连, HTTP/2 友好</td></tr>
+                  <tr><td>WebRTC</td><td>P2P</td><td>DTLS/SRTP</td><td>ICE/STUN/TURN</td></tr>
+                </table>
+              </div>
+              <div class="hbox warn">
+                <span class="hbox-icon">⚠️</span>
+                <div class="hbox-body">
+                  <strong>Fetch 陷阱：</strong>HTTP 错误状态(404/500)不会触发 reject，需要手动检查 response.ok
+                </div>
+              </div>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s3-2">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Worker 体系对比</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <div class="compare-wrap">
+                <table class="compare-table">
+                  <tr><th>类型</th><th>数量</th><th>生命周期</th><th>通信</th></tr>
+                  <tr><td>Web Worker</td><td>多实例</td><td>页面控制</td><td>postMessage</td></tr>
+                  <tr><td>SharedWorker</td><td>同源共享</td><td>所有关联页</td><td>MessagePort</td></tr>
+                  <tr><td>Service Worker</td><td>域级单例</td><td>独立页面</td><td>Cache API</td></tr>
+                </table>
+              </div>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="knowledge-card" data-id="s3-3">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Observer API 族</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><strong>IntersectionObserver</strong> - 懒加载、无限滚动</li>
+                <li><strong>MutationObserver</strong> - DOM 变化监听</li>
+                <li><strong>ResizeObserver</strong> - 元素尺寸变化</li>
+                <li><strong>PerformanceObserver</strong> - 性能条目订阅</li>
+              </ul>
+              <div class="hbox info">
+                <span class="hbox-icon">💡</span>
+                <div class="hbox-body">
+                  <strong>注意：</strong>IntersectionObserver 中 isIntersecting=true 时 intersectionRatio 可能为0（边缘接触）
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="knowledge-card" data-tags="new" data-id="s3-4">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">View Transitions API</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li>原生页面/状态切换动画</li>
+                <li><code>document.startViewTransition()</code></li>
+                <li>CSS: <code>::view-transition-old</code> / <code>::view-transition-new</code></li>
+                <li>支持 MPA 跨页面模式</li>
+              </ul>
+              <div class="tags">
+                <span class="tag new">新特性</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="knowledge-card" data-tags="new" data-id="s3-5">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Popover API</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+              <button class="card-action" title="代码演示" onclick="showDemo('popover-demo')">▶</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><code>popover</code> 属性 + <code>popovertarget</code></li>
+                <li><code>popover="auto"</code> - 点外关闭，互斥</li>
+                <li><code>popover="manual"</code> - 手动控制</li>
+                <li>Top Layer 渲染，自动焦点管理</li>
+              </ul>
+              <div class="code-block">
+<span class="tag">&lt;button</span> <span class="attr">popovertarget</span>=<span class="str">"menu"</span><span class="tag">&gt;</span>打开<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">id</span>=<span class="str">"menu"</span> <span class="attr">popover</span><span class="tag">&gt;</span>内容<span class="tag">&lt;/div&gt;</span></div>
+              <div class="tags">
+                <span class="tag new">新特性</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="knowledge-card" data-tags="new" data-id="s3-6">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Navigation API</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li>替代 History API 的现代路由基础</li>
+                <li><code>navigation.navigate()</code> / <code>navigation.back()</code></li>
+                <li><code>navigate</code> 事件可拦截并处理转场</li>
+                <li>解决 popstate 无法区分前进/后退的问题</li>
+              </ul>
+              <div class="tags">
+                <span class="tag new">新特性</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: 存储体系 -->
+  <div class="section" id="s4">
+    <div class="section-head">
+      <div class="section-num">04</div>
+      <div class="section-icon icon4">🗄</div>
+      <div class="section-title c4">存储体系全对比</div>
+      <div class="section-badge badge4">Storage</div>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <div class="knowledge-grid">
+        <!-- Card 1 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s4-1">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">存储方案对比矩阵</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <div class="compare-wrap">
+                <table class="compare-table">
+                  <tr><th>方案</th><th>容量</th><th>生命周期</th><th>线程</th></tr>
+                  <tr><td>Cookie</td><td>~4KB</td><td>expires/session</td><td>主线程</td></tr>
+                  <tr><td>localStorage</td><td>~5-10MB</td><td>永久</td><td>主线程(同步)</td></tr>
+                  <tr><td>sessionStorage</td><td>~5-10MB</td><td>标签页关闭</td><td>主线程</td></tr>
+                  <tr><td>IndexedDB</td><td>动态</td><td>永久</td><td>主线程+Worker</td></tr>
+                  <tr><td>Cache API</td><td>动态</td><td>SW控制</td><td>SW+主线程</td></tr>
+                </table>
+              </div>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s4-2">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Cookie 现代属性</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><code>SameSite=Strict</code> - 跨站不发送（最强防 CSRF）</li>
+                <li><code>SameSite=Lax</code> - Chrome 默认，顶级 GET 导航发送</li>
+                <li><code>SameSite=None; Secure</code> - 第三方必须加 Secure</li>
+                <li><code>HttpOnly</code> - 禁止 JS 读取（防 XSS）</li>
+                <li><code>__Host-</code> 前缀 - 强制 HTTPS+Secure+Path=/</li>
+              </ul>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="knowledge-card" data-id="s4-3">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">StorageManager API</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><code>navigator.storage.estimate()</code> - 查询配额</li>
+                <li><code>navigator.storage.persist()</code> - 申请持久化</li>
+                <li><code>navigator.storage.persisted()</code> - 检查授权</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="knowledge-card" data-id="s4-4">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Storage Partitioning</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li>2023+ 主流浏览器将三方 Cookie 分区</li>
+                <li>按 (top-site, frame-site) 分区</li>
+                <li>iframe 中的 localStorage 与顶层隔离</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: 多媒体 -->
+  <div class="section" id="s5">
+    <div class="section-head">
+      <div class="section-num">05</div>
+      <div class="section-icon icon5">🎨</div>
+      <div class="section-title c5">多媒体与图形</div>
+      <div class="section-badge badge5">Media</div>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <div class="knowledge-grid">
+        <!-- Card 1 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s5-1">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">图片响应式方案</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <div class="compare-wrap">
+                <table class="compare-table">
+                  <tr><th>方案</th><th>用途</th><th>选择权</th></tr>
+                  <tr><td>srcset + sizes</td><td>同内容不同分辨率</td><td>浏览器</td></tr>
+                  <tr><td>picture + media</td><td>Art Direction</td><td>开发者</td></tr>
+                  <tr><td>picture + type</td><td>格式降级</td><td>浏览器</td></tr>
+                </table>
+              </div>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="knowledge-card" data-id="s5-2">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">现代图片格式</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><strong>WebP</strong> - 比 JPEG 小 25-34%，全浏览器支持</li>
+                <li><strong>AVIF</strong> - 比 WebP 再小 20%+，编码慢</li>
+                <li><strong>SVG</strong> - 矢量，内联可 CSS/JS 控制</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="knowledge-card" data-id="s5-3">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Canvas vs WebGL vs SVG</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <div class="compare-wrap">
+                <table class="compare-table">
+                  <tr><th>技术</th><th>渲染</th><th>适合场景</th></tr>
+                  <tr><td>Canvas 2D</td><td>像素</td><td>图表、截图</td></tr>
+                  <tr><td>WebGL</td><td>GPU</td><td>3D、粒子</td></tr>
+                  <tr><td>WebGPU</td><td>现代 GPU</td><td>AI 推理、通用计算</td></tr>
+                  <tr><td>SVG</td><td>矢量 DOM</td><td>图标、交互图形</td></tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="knowledge-card" data-id="s5-4">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Web Audio API</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><code>AudioContext</code> - 音频处理图</li>
+                <li>节点图: Source → Effects → Destination</li>
+                <li><code>AudioWorkletProcessor</code> - 自定义处理</li>
+                <li>需用户手势解除 suspended 状态</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 6: 性能 -->
+  <div class="section" id="s6">
+    <div class="section-head">
+      <div class="section-num">06</div>
+      <div class="section-icon icon6">🚀</div>
+      <div class="section-title c6">性能优化与资源加载</div>
+      <div class="section-badge badge6">Performance</div>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <div class="knowledge-grid">
+        <!-- Card 1 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s6-1">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Resource Hints 全对比</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <div class="compare-wrap">
+                <table class="compare-table">
+                  <tr><th>rel</th><th>作用</th><th>是否执行</th></tr>
+                  <tr><td>dns-prefetch</td><td>预解析 DNS</td><td>否</td></tr>
+                  <tr><td>preconnect</td><td>DNS+TCP+TLS</td><td>否</td></tr>
+                  <tr><td>prefetch</td><td>未来页面资源</td><td>否</td></tr>
+                  <tr><td>preload</td><td>当前页高优先级</td><td>否(需 as)</td></tr>
+                  <tr><td>modulepreload</td><td>ES Module 预热</td><td>解析</td></tr>
+                </table>
+              </div>
+              <div class="hbox warn">
+                <span class="hbox-icon">⚠️</span>
+                <div class="hbox-body">
+                  <strong>preload 陷阱：</strong>必须配合 as 属性，字体 preload 必须加 crossorigin
+                </div>
+              </div>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s6-2">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Script 加载策略</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <div class="compare-wrap">
+                <table class="compare-table">
+                  <tr><th>属性</th><th>下载</th><th>执行时机</th><th>顺序</th></tr>
+                  <tr><td>(无)</td><td>阻塞解析</td><td>立即执行</td><td>✅</td></tr>
+                  <tr><td>async</td><td>并行</td><td>下载完立即</td><td>❌</td></tr>
+                  <tr><td>defer</td><td>并行</td><td>DOM解析后</td><td>✅</td></tr>
+                  <tr><td>module</td><td>并行</td><td>等同 defer</td><td>✅</td></tr>
+                </table>
+              </div>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="knowledge-card" data-id="s6-3">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Web Vitals</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><strong>LCP</strong> - 最大内容绘制，&lt;2.5s</li>
+                <li><strong>INP</strong> - 交互到下一帧，&lt;200ms (替代 FID)</li>
+                <li><strong>CLS</strong> - 累积布局偏移，&lt;0.1</li>
+              </ul>
+              <div class="hbox info">
+                <span class="hbox-icon">💡</span>
+                <div class="hbox-body">
+                  LCP 优化: fetchpriority="high" 图片、preload LCP 图、SSR
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="knowledge-card" data-id="s6-4">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">fetchpriority</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><code>fetchpriority="high|low|auto"</code></li>
+                <li>用于 img/link/script/fetch</li>
+                <li>LCP 图片设 high 可显著提升优先级</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 7: 安全 -->
+  <div class="section" id="s7">
+    <div class="section-head">
+      <div class="section-num">07</div>
+      <div class="section-icon icon7">🔒</div>
+      <div class="section-title c7">安全与隐私</div>
+      <div class="section-badge badge7">Security</div>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <div class="knowledge-grid">
+        <!-- Card 1 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s7-1">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">安全 HTTP Headers</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <div class="compare-wrap">
+                <table class="compare-table">
+                  <tr><th>Header</th><th>防御目标</th></tr>
+                  <tr><td>CSP</td><td>XSS、数据注入</td></tr>
+                  <tr><td>X-Frame-Options</td><td>点击劫持</td></tr>
+                  <tr><td>HSTS</td><td>降级攻击</td></tr>
+                  <tr><td>X-Content-Type-Options</td><td>MIME 嗅探</td></tr>
+                  <tr><td>COOP</td><td>Spectre 旁信道</td></tr>
+                  <tr><td>COEP</td><td>跨源资源隔离</td></tr>
+                </table>
+              </div>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="knowledge-card" data-id="s7-2">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">SRI / Trusted Types</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><strong>SRI</strong> - integrity 属性验证哈希，防 CDN 篡改</li>
+                <li><strong>Trusted Types</strong> - 从源头消除 DOM XSS</li>
+              </ul>
+              <div class="code-block">
+<span class="tag">&lt;script</span> <span class="attr">src</span>=<span class="str">"cdn.js"</span>
+  <span class="attr">integrity</span>=<span class="str">"sha384-xxx"</span>
+  <span class="attr">crossorigin</span>=<span class="str">"anonymous"</span><span class="tag">&gt;&lt;/script&gt;</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="knowledge-card" data-id="s7-3">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">跨源隔离</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li>COOP: same-origin + COEP: require-corp</li>
+                <li>启用 SharedArrayBuffer 必需</li>
+                <li>防 Spectre 攻击</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="knowledge-card" data-id="s7-4">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">Privacy Sandbox</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li>Topics API - 兴趣分类广告</li>
+                <li>Protected Audience - 再营销</li>
+                <li>Attribution Reporting - 转化归因</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 8: 规范细节 -->
+  <div class="section" id="s8">
+    <div class="section-head">
+      <div class="section-num">08</div>
+      <div class="section-icon icon8">📐</div>
+      <div class="section-title c8">规范细节与易混淆点</div>
+      <div class="section-badge badge8">Spec</div>
+      <span class="section-toggle">▼</span>
+    </div>
+    <div class="section-content">
+      <div class="knowledge-grid">
+        <!-- Card 1 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s8-1">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">解析模式与 DOCTYPE</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li><strong>Quirks Mode</strong> - 无 DOCTYPE，模拟旧浏览器</li>
+                <li><strong>Standards Mode</strong> - <code>&lt;!DOCTYPE html&gt;</code></li>
+                <li>差异: 盒模型、表格样式、行高计算</li>
+              </ul>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="knowledge-card" data-tags="interview" data-id="s8-2">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">高频易混淆对比</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <div class="compare-wrap">
+                <table class="compare-table">
+                  <tr><th>A</th><th>vs</th><th>B</th><th>差异</th></tr>
+                  <tr><td>innerHTML</td><td>vs</td><td>textContent</td><td>innerHTML 解析 HTML；textContent 纯文本</td></tr>
+                  <tr><td>attribute</td><td>vs</td><td>property</td><td>attribute 是初始值；property 是当前值</td></tr>
+                  <tr><td>target</td><td>vs</td><td>currentTarget</td><td>target 实际触发；currentTarget 绑定元素</td></tr>
+                  <tr><td>stopPropagation</td><td>vs</td><td>stopImmediate</td><td>后者还阻止同元素其他监听器</td></tr>
+                </table>
+              </div>
+              <div class="tags">
+                <span class="tag interview">面试高频</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="knowledge-card" data-id="s8-3">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">HTML 解析容错</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li>可省略 <code>&lt;html&gt;</code>、<code>&lt;head&gt;</code>、<code>&lt;body&gt;</code></li>
+                <li><code>&lt;p&gt;</code> 遇到块级元素自动关闭</li>
+                <li><code>&lt;table&gt;</code> 外的文本被移出</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="knowledge-card" data-id="s8-4">
+          <div class="card-header">
+            <span class="card-status"></span>
+            <span class="card-title">PWA 关键点</span>
+            <div class="card-actions">
+              <button class="card-action" title="展开/折叠" onclick="toggleCard(this)">▼</button>
+              <button class="card-action" title="标记掌握" onclick="markComplete(this)">✓</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="card-content">
+              <ul>
+                <li>Web App Manifest: display, start_url, scope</li>
+                <li>Service Worker 生命周期: install → waiting → activate</li>
+                <li>Cache strategies: Cache First / Network First / Stale While Revalidate</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center; padding-top:32px; border-top: 1px solid var(--border); font-family:var(--mono); font-size:10px; color:var(--ink3); letter-spacing:0.15em;">
+    HTML5 KNOWLEDGE PLAYGROUND · 8 MODULES · INTERACTIVE LEARNING
+  </div>
+</div>
+
+<!-- FAB -->
+<button class="fab" id="fabBtn" title="导出/更多">+</button>
+
+<!-- Export Menu -->
+<div class="export-menu" id="exportMenu">
+  <div class="export-item" onclick="exportProgress()">📊 导出学习进度</div>
+  <div class="export-item" onclick="showStats()">📈 查看统计</div>
+  <div class="export-item" onclick="resetProgress()">🔄 重置进度</div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">代码演示</span>
+      <button class="modal-close" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      <!-- Dynamic content -->
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// State
+const state = {
+  completed: new Set(),
+  filter: 'all' // all, interview, new
+};
+
+// Load from localStorage
+function loadProgress() {
+  const saved = localStorage.getItem('html5-knowledge-progress');
+  if (saved) {
+    state.completed = new Set(JSON.parse(saved));
+    updateProgress();
+    updateCompletedCards();
+  }
+}
+
+function saveProgress() {
+  localStorage.setItem('html5-knowledge-progress', JSON.stringify([...state.completed]));
+  updateProgress();
+}
+
+// Progress
+function updateProgress() {
+  const total = document.querySelectorAll('.knowledge-card').length;
+  const completed = state.completed.size;
+  const percent = (completed / total * 100).toFixed(1);
+  document.getElementById('progressFill').style.width = percent + '%';
+  document.getElementById('progressText').textContent = `${completed} / ${total} 知识点 (${percent}%)`;
+}
+
+function updateCompletedCards() {
+  document.querySelectorAll('.knowledge-card').forEach(card => {
+    const id = card.dataset.id;
+    if (state.completed.has(id)) {
+      card.classList.add('completed');
+      card.querySelector('.card-status').textContent = '✓';
+    }
+  });
+}
+
+// Card actions
+function toggleCard(btn) {
+  const card = btn.closest('.knowledge-card');
+  const body = card.querySelector('.card-body');
+  body.classList.toggle('expanded');
+  btn.textContent = body.classList.contains('expanded') ? '▲' : '▼';
+}
+
+function markComplete(btn) {
+  const card = btn.closest('.knowledge-card');
+  const id = card.dataset.id;
+  const status = card.querySelector('.card-status');
+
+  if (state.completed.has(id)) {
+    state.completed.delete(id);
+    card.classList.remove('completed');
+    status.textContent = '';
+  } else {
+    state.completed.add(id);
+    card.classList.add('completed');
+    status.textContent = '✓';
+    showToast('已标记为掌握 ✓', 'success');
+  }
+  saveProgress();
+}
+
+// Section toggle
+document.querySelectorAll('.section-head').forEach(head => {
+  head.addEventListener('click', (e) => {
+    if (e.target.closest('.section-badge')) return;
+    const section = head.closest('.section');
+    const content = section.querySelector('.section-content');
+    const toggle = head.querySelector('.section-toggle');
+
+    head.classList.toggle('collapsed');
+    content.classList.toggle('collapsed');
+    toggle.textContent = content.classList.contains('collapsed') ? '▶' : '▼';
+  });
+});
+
+// Search
+const searchInput = document.getElementById('searchInput');
+searchInput.addEventListener('input', (e) => {
+  const term = e.target.value.toLowerCase();
+  document.querySelectorAll('.knowledge-card').forEach(card => {
+    const text = card.textContent.toLowerCase();
+    if (text.includes(term)) {
+      card.classList.remove('hidden');
+    } else {
+      card.classList.add('hidden');
+    }
+  });
+});
+
+// Toolbar buttons
+document.getElementById('expandAll').addEventListener('click', () => {
+  document.querySelectorAll('.card-body').forEach(body => body.classList.add('expanded'));
+  document.querySelectorAll('.card-action').forEach(btn => {
+    if (btn.textContent === '▼') btn.textContent = '▲';
+  });
+});
+
+document.getElementById('collapseAll').addEventListener('click', () => {
+  document.querySelectorAll('.card-body').forEach(body => body.classList.remove('expanded'));
+  document.querySelectorAll('.card-action').forEach(btn => {
+    if (btn.textContent === '▲') btn.textContent = '▼';
+  });
+});
+
+document.getElementById('showInterview').addEventListener('click', (e) => {
+  e.target.classList.toggle('active');
+  const show = e.target.classList.contains('active');
+  document.querySelectorAll('.knowledge-card').forEach(card => {
+    if (show && !card.dataset.tags?.includes('interview')) {
+      card.classList.add('hidden');
+    } else {
+      card.classList.remove('hidden');
+    }
+  });
+});
+
+document.getElementById('showNew').addEventListener('click', (e) => {
+  e.target.classList.toggle('active');
+  const show = e.target.classList.contains('active');
+  document.querySelectorAll('.knowledge-card').forEach(card => {
+    if (show && !card.dataset.tags?.includes('new')) {
+      card.classList.add('hidden');
+    } else {
+      card.classList.remove('hidden');
+    }
+  });
+});
+
+document.getElementById('resetView').addEventListener('click', () => {
+  document.querySelectorAll('.knowledge-card').forEach(card => card.classList.remove('hidden'));
+  document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+  searchInput.value = '';
+});
+
+// TOC navigation
+document.querySelectorAll('.toc-pill').forEach(pill => {
+  pill.addEventListener('click', (e) => {
+    e.preventDefault();
+    const sectionId = pill.dataset.section;
+    const section = document.getElementById(sectionId);
+    section.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Quick test
+document.querySelectorAll('.test-option').forEach(option => {
+  option.addEventListener('click', () => {
+    const name = option.querySelector('input').name;
+    document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+      radio.closest('.test-option').classList.remove('correct', 'wrong');
+    });
+
+    if (option.dataset.correct) {
+      option.classList.add('correct');
+      showToast('回答正确！', 'success');
+    } else {
+      option.classList.add('wrong');
+      showToast('回答错误，请再试一次', 'error');
+    }
+  });
+});
+
+// Demo modal
+const demos = {
+  'header-demo': {
+    title: '语义化元素示例',
+    content: `
+      <div class="demo-container">
+        <div class="demo-header">
+          <div class="demo-tab active">HTML</div>
+          <div class="demo-tab">预览</div>
+        </div>
+        <div class="demo-content">
+          <textarea class="demo-editor" readonly><header>
+  <nav>
+    <a href="/">首页</a>
+    <a href="/about">关于</a>
+  </nav>
+</header>
+<main>
+  <article>
+    <header>
+      <h1>文章标题</h1>
+    </header>
+    <p>文章内容...</p>
+  </article>
+</main>
+<footer>版权信息</footer></textarea>
+        </div>
+      </div>
+    `
+  },
+  'article-demo': {
+    title: 'article vs section',
+    content: `
+      <div class="hbox info">
+        <span class="hbox-icon">💡</span>
+        <div class="hbox-body">
+          article 可以独立出现在 RSS/聚合内容中；section 必须有主题
+        </div>
+      </div>
+      <div class="code-block">
+&lt;article&gt;  &lt;!-- 博客文章 --&gt;
+  &lt;h1&gt;文章标题&lt;/h1&gt;
+  &lt;section&gt;  &lt;!-- 章节 --&gt;
+    &lt;h2&gt;第一节&lt;/h2&gt;
+    &lt;p&gt;...&lt;/p&gt;
+  &lt;/section&gt;
+  &lt;section&gt;
+    &lt;h2&gt;第二节&lt;/h2&gt;
+    &lt;p&gt;...&lt;/p&gt;
+  &lt;/section&gt;
+&lt;/article&gt;</div>
+    `
+  },
+  'details-demo': {
+    title: '原生折叠面板',
+    content: `
+      <div class="demo-container">
+        <div class="demo-content">
+          <details>
+            <summary>点击展开详情</summary>
+            <p>这是使用 &lt;details&gt; 和 &lt;summary&gt; 实现的原生折叠效果，无需 JavaScript！</p>
+          </details>
+          <details open style="margin-top: 12px;">
+            <summary>默认展开</summary>
+            <p>使用 open 属性可以默认展开内容。</p>
+          </details>
+        </div>
+      </div>
+      <div class="code-block">
+&lt;details&gt;
+  &lt;summary&gt;点击展开&lt;/summary&gt;
+  &lt;p&gt;隐藏内容...&lt;/p&gt;
+&lt;/details&gt;</div>
+    `
+  },
+  'dialog-demo': {
+    title: '原生对话框',
+    content: `
+      <div class="demo-container">
+        <div class="demo-content">
+          <button class="btn" onclick="document.getElementById('demo-dialog').showModal()">打开模态框</button>
+          <dialog id="demo-dialog" style="padding: 20px; border-radius: 8px; border: 1px solid var(--border);">
+            <h3>原生对话框</h3>
+            <p>这是使用 &lt;dialog&gt; 元素实现的模态框！</p>
+            <button class="btn" onclick="document.getElementById('demo-dialog').close()">关闭</button>
+          </dialog>
+        </div>
+      </div>
+      <div class="code-block">
+&lt;dialog&gt;
+  &lt;p&gt;对话框内容&lt;/p&gt;
+&lt;/dialog&gt;
+&lt;script&gt;
+dialog.showModal(); // 打开
+dialog.close();     // 关闭
+&lt;/script&gt;</div>
+    `
+  },
+  'input-types-demo': {
+    title: 'Input Type 演示',
+    content: `
+      <div class="demo-container">
+        <div class="demo-content">
+          <p><label>email: <input type="email" placeholder="test@example.com" style="padding: 8px; margin-left: 8px;"></label></p>
+          <p><label>date: <input type="date" style="padding: 8px; margin-left: 8px;"></label></p>
+          <p><label>color: <input type="color" value="#5298f8" style="margin-left: 8px;"></label></p>
+          <p><label>range: <input type="range" style="margin-left: 8px;"></label></p>
+        </div>
+      </div>
+    `
+  },
+  'validation-demo': {
+    title: '表单验证 API',
+    content: `
+      <div class="demo-container">
+        <div class="demo-content">
+          <form id="demo-form" onsubmit="event.preventDefault();">
+            <input type="email" required placeholder="输入邮箱" style="padding: 8px; width: 200px;">
+            <button type="button" class="btn" onclick="this.previousElementSibling.reportValidity()">验证</button>
+          </form>
+        </div>
+      </div>
+      <div class="code-block">
+const input = document.querySelector('input');
+input.setCustomValidity('自定义错误');
+input.reportValidity(); // 显示气泡提示</div>
+    `
+  },
+  'datalist-demo': {
+    title: 'Datalist 自动完成',
+    content: `
+      <div class="demo-container">
+        <div class="demo-content">
+          <label>选择或输入: <input list="browsers" placeholder="浏览器名称" style="padding: 8px;"></label>
+          <datalist id="browsers">
+            <option value="Chrome">
+            <option value="Firefox">
+            <option value="Safari">
+            <option value="Edge">
+          </datalist>
+        </div>
+      </div>
+      <div class="code-block">
+&lt;input list="browsers"&gt;
+&lt;datalist id="browsers"&gt;
+  &lt;option value="Chrome"&gt;
+  &lt;option value="Firefox"&gt;
+&lt;/datalist&gt;</div>
+    `
+  },
+  'popover-demo': {
+    title: 'Popover API',
+    content: `
+      <div class="demo-container">
+        <div class="demo-content">
+          <button class="btn" popovertarget="demo-popover">打开 Popover</button>
+          <div id="demo-popover" popover style="padding: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px;">
+            <p>这是使用 Popover API 的原生弹出层！</p>
+            <p>点击外部可自动关闭。</p>
+          </div>
+        </div>
+      </div>
+      <div class="code-block">
+&lt;button popovertarget="menu"&gt;打开&lt;/button&gt;
+&lt;div id="menu" popover&gt;内容&lt;/div&gt;</div>
+      <p style="color: var(--ink3); font-size: 12px; margin-top: 12px;">注：需要较新的 Chrome/Edge 浏览器支持</p>
+    `
+  },
+  'picture-demo': {
+    title: 'Picture 响应式图片',
+    content: `
+      <div class="code-block">
+&lt;picture&gt;
+  &lt;!-- 格式降级 --&gt;
+  &lt;source type="image/avif" srcset="img.avif"&gt;
+  &lt;source type="image/webp" srcset="img.webp"&gt;
+
+  &lt;!-- Art Direction --&gt;
+  &lt;source media="(max-width: 600px)"
+          srcset="mobile.jpg"&gt;
+
+  &lt;!-- Fallback --&gt;
+  &lt;img src="fallback.jpg" alt="描述"&gt;
+&lt;/picture&gt;</div>
+      <div class="hbox tip">
+        <span class="hbox-icon">💡</span>
+        <div class="hbox-body">
+          source 顺序很重要！浏览器选择第一个匹配的条件。
+        </div>
+      </div>
+    `
+  }
+};
+
+function showDemo(demoId) {
+  const demo = demos[demoId];
+  if (!demo) return;
+
+  document.getElementById('modalTitle').textContent = demo.title;
+  document.getElementById('modalBody').innerHTML = demo.content;
+  document.getElementById('modal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+}
+
+// FAB menu
+const fabBtn = document.getElementById('fabBtn');
+const exportMenu = document.getElementById('exportMenu');
+
+fabBtn.addEventListener('click', () => {
+  exportMenu.classList.toggle('active');
+});
+
+document.addEventListener('click', (e) => {
+  if (!fabBtn.contains(e.target) && !exportMenu.contains(e.target)) {
+    exportMenu.classList.remove('active');
+  }
+});
+
+// Export functions
+function exportProgress() {
+  const data = {
+    date: new Date().toISOString(),
+    completed: [...state.completed],
+    total: document.querySelectorAll('.knowledge-card').length,
+    percentage: ((state.completed.size / document.querySelectorAll('.knowledge-card').length) * 100).toFixed(1)
+  };
+
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'html5-learning-progress.json';
+  a.click();
+  URL.revokeObjectURL(url);
+
+  showToast('进度已导出', 'success');
+  exportMenu.classList.remove('active');
+}
+
+function showStats() {
+  const total = document.querySelectorAll('.knowledge-card').length;
+  const completed = state.completed.size;
+  const interviewCards = document.querySelectorAll('[data-tags*="interview"]').length;
+  const completedInterview = [...state.completed].filter(id => {
+    const card = document.querySelector(`[data-id="${id}"]`);
+    return card?.dataset.tags?.includes('interview');
+  }).length;
+
+  document.getElementById('modalTitle').textContent = '学习统计';
+  document.getElementById('modalBody').innerHTML = `
+    <div style="display: grid; gap: 16px;">
+      <div class="hbox info">
+        <span class="hbox-icon">📊</span>
+        <div class="hbox-body">
+          <strong>总体进度:</strong> ${completed}/${total} (${(completed/total*100).toFixed(1)}%)
+        </div>
+      </div>
+      <div class="hbox warn">
+        <span class="hbox-icon">🎯</span>
+        <div class="hbox-body">
+          <strong>面试高频:</strong> ${completedInterview}/${interviewCards} 已掌握
+        </div>
+      </div>
+      <div class="compare-wrap">
+        <table class="compare-table">
+          <tr><th>分类</th><th>总数</th><th>已掌握</th></tr>
+          ${[1,2,3,4,5,6,7,8].map(i => {
+            const sectionCards = document.querySelectorAll(`#s${i} .knowledge-card`).length;
+            const sectionCompleted = [...state.completed].filter(id => id.startsWith(`s${i}-`)).length;
+            return `<tr><td>模块 0${i}</td><td>${sectionCards}</td><td>${sectionCompleted}</td></tr>`;
+          }).join('')}
+        </table>
+      </div>
+    </div>
+  `;
+  document.getElementById('modal').classList.add('active');
+  exportMenu.classList.remove('active');
+}
+
+function resetProgress() {
+  if (confirm('确定要重置所有学习进度吗？')) {
+    state.completed.clear();
+    saveProgress();
+    document.querySelectorAll('.knowledge-card').forEach(card => {
+      card.classList.remove('completed');
+      card.querySelector('.card-status').textContent = '';
+    });
+    showToast('进度已重置', 'success');
+  }
+  exportMenu.classList.remove('active');
+}
+
+// Toast
+function showToast(message, type = '') {
+  const toast = document.getElementById('toast');
+  toast.textContent = message;
+  toast.className = 'toast show ' + type;
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 2000);
+}
+
+// Modal close on backdrop click
+document.getElementById('modal').addEventListener('click', (e) => {
+  if (e.target.id === 'modal') {
+    closeModal();
+  }
+});
+
+// Initialize
+loadProgress();
+</script>
+</body>
+</html>

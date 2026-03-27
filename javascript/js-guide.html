@@ -1,0 +1,2292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript 知识体系与面试指南 | 资深前端</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #161b22;
+      --surface2: #1c2128;
+      --surface3: #21262d;
+      --border: #30363d;
+      --border2: #484f58;
+      --ink: #e6edf3;
+      --ink2: #7d8590;
+      --ink3: #484f58;
+      --accent: #f7c843;
+      --accent2: #79c0ff;
+      --accent3: #ffa657;
+      --accent4: #7ee787;
+      --accent5: #d2a8ff;
+      --warning: #ffa657;
+      --success: #7ee787;
+      --danger: #f85149;
+      --mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .layout { min-height: 100vh; }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 280px;
+      height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 24px 0;
+      z-index: 100;
+    }
+
+    .sidebar-header {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .sidebar-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .sidebar-subtitle { font-size: 12px; color: var(--ink2); }
+
+    .nav-section { margin-bottom: 8px; }
+
+    .nav-header {
+      padding: 10px 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--ink2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-header::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .nav-list { list-style: none; }
+
+    .nav-item a {
+      display: block;
+      padding: 8px 20px 8px 32px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+      transition: all 0.2s;
+      border-left: 2px solid transparent;
+    }
+
+    .nav-item a:hover {
+      background: var(--surface2);
+      color: var(--accent);
+      border-left-color: var(--accent);
+    }
+
+    .main {
+      margin-left: 280px;
+      padding: 40px 48px;
+      max-width: 900px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 .version {
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-left: 12px;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 48px 0 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink);
+    }
+
+    h2 .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 12px;
+      vertical-align: middle;
+    }
+
+    .tag-core { background: var(--accent4); color: var(--bg); }
+    .tag-advanced { background: var(--accent2); color: var(--bg); }
+    .tag-interview { background: var(--accent3); color: var(--bg); }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 32px 0 16px;
+      color: var(--accent);
+    }
+
+    h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 24px 0 12px;
+      color: var(--ink);
+    }
+
+    p { margin-bottom: 16px; color: var(--ink); }
+
+    pre {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      margin: 16px 0;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    code {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: var(--surface2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent2);
+    }
+
+    pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+
+    .compare-table th,
+    .compare-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+
+    .compare-table th {
+      background: var(--surface2);
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .compare-table tr:hover td { background: var(--surface2); }
+    .compare-table .highlight { color: var(--accent4); font-weight: 500; }
+
+    .knowledge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .knowledge-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+
+    .knowledge-card:hover { border-color: var(--border2); }
+
+    .knowledge-card h4 {
+      margin: 0 0 12px;
+      color: var(--accent);
+      font-size: 14px;
+    }
+
+    .knowledge-card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--ink2);
+    }
+
+    .interview-q {
+      background: var(--surface);
+      border-left: 4px solid var(--accent3);
+      padding: 20px 24px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .interview-q .q {
+      font-weight: 600;
+      color: var(--accent3);
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    .interview-q .a { color: var(--ink); }
+
+    .interview-q .key-point {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--ink2);
+    }
+
+    .interview-q .key-point strong { color: var(--accent4); }
+
+    .highlight-box {
+      background: rgba(247, 200, 67, 0.08);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+
+    .highlight-box.warning {
+      background: rgba(255, 166, 87, 0.08);
+      border-color: var(--warning);
+    }
+
+    .highlight-box.success {
+      background: rgba(126, 231, 135, 0.08);
+      border-color: var(--success);
+    }
+
+    .highlight-box.danger {
+      background: rgba(248, 81, 73, 0.08);
+      border-color: var(--danger);
+    }
+
+    ul, ol { margin: 16px 0; padding-left: 24px; }
+    li { margin: 8px 0; }
+
+    .attr-table {
+      width: 100%;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    .attr-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .attr-table td:first-child {
+      width: 180px;
+      color: var(--accent2);
+      font-family: var(--mono);
+    }
+
+    .attr-table tr:last-child td { border-bottom: none; }
+
+    .code-label {
+      background: var(--surface2);
+      padding: 4px 12px;
+      border-radius: 4px 4px 0 0;
+      font-size: 12px;
+      color: var(--ink2);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      display: inline-block;
+      margin-bottom: -1px;
+    }
+
+    .code-block { margin: 16px 0; }
+
+    section { scroll-margin-top: 40px; }
+
+    @media print {
+      .sidebar { display: none; }
+      .main { margin-left: 0; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">JavaScript 知识体系</div>
+        <div class="sidebar-subtitle">面试复习指南 · 2025版</div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">基础核心</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#types">数据类型</a></li>
+          <li class="nav-item"><a href="#scope">作用域与提升</a></li>
+          <li class="nav-item"><a href="#closure">闭包</a></li>
+          <li class="nav-item"><a href="#this">this绑定</a></li>
+          <li class="nav-item"><a href="#prototype">原型链</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">异步编程</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#event-loop">事件循环</a></li>
+          <li class="nav-item"><a href="#promise">Promise</a></li>
+          <li class="nav-item"><a href="#async-await">Async/Await</a></li>
+          <li class="nav-item"><a href="#generator">Generator</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">ES6+特性</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#es6-features">核心特性</a></li>
+          <li class="nav-item"><a href="#module">模块化</a></li>
+          <li class="nav-item"><a href="#proxy">Proxy</a></li>
+          <li class="nav-item"><a href="#reflect">Reflect</a></li>
+          <li class="nav-item"><a href="#symbol">Symbol</a></li>
+          <li class="nav-item"><a href="#iterator">迭代器</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">进阶主题</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#memory">内存管理</a></li>
+          <li class="nav-item"><a href="#v8">V8引擎</a></li>
+          <li class="nav-item"><a href="#ts">TypeScript</a></li>
+          <li class="nav-item"><a href="#functional">函数式编程</a></li>
+          <li class="nav-item"><a href="#pattern">设计模式</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">面试专题</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#interview-code">手写代码</a></li>
+          <li class="nav-item"><a href="#interview-scenario">场景题</a></li>
+          <li class="nav-item"><a href="#interview-trap">陷阱题</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="main">
+      <h1>JavaScript 知识体系与面试指南 <span class="version">ES2025 Ready</span></h1>
+
+      <section id="types">
+        <h2>数据类型与检测 <span class="tag tag-core">核心</span></h2>
+
+        <h3>8种数据类型</h3>
+        <table class="compare-table">
+          <tr>
+            <th>类型</th>
+            <th>typeof 结果</th>
+            <th>说明</th>
+          </tr>
+          <tr>
+            <td>Number</td>
+            <td>"number"</td>
+            <td>包括 NaN、Infinity、-Infinity</td>
+          </tr>
+          <tr>
+            <td>BigInt</td>
+            <td>"bigint"</td>
+            <td>ES2020，任意精度整数</td>
+          </tr>
+          <tr>
+            <td>String</td>
+            <td>"string"</td>
+            <td>不可变序列</td>
+          </tr>
+          <tr>
+            <td>Boolean</td>
+            <td>"boolean"</td>
+            <td>true/false</td>
+          </tr>
+          <tr>
+            <td>undefined</td>
+            <td>"undefined"</td>
+            <td>未初始化变量的默认值</td>
+          </tr>
+          <tr>
+            <td>Symbol</td>
+            <td>"symbol"</td>
+            <td>ES6，唯一标识符</td>
+          </tr>
+          <tr>
+            <td>null</td>
+            <td class="highlight">"object"（历史bug）</td>
+            <td>空值，原型链终点</td>
+          </tr>
+          <tr>
+            <td>Object</td>
+            <td>"object"/"function"</td>
+            <td>引用类型</td>
+          </tr>
+        </table>
+
+        <h3>类型检测方法对比</h3>
+        <pre><code>typeof null           // "object" - 历史bug
+typeof []             // "object"
+typeof {}             // "object"
+typeof function(){}   // "function"
+
+// 正确检测数组
+Array.isArray([])     // true
+
+// 正确检测null
+value === null
+
+// 通用类型检测
+Object.prototype.toString.call([])      // "[object Array]"
+Object.prototype.toString.call({})      // "[object Object]"
+Object.prototype.toString.call(null)    // "[object Null]"
+Object.prototype.toString.call(/reg/)   // "[object RegExp]"
+
+// instanceof（检测原型链）
+[] instanceof Array           // true
+[] instanceof Object          // true
+new Date() instanceof Date    // true</code></pre>
+
+        <div class="interview-q">
+          <div class="q">Q: typeof null === "object" 为什么是bug？</div>
+          <div class="a">
+            JavaScript 第一个版本用 32 位存储值，其中 3 位表示类型标签。
+            object 的类型标签是 000，而 null 在底层表示为全 0（0x00），被误判为 object。
+            由于修复会破坏大量现有代码，这个 bug 被保留至今。
+          </div>
+        </div>
+      </section>
+
+      <section id="scope">
+        <h2>作用域与变量提升 <span class="tag tag-core">核心</span> <span class="tag tag-interview">必考</span></h2>
+
+        <h3>作用域类型详解</h3>
+        <table class="compare-table">
+          <tr>
+            <th>特性</th>
+            <th>全局作用域</th>
+            <th>函数作用域</th>
+            <th>块级作用域</th>
+          </tr>
+          <tr>
+            <td>创建方式</td>
+            <td>全局上下文</td>
+            <td>function 声明</td>
+            <td>let/const + {}</td>
+          </tr>
+          <tr>
+            <td>变量声明</td>
+            <td>var/let/const/function</td>
+            <td>var/let/const/function</td>
+            <td>let/const</td>
+          </tr>
+          <tr>
+            <td>变量提升</td>
+            <td>var/function 提升</td>
+            <td>var/function 提升</td>
+            <td>无（暂时性死区）</td>
+          </tr>
+          <tr>
+            <td>重复声明</td>
+            <td>var 可重复</td>
+            <td>var 可重复</td>
+            <td>不可重复</td>
+          </tr>
+        </table>
+
+        <h3>变量提升详解</h3>
+        <div class="highlight-box">
+          <strong>提升规则：</strong>
+          <ul>
+            <li><code>var</code>：声明提升，初始化为 undefined</li>
+            <li><code>function</code>：声明和初始化都提升</li>
+            <li><code>let/const</code>：声明提升，但不初始化（暂时性死区 TDZ）</li>
+            <li><code>import</code>：声明提升，模块预解析</li>
+          </ul>
+        </div>
+
+        <pre><code>// 示例1：var 提升
+console.log(a);  // undefined（不会报错）
+var a = 10;
+
+// 实际上被解释为：
+var a;
+console.log(a);  // undefined
+a = 10;
+
+// 示例2：function 提升
+sayHello();      // "Hello" - 可以正常执行
+function sayHello() {
+  console.log("Hello");
+}
+
+// 示例3：let 暂时性死区
+console.log(b);  // ReferenceError: Cannot access 'b' before initialization
+let b = 20;
+
+// 示例4：复杂提升顺序
+console.log(c);  // undefined（var 提升）
+// console.log(d); // ReferenceError（let TDZ）
+
+var c = 1;
+let d = 2;
+
+function test() {
+  console.log(c);  // undefined（函数内 var 覆盖全局）
+  // console.log(d); // ReferenceError（TDZ）
+  var c = 3;
+  let d = 4;
+}
+
+test();</code></pre>
+
+        <h3>作用域链与闭包前置</h3>
+        <pre><code>// 作用域链查找示例
+let globalVar = 'global';
+
+function outer() {
+  let outerVar = 'outer';
+
+  function inner() {
+    let innerVar = 'inner';
+    console.log(innerVar);  // "inner" - 当前作用域
+    console.log(outerVar);  // "outer" - 父作用域
+    console.log(globalVar); // "global" - 全局作用域
+  }
+
+  inner();
+}
+
+outer();
+
+// 修改外部变量
+let count = 0;
+function increment() {
+  count++;  // 找到全局作用域的 count
+}
+increment();
+console.log(count); // 1</code></pre>
+
+        <div class="interview-q">
+          <div class="q">Q: 以下代码输出什么？为什么？</div>
+          <div class="a">
+            <pre><code>for (var i = 0; i < 3; i++) {
+  setTimeout(() => {
+    console.log(i);
+  }, 100);
+}
+// 输出：3, 3, 3
+
+for (let i = 0; i < 3; i++) {
+  setTimeout(() => {
+    console.log(i);
+  }, 100);
+}
+// 输出：0, 1, 2</code></pre>
+            <p><strong>原因：</strong></p>
+            <ul>
+              <li><code>var</code>：函数作用域，循环结束后 i = 3，三个闭包共享同一个 i</li>
+              <li><code>let</code>：块级作用域，每次迭代创建新的绑定，闭包捕获各自的 i</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="closure">
+        <h2>闭包 (Closure) <span class="tag tag-core">核心</span> <span class="tag tag-interview">必考</span></h2>
+
+        <h3>什么是闭包</h3>
+        <p>闭包是指<strong>函数能够记住并访问它的词法作用域</strong>，即使该函数在其词法作用域之外执行。</p>
+
+        <div class="highlight-box">
+          <strong>闭包的形成条件：</strong>
+          <ol>
+            <li>函数嵌套（内部函数）</li>
+            <li>内部函数引用外部函数的变量</li>
+            <li>内部函数被返回到外部或在别处被调用</li>
+          </ol>
+        </div>
+
+        <h3>经典闭包示例</h3>
+        <pre><code>// 基础闭包
+function makeCounter() {
+  let count = 0;  // 被闭包保留的变量
+
+  return function() {
+    return ++count;  // 访问外部函数的 count
+  };
+}
+
+const counter = makeCounter();
+console.log(counter()); // 1
+console.log(counter()); // 2
+console.log(counter()); // 3
+
+// count 被保留在内存中，无法直接访问
+// 这就是私有变量的实现原理</code></pre>
+
+        <h3>闭包的实际应用</h3>
+        <pre><code>// 1. 模块模式（封装私有变量）
+const myModule = (function() {
+  let privateVar = 'I am private';
+
+  function privateMethod() {
+    console.log(privateVar);
+  }
+
+  return {
+    publicMethod: function() {
+      privateMethod();
+    },
+    getPrivateVar: function() {
+      return privateVar;
+    }
+  };
+})();
+
+myModule.publicMethod();    // "I am private"
+console.log(myModule.getPrivateVar()); // "I am private"
+
+// 2. 函数柯里化
+function curry(fn) {
+  return function curried(...args) {
+    if (args.length >= fn.length) {
+      return fn.apply(this, args);
+    } else {
+      return function(...args2) {
+        return curried.apply(this, args.concat(args2));
+      };
+    }
+  };
+}
+
+const add = curry((a, b, c) => a + b + c);
+console.log(add(1)(2)(3)); // 6
+console.log(add(1, 2)(3)); // 6
+
+// 3. 防抖实现（闭包保存 timer）
+function debounce(fn, delay) {
+  let timer = null;  // 被闭包保存
+
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn.apply(this, args);
+    }, delay);
+  };
+}
+
+// 4. 缓存（记忆化）
+function memoize(fn) {
+  const cache = {};  // 被闭包保存
+
+  return function(...args) {
+    const key = JSON.stringify(args);
+    if (cache[key]) {
+      console.log('Cached');
+      return cache[key];
+    }
+    const result = fn.apply(this, args);
+    cache[key] = result;
+    return result;
+  };
+}
+
+const fib = memoize(function(n) {
+  if (n < 2) return n;
+  return fib(n - 1) + fib(n - 2);
+});</code></pre>
+
+        <h3>闭包的陷阱与解决</h3>
+        <pre><code>// 陷阱1：循环中的闭包（旧浏览器）
+for (var i = 0; i < 3; i++) {
+  setTimeout(function() {
+    console.log(i);  // 3, 3, 3
+  }, 100);
+}
+
+// 解决方案1：IIFE
+for (var i = 0; i < 3; i++) {
+  (function(j) {
+    setTimeout(function() {
+      console.log(j);  // 0, 1, 2
+    }, 100);
+  })(i);
+}
+
+// 解决方案2：let（ES6）
+for (let i = 0; i < 3; i++) {
+  setTimeout(() => {
+    console.log(i);  // 0, 1, 2
+  }, 100);
+}
+
+// 陷阱2：内存泄漏
+function leaky() {
+  const hugeData = new Array(1000000).fill('x');
+
+  return function() {
+    console.log('I hold reference to hugeData');
+    // 即使不访问 hugeData，它也被保留在闭包中
+  };
+}
+
+const leakyFn = leaky();  // hugeData 无法被GC
+// 解决：避免在闭包中保留不必要的大对象</code></pre>
+
+        <div class="interview-q">
+          <div class="q">Q: 闭包会导致内存泄漏吗？如何避免？</div>
+          <div class="a">
+            <p><strong>闭包本身不会泄漏</strong>，但不当使用会导致变量无法被垃圾回收。</p>
+            <p><strong>常见场景：</strong></p>
+            <ul>
+              <li>DOM 元素引用：闭包中保留 DOM 引用，即使元素已移除</li>
+              <li>大对象缓存：闭包缓存无限增长</li>
+              <li>循环引用：旧 IE 浏览器中闭包与 DOM 的循环引用</li>
+            </ul>
+            <p><strong>避免方法：</strong></p>
+            <ul>
+              <li>及时解除引用（fn = null）</li>
+              <li>使用 WeakMap/WeakSet 存储</li>
+              <li>避免在闭包中保留不必要的 DOM 引用</li>
+              <li>限制缓存大小（LRU策略）</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="this">
+        <h2>this 绑定机制 <span class="tag tag-core">核心</span> <span class="tag tag-interview">必考</span></h2>
+
+        <h3>this 绑定规则优先级</h3>
+        <div class="highlight-box">
+          <strong>绑定优先级（从高到低）：</strong>
+          <ol>
+            <li><code>new</code> 绑定：this 指向新创建的对象</li>
+            <li>显式绑定：<code>call/apply/bind</code> 指定的对象</li>
+            <li>隐式绑定：函数作为对象方法调用时的对象</li>
+            <li>默认绑定：全局对象（严格模式为 undefined）</li>
+          </ol>
+        </div>
+
+        <h3>四大绑定规则详解</h3>
+        <pre><code>// 1. 默认绑定
+function defaultBinding() {
+  console.log(this);
+}
+defaultBinding();  // window（浏览器）/ global（Node）
+
+function strictBinding() {
+  'use strict';
+  console.log(this);  // undefined
+}
+strictBinding();
+
+// 2. 隐式绑定
+const obj = {
+  name: 'Object',
+  sayName: function() {
+    console.log(this.name);
+  }
+};
+obj.sayName();  // "Object" - this 指向 obj
+
+// 隐式绑定的丢失（经典陷阱）
+const say = obj.sayName;
+say();  // undefined - this 丢失，变为默认绑定
+
+// 3. 显式绑定
+defaultBinding.call(obj);     // "Object"
+defaultBinding.apply(obj);    // "Object"
+const bound = defaultBinding.bind(obj);
+bound();  // "Object"
+
+// call vs apply vs bind
+defaultBinding.call(obj, 1, 2, 3);    // 参数列表
+defaultBinding.apply(obj, [1, 2, 3]); // 参数数组
+const boundLater = defaultBinding.bind(obj, 1, 2);  // 预设参数
+boundLater(3);  // 1, 2, 3
+
+// 4. new 绑定
+function Person(name) {
+  this.name = name;  // this 指向新对象
+}
+const p = new Person('Alice');
+console.log(p.name);  // "Alice"</code></pre>
+
+        <h3>箭头函数与 this</h3>
+        <pre><code>// 箭头函数没有自己的 this，继承外层作用域
+const arrowObj = {
+  name: 'Arrow',
+  sayName: () => {
+    console.log(this.name);  // undefined（继承全局 this）
+  },
+  sayNameLater: function() {
+    setTimeout(() => {
+      console.log(this.name);  // "Arrow" - 继承 sayNameLater 的 this
+    }, 100);
+  }
+};
+
+arrowObj.sayName();        // undefined
+arrowObj.sayNameLater();   // "Arrow"
+
+// 经典对比
+const classicObj = {
+  name: 'Classic',
+  sayNameLater: function() {
+    setTimeout(function() {
+      console.log(this.name);  // undefined - 回调函数有自己的 this
+    }, 100);
+  },
+  sayNameFixed: function() {
+    const self = this;  // 保存 this
+    setTimeout(function() {
+      console.log(self.name);  // "Classic"
+    }, 100);
+  }
+};
+
+// 现代方案：箭头函数或 bind
+const modernObj = {
+  name: 'Modern',
+  sayNameLater: function() {
+    setTimeout(() => {
+      console.log(this.name);  // "Modern"
+    }, 100);
+  },
+  sayNameWithBind: function() {
+    setTimeout(function() {
+      console.log(this.name);
+    }.bind(this), 100);
+  }
+};</code></pre>
+
+        <h3>this 绑定的优先级演示</h3>
+        <pre><code>function foo() {
+  console.log(this.a);
+}
+
+const obj1 = { a: 1, foo: foo };
+const obj2 = { a: 2, foo: foo };
+
+obj1.foo.call(obj2);  // 2 - 显式绑定 > 隐式绑定
+
+// new vs 显式
+function bar() {
+  console.log(this.a);
+}
+const baz = { a: 3 };
+const boundBar = bar.bind(baz);
+new boundBar();  // undefined - new 绑定 > 显式绑定</code></pre>
+
+        <div class="interview-q">
+          <div class="q">Q: 手写实现 bind 函数</div>
+          <div class="a">
+            <pre><code>Function.prototype.myBind = function(context, ...args) {
+  const fn = this;
+
+  // 返回的绑定函数
+  function bound(...args2) {
+    // 如果被 new 调用，this 应该是新对象
+    // 否则使用绑定的 context
+    const isNew = this instanceof bound;
+    return fn.call(isNew ? this : context, ...args, ...args2);
+  }
+
+  // 保持原型链
+  bound.prototype = Object.create(fn.prototype);
+
+  return bound;
+};
+
+// 测试
+function greet(greeting, name) {
+  console.log(`${greeting}, ${name}! I am ${this.title}`);
+}
+
+const boundGreet = greet.myBind({ title: 'Developer' }, 'Hello');
+boundGreet('World');  // "Hello, World! I am Developer"
+
+// new 调用
+function Person(name) {
+  this.name = name;
+}
+const BoundPerson = Person.myBind({ name: 'bound' });
+const p = new BoundPerson('Alice');
+console.log(p.name);  // "Alice"（new 优先）</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="prototype">
+        <h2>原型与原型链 <span class="tag tag-core">核心</span> <span class="tag tag-interview">必考</span></h2>
+
+        <h3>核心概念图解</h3>
+        <pre><code>// 构造函数、实例、原型的关系
+function Person(name) {
+  this.name = name;
+}
+
+Person.prototype.sayHello = function() {
+  console.log(`Hello, I'm ${this.name}`);
+};
+
+const alice = new Person('Alice');
+
+// 关系：
+// alice.__proto__ === Person.prototype
+// Person.prototype.constructor === Person
+// Person.__proto__ === Function.prototype
+// Function.prototype.__proto__ === Object.prototype
+// Object.prototype.__proto__ === null（原型链终点）</code></pre>
+
+        <h3>继承的实现方式演进</h3>
+        <pre><code>// 1. 原型链继承（问题：引用类型共享）
+function Parent() {
+  this.colors = ['red', 'blue'];
+}
+function Child() {}
+Child.prototype = new Parent();
+
+const c1 = new Child();
+c1.colors.push('green');
+const c2 = new Child();
+console.log(c2.colors);  // ['red', 'blue', 'green'] - 共享了！
+
+// 2. 构造函数继承（问题：方法无法复用）
+function Child2() {
+  Parent.call(this);  // 借用构造函数
+}
+
+// 3. 组合继承（最常用）
+function Child3(name) {
+  Parent.call(this);  // 继承属性
+}
+Child3.prototype = new Parent();  // 继承方法
+Child3.prototype.constructor = Child3;  // 修复 constructor
+
+// 4. 寄生组合继承（优化版）
+function inherit(Child, Parent) {
+  const prototype = Object.create(Parent.prototype);
+  prototype.constructor = Child;
+  Child.prototype = prototype;
+}
+
+function Child4(name) {
+  Parent.call(this);
+}
+inherit(Child4, Parent);
+
+// 5. ES6 Class（语法糖，本质相同）
+class ModernChild extends Parent {
+  constructor(name) {
+    super(name);  // 调用父类构造函数
+    this.name = name;
+  }
+
+  sayHi() {
+    console.log(`Hi, I'm ${this.name}`);
+  }
+}</code></pre>
+
+        <h3>instanceof 与 isPrototypeOf</h3>
+        <pre><code>// instanceof：检查原型链
+alice instanceof Person      // true
+alice instanceof Object      // true
+alice instanceof Array       // false
+
+// 手写 instanceof
+function myInstanceof(obj, Constructor) {
+  let proto = Object.getPrototypeOf(obj);
+  while (proto) {
+    if (proto === Constructor.prototype) return true;
+    proto = Object.getPrototypeOf(proto);
+  }
+  return false;
+}
+
+// isPrototypeOf：检查是否在原型链上
+Person.prototype.isPrototypeOf(alice);  // true
+Object.prototype.isPrototypeOf(alice);  // true</code></pre>
+
+        <h3>Object.create 的 polyfill</h3>
+        <pre><code>// Object.create 原理
+Object.myCreate = function(proto, properties) {
+  function F() {}
+  F.prototype = proto;
+  const obj = new F();
+  if (properties) {
+    Object.defineProperties(obj, properties);
+  }
+  return obj;
+};
+
+// 使用
+const person = {
+  greet() {
+    console.log('Hello');
+  }
+};
+const john = Object.myCreate(person);
+john.greet();  // "Hello"</code></pre>
+
+        <div class="interview-q">
+          <div class="q">Q: new 操作符具体做了什么？</div>
+          <div class="a">
+            <pre><code>// 手写 new
+function myNew(Constructor, ...args) {
+  // 1. 创建空对象，原型指向 Constructor.prototype
+  const obj = Object.create(Constructor.prototype);
+
+  // 2. 执行构造函数，this 绑定到新对象
+  const result = Constructor.apply(obj, args);
+
+  // 3. 如果构造函数返回对象，则返回该对象；否则返回新对象
+  return (result && typeof result === 'object') ? result : obj;
+}
+
+// 测试
+function Person(name) {
+  this.name = name;
+}
+const p = myNew(Person, 'Alice');
+console.log(p.name);  // "Alice"
+
+// 构造函数返回对象的情况
+function ReturnObject() {
+  this.name = 'not returned';
+  return { name: 'returned' };
+}
+const r = myNew(ReturnObject);
+console.log(r.name);  // "returned"</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="event-loop">
+        <h2>事件循环 (Event Loop) <span class="tag tag-core">核心</span> <span class="tag tag-interview">必考</span></h2>
+
+        <h3>浏览器事件循环模型</h3>
+        <div class="highlight-box">
+          <strong>执行顺序：</strong>
+          <ol>
+            <li>执行同步代码（调用栈）</li>
+            <li>执行所有微任务（Microtasks）：Promise.then/catch/finally、queueMicrotask、MutationObserver</li>
+            <li>执行一个宏任务（Macrotask）：setTimeout/setInterval、setImmediate、I/O、UI渲染</li>
+            <li>重复步骤 2-3</li>
+          </ol>
+        </div>
+
+        <pre><code>// 经典面试题
+console.log('1');  // 同步
+
+setTimeout(() => {
+  console.log('2');  // 宏任务
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('3');  // 微任务
+});
+
+console.log('4');  // 同步
+
+// 输出：1, 4, 3, 2
+
+// 复杂版本
+console.log('1');
+
+setTimeout(() => {
+  console.log('2');
+  Promise.resolve().then(() => console.log('3'));
+}, 0);
+
+Promise.resolve().then(() => {
+  console.log('4');
+  setTimeout(() => console.log('5'), 0);
+});
+
+console.log('6');
+
+// 输出：1, 6, 4, 2, 3, 5
+// 解释：
+// - 同步：1, 6
+// - 微任务：4（执行中又添加宏任务5）
+// - 宏任务：2（执行中又添加微任务3）
+// - 微任务：3
+// - 宏任务：5</code></pre>
+
+        <h3>宏任务 vs 微任务</h3>
+        <table class="compare-table">
+          <tr>
+            <th>类型</th>
+            <th>包含</th>
+            <th>优先级</th>
+          </tr>
+          <tr>
+            <td>同步代码</td>
+            <td>主执行栈</td>
+            <td>最高</td>
+          </tr>
+          <tr>
+            <td>微任务 (Microtask)</td>
+            <td>Promise.then、queueMicrotask、MutationObserver</td>
+            <td>高</td>
+          </tr>
+          <tr>
+            <td>宏任务 (Macrotask)</td>
+            <td>setTimeout/setInterval、setImmediate、I/O、MessageChannel</td>
+            <td>低</td>
+          </tr>
+          <tr>
+            <td>UI 渲染</td>
+            <td>requestAnimationFrame</td>
+            <td>每帧一次</td>
+          </tr>
+        </table>
+
+        <h3>Node.js 事件循环</h3>
+        <pre><code>// Node.js 事件循环阶段：
+// 1. timers: setTimeout/setInterval
+// 2. pending callbacks: 系统回调
+// 3. idle, prepare: 内部使用
+// 4. poll: 获取新的 I/O 事件
+// 5. check: setImmediate
+// 6. close callbacks: 关闭事件
+
+setTimeout(() => console.log('timeout'), 0);
+setImmediate(() => console.log('immediate'));
+
+// 在主模块中执行顺序不确定！
+// 在 I/O 回调中，setImmediate 总是在 setTimeout 之前</code></pre>
+
+        <h3>nextTick 与 Promise</h3>
+        <pre><code>// Node.js：process.nextTick 优先级最高
+setTimeout(() => console.log('timeout'), 0);
+Promise.resolve().then(() => console.log('promise'));
+process.nextTick(() => console.log('nextTick'));
+
+// 输出：nextTick, promise, timeout
+// nextTick 会在当前操作完成后、事件循环继续之前执行</code></pre>
+      </section>
+
+      <section id="promise">
+        <h2>Promise <span class="tag tag-core">核心</span></h2>
+
+        <h3>Promise 状态与链式调用</h3>
+        <pre><code>// Promise 状态：pending -> fulfilled/rejected
+const p = new Promise((resolve, reject) => {
+  setTimeout(() => resolve('success'), 1000);
+});
+
+// 链式调用
+p
+  .then(value => {
+    console.log(value);  // "success"
+    return value + '!';
+  })
+  .then(value => {
+    console.log(value);  // "success!"
+    throw new Error('oops');
+  })
+  .catch(err => {
+    console.log(err.message);  // "oops"
+    return 'recovered';
+  })
+  .then(value => {
+    console.log(value);  // "recovered"
+  })
+  .finally(() => {
+    console.log('done');
+  });
+
+// then 返回新 Promise
+const p2 = Promise.resolve(1);
+const p3 = p2.then(v => v + 1);
+console.log(p2 === p3);  // false - 新 Promise</code></pre>
+
+        <h3>Promise 静态方法</h3>
+        <pre><code>// Promise.resolve/reject
+Promise.resolve(42);           // 已解决
+Promise.reject(new Error());
+
+// Promise.all - 全部成功才算成功，一个失败全部失败
+Promise.all([p1, p2, p3]).then(values => {
+  // values = [v1, v2, v3]
+}).catch(err => {
+  // 第一个失败的错误
+});
+
+// Promise.race - 返回最先完成的
+Promise.race([p1, p2]).then(winner => {});
+
+// Promise.allSettled - 等待所有完成（无论成功失败）
+Promise.allSettled([p1, p2]).then(results => {
+  // results = [{status: 'fulfilled', value: ...}, {status: 'rejected', reason: ...}]
+});
+
+// Promise.any - 返回第一个成功的，全部失败才失败
+Promise.any([p1, p2]).then(firstSuccess => {});
+
+// Promise.withResolvers (ES2024)
+const { promise, resolve, reject } = Promise.withResolvers();
+// 适用于需要在外部 resolve 的场景</code></pre>
+
+        <div class="interview-q">
+          <div class="q">Q: 手写 Promise 实现（简化版）</div>
+          <div class="a">
+            <pre><code>class MyPromise {
+  constructor(executor) {
+    this.state = 'pending';
+    this.value = undefined;
+    this.reason = undefined;
+    this.onFulfilledCallbacks = [];
+    this.onRejectedCallbacks = [];
+
+    const resolve = (value) => {
+      if (this.state === 'pending') {
+        this.state = 'fulfilled';
+        this.value = value;
+        this.onFulfilledCallbacks.forEach(fn => fn());
+      }
+    };
+
+    const reject = (reason) => {
+      if (this.state === 'pending') {
+        this.state = 'rejected';
+        this.reason = reason;
+        this.onRejectedCallbacks.forEach(fn => fn());
+      }
+    };
+
+    try {
+      executor(resolve, reject);
+    } catch (err) {
+      reject(err);
+    }
+  }
+
+  then(onFulfilled, onRejected) {
+    onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : v => v;
+    onRejected = typeof onRejected === 'function' ? onRejected : e => { throw e };
+
+    const promise2 = new MyPromise((resolve, reject) => {
+      if (this.state === 'fulfilled') {
+        setTimeout(() => {
+          try {
+            const x = onFulfilled(this.value);
+            resolvePromise(promise2, x, resolve, reject);
+          } catch (err) {
+            reject(err);
+          }
+        }, 0);
+      } else if (this.state === 'rejected') {
+        setTimeout(() => {
+          try {
+            const x = onRejected(this.reason);
+            resolvePromise(promise2, x, resolve, reject);
+          } catch (err) {
+            reject(err);
+          }
+        }, 0);
+      } else {
+        this.onFulfilledCallbacks.push(() => {
+          setTimeout(() => {
+            try {
+              const x = onFulfilled(this.value);
+              resolvePromise(promise2, x, resolve, reject);
+            } catch (err) {
+              reject(err);
+            }
+          }, 0);
+        });
+        this.onRejectedCallbacks.push(() => {
+          setTimeout(() => {
+            try {
+              const x = onRejected(this.reason);
+              resolvePromise(promise2, x, resolve, reject);
+            } catch (err) {
+              reject(err);
+            }
+          }, 0);
+        });
+      }
+    });
+
+    return promise2;
+  }
+}
+
+// 处理 then 返回值的辅助函数
+function resolvePromise(promise2, x, resolve, reject) {
+  if (promise2 === x) {
+    reject(new TypeError('Chaining cycle detected'));
+    return;
+  }
+  if (x && (typeof x === 'object' || typeof x === 'function')) {
+    let called = false;
+    try {
+      const then = x.then;
+      if (typeof then === 'function') {
+        then.call(x, (y) => {
+          if (called) return;
+          called = true;
+          resolvePromise(promise2, y, resolve, reject);
+        }, (r) => {
+          if (called) return;
+          called = true;
+          reject(r);
+        });
+      } else {
+        resolve(x);
+      }
+    } catch (err) {
+      if (called) return;
+      reject(err);
+    }
+  } else {
+    resolve(x);
+  }
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="proxy">
+        <h2>Proxy 代理 <span class="tag tag-advanced">进阶</span></h2>
+
+        <h3>基础拦截器</h3>
+        <pre><code>const target = { name: 'Alice', age: 25 };
+
+const proxy = new Proxy(target, {
+  get(target, prop, receiver) {
+    console.log(`Getting ${prop}`);
+    return Reflect.get(target, prop, receiver);
+  },
+
+  set(target, prop, value, receiver) {
+    console.log(`Setting ${prop} = ${value}`);
+    return Reflect.set(target, prop, value, receiver);
+  },
+
+  has(target, prop) {
+    console.log(`Checking ${prop}`);
+    return Reflect.has(target, prop);
+  },
+
+  deleteProperty(target, prop) {
+    console.log(`Deleting ${prop}`);
+    return Reflect.deleteProperty(target, prop);
+  }
+});
+
+proxy.name;      // Getting name -> "Alice"
+proxy.age = 26;  // Setting age = 26 -> true
+'name' in proxy; // Checking name -> true
+delete proxy.age;// Deleting age -> true</code></pre>
+
+        <h3>实用场景</h3>
+        <pre><code>// 1. 数据验证
+const validator = {
+  set(target, prop, value) {
+    if (prop === 'age') {
+      if (!Number.isInteger(value)) {
+        throw new TypeError('Age must be integer');
+      }
+      if (value < 0 || value > 150) {
+        throw new RangeError('Age must be 0-150');
+      }
+    }
+    target[prop] = value;
+    return true;
+  }
+};
+
+const person = new Proxy({}, validator);
+person.age = 25;  // OK
+// person.age = -5;  // Error!
+
+// 2. 私有属性保护
+const withPrivate = (target) => new Proxy(target, {
+  get(target, prop) {
+    if (prop.startsWith('_')) {
+      throw new Error(`Private property "${prop}" is not accessible`);
+    }
+    return target[prop];
+  },
+  has(target, prop) {
+    if (prop.startsWith('_')) return false;
+    return prop in target;
+  }
+});
+
+const data = withPrivate({ _secret: 123, public: 456 });
+console.log(data.public);    // 456
+// console.log(data._secret); // Error!
+
+// 3. 函数参数日志
+function logFn(fn) {
+  return new Proxy(fn, {
+    apply(target, thisArg, args) {
+      console.log(`Calling ${fn.name} with:`, args);
+      const result = Reflect.apply(target, thisArg, args);
+      console.log(`Result:`, result);
+      return result;
+    }
+  });
+}
+
+const add = logFn((a, b) => a + b);
+add(2, 3);  // 自动打印调用日志
+
+// 4. 响应式系统简化版（Vue3 原理）
+function reactive(obj) {
+  return new Proxy(obj, {
+    get(target, key) {
+      track(target, key);  // 收集依赖
+      return Reflect.get(target, key);
+    },
+    set(target, key, value) {
+      const oldValue = target[key];
+      const result = Reflect.set(target, key, value);
+      if (oldValue !== value) {
+        trigger(target, key);  // 触发更新
+      }
+      return result;
+    }
+  });
+}</code></pre>
+
+        <h3>Proxy vs Object.defineProperty</h3>
+        <table class="compare-table">
+          <tr>
+            <th>特性</th>
+            <th>Proxy</th>
+            <th>defineProperty</th>
+          </tr>
+          <tr>
+            <td>拦截能力</td>
+            <td>13种操作（get/set/has/delete/apply等）</td>
+            <td>get/set/configurable/enumerable</td>
+          </tr>
+          <tr>
+            <td>新增属性</td>
+            <td>自动拦截</td>
+            <td>无法拦截</td>
+          </tr>
+          <tr>
+            <td>数组索引</td>
+            <td>自动拦截</td>
+            <td>需手动设置每个索引</td>
+          </tr>
+          <tr>
+            <td>嵌套对象</td>
+            <td>需递归代理</td>
+            <td>需递归设置</td>
+          </tr>
+          <tr>
+            <td>兼容性</td>
+            <td>IE11+（不支持）</td>
+            <td>IE9+</td>
+          </tr>
+        </table>
+      </section>
+
+      <section id="reflect">
+        <h2>Reflect API <span class="tag tag-advanced">进阶</span></h2>
+
+        <h3>Reflect 设计目的</h3>
+        <p>Reflect 是 ES6 引入的<strong>对象操作统一 API</strong>，将所有 Object 上的命令式操作改为函数式调用，并与 Proxy 的拦截器一一对应。</p>
+
+        <h3>Reflect 与 Object 方法对比</h3>
+        <pre><code>// Object 命令式 vs Reflect 函数式
+
+// 属性读取
+obj[key]              // 操作符
+Reflect.get(obj, key) // 函数式
+
+// 属性设置
+obj[key] = value
+Reflect.set(obj, key, value)
+
+// 属性删除
+delete obj[key]
+Reflect.deleteProperty(obj, key)
+
+// 原型设置
+Object.setPrototypeOf(obj, proto)
+Reflect.setPrototypeOf(obj, proto)
+
+// 原型获取
+Object.getPrototypeOf(obj)
+Reflect.getPrototypeOf(obj)
+
+// 属性定义
+Object.defineProperty(obj, key, desc)
+Reflect.defineProperty(obj, key, desc)
+
+// 属性枚举
+Object.keys(obj)
+Reflect.ownKeys(obj)  // 包含 symbol 和不可枚举
+
+// 属性描述符
+Object.getOwnPropertyDescriptor(obj, key)
+Reflect.getOwnPropertyDescriptor(obj, key)
+
+// 属性检测
+key in obj
+Reflect.has(obj, key)
+
+// 函数调用
+fn(...args)
+Reflect.apply(fn, thisArg, args)
+
+// 构造函数
+new Constructor(...args)
+Reflect.construct(Constructor, args, newTarget)</code></pre>
+
+        <h3>Reflect 的优势</h3>
+        <pre><code>// 1. 返回布尔值，便于错误处理
+if (Reflect.defineProperty(obj, key, desc)) {
+  console.log('Success');
+} else {
+  console.log('Failed');
+}
+
+// Object.defineProperty 失败会抛错
+
+try {
+  Object.defineProperty(obj, key, desc);
+} catch (e) {
+  console.log('Failed');
+}
+
+// 2. 更精确的原型操作
+// Object.setPrototypeOf 返回对象本身
+// Reflect.setPrototypeOf 返回布尔值
+
+// 3. 与 Proxy 完美配合
+const proxy = new Proxy(target, {
+  get(target, prop, receiver) {
+    // 使用 Reflect 保持默认行为
+    return Reflect.get(target, prop, receiver);
+  },
+
+  set(target, prop, value, receiver) {
+    // receiver 确保 this 指向正确（继承场景）
+    return Reflect.set(target, prop, value, receiver);
+  }
+});
+
+// 4. 函数式编程友好
+const objs = [{ a: 1 }, { b: 2 }];
+const keys = objs.flatMap(obj => Reflect.ownKeys(obj));
+
+// 5. 支持 receiver（解决 this 绑定）
+const obj = {
+  name: 'Alice',
+  get getter() {
+    return this.name;
+  }
+};
+
+const proxy = new Proxy(obj, {
+  get(target, prop, receiver) {
+    // receiver 是 proxy，不是 target
+    // 使用 Reflect 保持正确的 this 绑定
+    return Reflect.get(target, prop, receiver);
+  }
+});
+
+const child = Object.create(proxy);
+child.name = 'Bob';
+console.log(child.getter); // "Bob"（正确）</code></pre>
+
+        <h3>完整 Reflect API 列表</h3>
+        <table class="compare-table">
+          <tr>
+            <th>方法</th>
+            <th>对应操作</th>
+            <th>返回值</th>
+          </tr>
+          <tr>
+            <td>Reflect.get()</td>
+            <td>读取属性</td>
+            <td>属性值</td>
+          </tr>
+          <tr>
+            <td>Reflect.set()</td>
+            <td>设置属性</td>
+            <td>布尔值</td>
+          </tr>
+          <tr>
+            <td>Reflect.has()</td>
+            <td>in 操作符</td>
+            <td>布尔值</td>
+          </tr>
+          <tr>
+            <td>Reflect.deleteProperty()</td>
+            <td>delete 操作符</td>
+            <td>布尔值</td>
+          </tr>
+          <tr>
+            <td>Reflect.getPrototypeOf()</td>
+            <td>Object.getPrototypeOf</td>
+            <td>原型对象</td>
+          </tr>
+          <tr>
+            <td>Reflect.setPrototypeOf()</td>
+            <td>Object.setPrototypeOf</td>
+            <td>布尔值</td>
+          </tr>
+          <tr>
+            <td>Reflect.getOwnPropertyDescriptor()</td>
+            <td>Object.getOwnPropertyDescriptor</td>
+            <td>描述符</td>
+          </tr>
+          <tr>
+            <td>Reflect.defineProperty()</td>
+            <td>Object.defineProperty</td>
+            <td>布尔值</td>
+          </tr>
+          <tr>
+            <td>Reflect.ownKeys()</td>
+            <td>Object.getOwnPropertyNames + Symbols</td>
+            <td>数组</td>
+          </tr>
+          <tr>
+            <td>Reflect.apply()</td>
+            <td>调用函数</td>
+            <td>任意值</td>
+          </tr>
+          <tr>
+            <td>Reflect.construct()</td>
+            <td>new 操作符</td>
+            <td>实例对象</td>
+          </tr>
+          <tr>
+            <td>Reflect.isExtensible()</td>
+            <td>Object.isExtensible</td>
+            <td>布尔值</td>
+          </tr>
+          <tr>
+            <td>Reflect.preventExtensions()</td>
+            <td>Object.preventExtensions</td>
+            <td>布尔值</td>
+          </tr>
+        </table>
+
+        <div class="interview-q">
+          <div class="q">Q: Reflect.ownKeys() vs Object.keys() 区别？</div>
+          <div class="a">
+            <pre><code>const obj = {
+  normal: 1,
+  [Symbol('sym')]: 2
+};
+Object.defineProperty(obj, 'hidden', {
+  value: 3,
+  enumerable: false
+});
+
+Object.keys(obj);        // ['normal'] - 仅可枚举字符串键
+Object.getOwnPropertyNames(obj);  // ['normal', 'hidden'] - 所有字符串键
+Object.getOwnPropertySymbols(obj); // [Symbol(sym)] - 所有 Symbol 键
+
+Reflect.ownKeys(obj);    // ['normal', 'hidden', Symbol(sym)] - 所有键
+
+// Reflect.ownKeys 顺序：
+// 1. 整数索引（按数字排序）
+// 2. 字符串键（按添加顺序）
+// 3. Symbol 键（按添加顺序）</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="es6-features">
+        <h2>ES6+ 核心特性 <span class="tag tag-core">核心</span></h2>
+
+        <h3>解构赋值深度解析</h3>
+        <pre><code>// 基础解构
+const { a, b } = { a: 1, b: 2 };
+const [x, y] = [1, 2];
+
+// 重命名
+const { a: newA, b: newB } = { a: 1, b: 2 };
+
+// 默认值
+const { a = 1, b = 2 } = {};  // a=1, b=2
+const [x = 1, y = 2] = [];    // x=1, y=2
+
+// 嵌套解构
+const user = {
+  info: {
+    name: 'Alice',
+    age: 25
+  },
+  hobbies: ['coding', 'reading']
+};
+
+const { info: { name, age }, hobbies: [first] } = user;
+// name='Alice', age=25, first='coding'
+
+// 剩余元素
+const { a, ...rest } = { a: 1, b: 2, c: 3 };
+// rest = { b: 2, c: 3 }
+
+const [first, ...others] = [1, 2, 3, 4];
+// first = 1, others = [2, 3, 4]
+
+// 交换变量
+let x1 = 1, y1 = 2;
+[x1, y1] = [y1, x1];
+
+// 函数参数解构
+function draw({ shape = 'circle', x = 0, y = 0 }) {
+  console.log(shape, x, y);
+}
+draw({ shape: 'rect', x: 10 });  // rect, 10, 0
+
+// 复杂解构
+const [{ prop: value }] = [{ prop: 123 }];  // value = 123</code></pre>
+
+        <h3>Spread 与 Rest 运算符</h3>
+        <pre><code>// Spread 展开
+const arr1 = [1, 2];
+const arr2 = [...arr1, 3, 4];  // [1, 2, 3, 4]
+
+const obj1 = { a: 1 };
+const obj2 = { ...obj1, b: 2 };  // { a: 1, b: 2 }
+
+// 数组克隆（浅拷贝）
+const clone = [...original];
+
+// 对象克隆（浅拷贝）
+const clone = { ...original };
+
+// 合并对象
+const merged = { ...obj1, ...obj2 };
+// 同名属性后者覆盖前者
+
+// Rest 收集
+function sum(...numbers) {
+  return numbers.reduce((a, b) => a + b, 0);
+}
+sum(1, 2, 3, 4);  // 10
+
+// 与解构结合
+const [first, ...rest] = [1, 2, 3, 4];  // first=1, rest=[2,3,4]
+
+// 注意：只能有一个 rest 参数，且必须在最后
+function fn(a, ...rest, b) {}  // SyntaxError
+function fn(a, ...rest) {}     // OK</code></pre>
+
+        <h3>Class 完整指南</h3>
+        <pre><code>// 基础类
+class Animal {
+  // 静态属性
+  static species = 'Animal';
+
+  // 私有字段（ES2022）
+  #privateField = 'private';
+
+  // 公共字段
+  publicField = 'public';
+
+  constructor(name) {
+    this.name = name;
+  }
+
+  // 实例方法
+  speak() {
+    console.log(`${this.name} makes a sound`);
+  }
+
+  // 静态方法
+  static isAnimal(obj) {
+    return obj instanceof Animal;
+  }
+
+  // Getter/Setter
+  get privateInfo() {
+    return this.#privateField;
+  }
+
+  set privateInfo(value) {
+    this.#privateField = value;
+  }
+
+  // 私有方法（ES2022）
+  #privateMethod() {
+    return 'private result';
+  }
+}
+
+// 继承
+class Dog extends Animal {
+  constructor(name, breed) {
+    super(name);  // 必须！且要在使用 this 之前
+    this.breed = breed;
+  }
+
+  speak() {
+    super.speak();  // 调用父类方法
+    console.log(`${this.name} barks`);
+  }
+
+  // 静态属性继承
+  static species = 'Dog';
+}
+
+const dog = new Dog('Buddy', 'Golden Retriever');
+dog.speak();
+
+// 类表达式
+const MyClass = class {
+  constructor() {}
+};
+
+// 立即执行类
+const singleton = new class {
+  constructor() {
+    this.value = 42;
+  }
+}();</code></pre>
+
+        <h3>Map/Set/WeakMap/WeakSet</h3>
+        <pre><code>// Map - 键值对，键可以是任意类型
+const map = new Map();
+map.set('key', 'value');
+map.set({}, 'object key');
+map.set(NaN, 'NaN works');
+
+map.get('key');           // 'value'
+map.has('key');           // true
+map.delete('key');        // true
+map.size;                 // 0
+
+// 初始化
+const map2 = new Map([['a', 1], ['b', 2]]);
+
+// Set - 唯一值集合
+const set = new Set([1, 2, 2, 3]);  // {1, 2, 3}
+set.add(4);
+set.has(2);    // true
+set.delete(2);
+set.size;      // 3
+
+// 数组去重
+const unique = [...new Set(arr)];
+
+// WeakMap - 弱引用键（必须是对象）
+const weakMap = new WeakMap();
+let obj = {};
+weakMap.set(obj, 'value');
+obj = null;  // 对象可被垃圾回收，weakMap 自动移除
+
+// WeakSet - 弱引用值
+const weakSet = new WeakSet();
+weakSet.add(obj);
+
+// 使用场景：DOM 节点关联数据
+const elementData = new WeakMap();
+elementData.set(domNode, { clicks: 0 });
+// domNode 被移除后，关联数据自动释放</code></pre>
+      </section>
+
+      <section id="interview-code">
+        <h2>手写代码实现 <span class="tag tag-interview">必考</span></h2>
+
+        <h3>1. 深拷贝</h3>
+        <pre><code>function deepClone(obj, map = new WeakMap()) {
+  // 处理 null 或基本类型
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  // 处理 Date
+  if (obj instanceof Date) return new Date(obj);
+
+  // 处理 RegExp
+  if (obj instanceof RegExp) return new RegExp(obj);
+
+  // 处理 Map
+  if (obj instanceof Map) {
+    const clone = new Map();
+    map.set(obj, clone);
+    obj.forEach((value, key) => {
+      clone.set(deepClone(key, map), deepClone(value, map));
+    });
+    return clone;
+  }
+
+  // 处理 Set
+  if (obj instanceof Set) {
+    const clone = new Set();
+    map.set(obj, clone);
+    obj.forEach(value => {
+      clone.add(deepClone(value, map));
+    });
+    return clone;
+  }
+
+  // 处理循环引用
+  if (map.has(obj)) {
+    return map.get(obj);
+  }
+
+  // 创建新对象/数组
+  const clone = Array.isArray(obj) ? [] : {};
+  map.set(obj, clone);
+
+  // 复制 Symbol 属性
+  const symKeys = Object.getOwnPropertySymbols(obj);
+  for (const sym of symKeys) {
+    clone[sym] = deepClone(obj[sym], map);
+  }
+
+  // 复制普通属性
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      clone[key] = deepClone(obj[key], map);
+    }
+  }
+
+  return clone;
+}</code></pre>
+
+        <h3>2. 节流 Throttle</h3>
+        <pre><code>function throttle(fn, wait, options = {}) {
+  let timeout = null;
+  let previous = 0;
+
+  return function(...args) {
+    const now = Date.now();
+    const { leading = true, trailing = true } = options;
+
+    if (!previous && !leading) {
+      previous = now;
+    }
+
+    const remaining = wait - (now - previous);
+
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout);
+        timeout = null;
+      }
+      fn.apply(this, args);
+      previous = now;
+    } else if (!timeout && trailing) {
+      timeout = setTimeout(() => {
+        previous = leading ? Date.now() : 0;
+        timeout = null;
+        fn.apply(this, args);
+      }, remaining);
+    }
+  };
+}
+
+// leading: 首次立即执行
+event.addEventListener('scroll', throttle(handler, 100, { leading: true }));
+
+// trailing: 结束后额外执行一次
+event.addEventListener('scroll', throttle(handler, 100, { trailing: true }));</code></pre>
+
+        <h3>3. 数组方法</h3>
+        <pre><code>// map
+Array.prototype.myMap = function(fn, thisArg) {
+  const result = [];
+  for (let i = 0; i < this.length; i++) {
+    if (i in this) {
+      result.push(fn.call(thisArg, this[i], i, this));
+    }
+  }
+  return result;
+};
+
+// filter
+Array.prototype.myFilter = function(fn, thisArg) {
+  const result = [];
+  for (let i = 0; i < this.length; i++) {
+    if (i in this && fn.call(thisArg, this[i], i, this)) {
+      result.push(this[i]);
+    }
+  }
+  return result;
+};
+
+// reduce
+Array.prototype.myReduce = function(fn, initialValue) {
+  let accumulator = initialValue;
+  let startIndex = 0;
+
+  if (accumulator === undefined) {
+    accumulator = this[0];
+    startIndex = 1;
+  }
+
+  for (let i = startIndex; i < this.length; i++) {
+    if (i in this) {
+      accumulator = fn(accumulator, this[i], i, this);
+    }
+  }
+
+  return accumulator;
+};
+
+// flat
+Array.prototype.myFlat = function(depth = 1) {
+  const result = [];
+
+  function flatten(arr, currentDepth) {
+    for (const item of arr) {
+      if (Array.isArray(item) && currentDepth < depth) {
+        flatten(item, currentDepth + 1);
+      } else {
+        result.push(item);
+      }
+    }
+  }
+
+  flatten(this, 0);
+  return result;
+};</code></pre>
+
+        <h3>4. 柯里化与偏函数</h3>
+        <pre><code>// 柯里化
+function curry(fn) {
+  return function curried(...args) {
+    if (args.length >= fn.length) {
+      return fn.apply(this, args);
+    } else {
+      return function(...args2) {
+        return curried.apply(this, args.concat(args2));
+      };
+    }
+  };
+}
+
+const add = curry((a, b, c) => a + b + c);
+console.log(add(1)(2)(3));  // 6
+console.log(add(1, 2)(3));  // 6
+console.log(add(1)(2, 3));  // 6
+
+// 偏函数（占位符版）
+function partial(fn, ...args) {
+  return function(...args2) {
+    let argIndex = 0;
+    const finalArgs = args.map(arg =>
+      arg === partial._ ? args2[argIndex++] : arg
+    );
+    return fn.apply(this, finalArgs.concat(args2.slice(argIndex)));
+  };
+}
+
+partial._ = Symbol('placeholder');
+
+const multiply = (a, b, c) => a * b * c;
+const double = partial(multiply, partial._, 2, partial._);
+console.log(double(3, 5));  // 3 * 2 * 5 = 30</code></pre>
+      </section>
+
+      <section id="interview-scenario">
+        <h2>场景题与最佳实践 <span class="tag tag-interview">热门</span></h2>
+
+        <div class="interview-q">
+          <div class="q">Q: 实现一个发布订阅模式 (EventEmitter)</div>
+          <div class="a">
+            <pre><code>class EventEmitter {
+  constructor() {
+    this.events = new Map();
+  }
+
+  on(event, listener) {
+    if (!this.events.has(event)) {
+      this.events.set(event, new Set());
+    }
+    this.events.get(event).add(listener);
+    return () => this.off(event, listener);  // 返回取消订阅函数
+  }
+
+  once(event, listener) {
+    const wrapper = (...args) => {
+      this.off(event, wrapper);
+      listener.apply(this, args);
+    };
+    return this.on(event, wrapper);
+  }
+
+  off(event, listener) {
+    if (this.events.has(event)) {
+      this.events.get(event).delete(listener);
+    }
+  }
+
+  emit(event, ...args) {
+    if (this.events.has(event)) {
+      this.events.get(event).forEach(listener => {
+        listener.apply(this, args);
+      });
+    }
+  }
+
+  removeAllListeners(event) {
+    if (event) {
+      this.events.delete(event);
+    } else {
+      this.events.clear();
+    }
+  }
+}
+
+// 使用
+const emitter = new EventEmitter();
+const unsubscribe = emitter.on('data', (data) => {
+  console.log('Received:', data);
+});
+
+emitter.emit('data', { message: 'Hello' });
+unsubscribe();  // 取消订阅</code></pre>
+          </div>
+        </div>
+
+        <div class="interview-q">
+          <div class="q">Q: 实现 LRU 缓存</div>
+          <div class="a">
+            <pre><code>class LRUCache {
+  constructor(capacity) {
+    this.capacity = capacity;
+    this.cache = new Map();  // 利用 Map 的有序性
+  }
+
+  get(key) {
+    if (!this.cache.has(key)) {
+      return -1;
+    }
+    // 移到最近使用（删除后重新插入到末尾）
+    const value = this.cache.get(key);
+    this.cache.delete(key);
+    this.cache.set(key, value);
+    return value;
+  }
+
+  put(key, value) {
+    if (this.cache.has(key)) {
+      this.cache.delete(key);
+    } else if (this.cache.size >= this.capacity) {
+      // 删除最久未使用的（第一个）
+      const firstKey = this.cache.keys().next().value;
+      this.cache.delete(firstKey);
+    }
+    this.cache.set(key, value);
+  }
+}
+
+// 测试
+const cache = new LRUCache(2);
+cache.put(1, 1);
+cache.put(2, 2);
+cache.get(1);    // 返回 1
+cache.put(3, 3); // 移除 key 2
+cache.get(2);    // 返回 -1</code></pre>
+          </div>
+        </div>
+
+        <div class="interview-q">
+          <div class="q">Q: 实现一个简单的 Promise.race</div>
+          <div class="a">
+            <pre><code>Promise.myRace = function(promises) {
+  return new Promise((resolve, reject) => {
+    if (promises.length === 0) return;
+
+    promises.forEach(promise => {
+      Promise.resolve(promise).then(resolve, reject);
+    });
+  });
+};
+
+// 使用
+const p1 = new Promise((resolve) => setTimeout(resolve, 500, 'slow'));
+const p2 = new Promise((resolve) => setTimeout(resolve, 100, 'fast'));
+
+Promise.myRace([p1, p2]).then(value => {
+  console.log(value);  // "fast"
+});</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <div style="margin-top: 80px; padding-top: 40px; border-top: 2px solid var(--border); color: var(--ink2); text-align: center;">
+        <p>祝你面试成功，Offer 拿到手软 🚀</p>
+        <p style="font-size: 12px; margin-top: 8px;">基于 ES2025 / ECMAScript 2025 规范 | 持续更新</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    const sections = document.querySelectorAll('section[id]');
+    const navItems = document.querySelectorAll('.nav-item a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navItems.forEach(item => {
+            item.style.color = '';
+            item.style.borderLeftColor = '';
+          });
+          const activeLink = document.querySelector(`.nav-item a[href="#${entry.target.id}"]`);
+          if (activeLink) {
+            activeLink.style.color = 'var(--accent)';
+            activeLink.style.borderLeftColor = 'var(--accent)';
+          }
+        }
+      });
+    }, { rootMargin: '-20% 0px -80% 0px', threshold: 0 });
+
+    sections.forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>

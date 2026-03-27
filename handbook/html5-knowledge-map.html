@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML5 知识体系全图 · 面试备战</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d1117;
+  --surface: #131920;
+  --surface2: #1a2330;
+  --border: #1e2d3e;
+  --ink: #d8e8f4;
+  --ink2: #7aa2be;
+  --ink3: #38556a;
+  --c1: #f07060; /* 语义化 - 赤 */
+  --c2: #5298f8; /* 表单 - 蓝 */
+  --c3: #34d48a; /* API - 绿 */
+  --c4: #a87aff; /* 存储 - 紫 */
+  --c5: #f5a030; /* 多媒体 - 橙 */
+  --c6: #22c8d8; /* 性能 - 青 */
+  --c7: #f06898; /* 安全 - 玫 */
+  --c8: #8aaac8; /* 规范 - 灰蓝 */
+  --mono: 'JetBrains Mono', monospace;
+  --serif: 'Noto Serif SC', serif;
+  --sans: 'Noto Sans SC', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* subtle grid lines */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(60,150,220,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(60,150,220,.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+}
+.page { position: relative; z-index: 1; }
+
+/* ─── Layout ─── */
+.page { max-width: 1100px; margin: 0 auto; padding: 56px 28px 100px; }
+
+/* ─── Header ─── */
+.masthead {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 24px;
+  padding-bottom: 32px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 48px;
+}
+.masthead-left {}
+.masthead-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin-bottom: 8px;
+}
+.masthead h1 {
+  font-family: var(--serif);
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 700;
+  line-height: 1.15;
+  color: var(--ink);
+}
+.masthead h1 em { font-style: normal; color: var(--c1); }
+.masthead-meta {
+  text-align: right;
+  font-size: 12px;
+  color: var(--ink3);
+  line-height: 1.9;
+}
+.masthead-meta strong { color: var(--ink2); font-weight: 500; }
+
+/* ─── Nav TOC ─── */
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 48px;
+}
+.toc-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1.5px solid;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.18s;
+  white-space: nowrap;
+}
+.toc-pill:hover { color: #fff; }
+.toc-pill .dot { width: 7px; height: 7px; border-radius: 50%; }
+
+/* ─── Section ─── */
+.section { margin-bottom: 56px; scroll-margin-top: 24px; }
+
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1.5px solid var(--border);
+}
+.section-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink3);
+  letter-spacing: 0.1em;
+}
+.section-icon {
+  width: 28px; height: 28px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+.section-title {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 700;
+}
+.section-badge {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.12em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-left: auto;
+  text-transform: uppercase;
+}
+
+/* ─── Cards grid ─── */
+.cards { display: grid; gap: 12px; }
+.cards-2 { grid-template-columns: repeat(2, 1fr); }
+.cards-3 { grid-template-columns: repeat(3, 1fr); }
+.cards-auto { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+
+@media (max-width: 700px) {
+  .cards-2, .cards-3, .cards-auto { grid-template-columns: 1fr; }
+  .masthead { grid-template-columns: 1fr; }
+  .masthead-meta { text-align: left; }
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 18px;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  border-radius: 3px 0 0 3px;
+}
+.card-title {
+  font-weight: 700;
+  font-size: 13.5px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.card-body {
+  font-size: 12.5px;
+  color: var(--ink2);
+  line-height: 1.7;
+}
+.card-body code, code {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  background: var(--surface2);
+  padding: 1px 5px;
+  border-radius: 3px;
+  color: var(--ink);
+}
+.card-body ul { padding-left: 0; list-style: none; }
+.card-body ul li { padding: 2px 0; display: flex; gap: 6px; }
+.card-body ul li::before { content: '›'; color: var(--ink3); flex-shrink: 0; }
+
+/* ─── Compare Table ─── */
+.compare-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+.compare-table th {
+  background: var(--surface2);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 11px;
+  font-family: var(--mono);
+  letter-spacing: 0.1em;
+  color: var(--ink2);
+  border-bottom: 1px solid var(--border);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.compare-table td {
+  padding: 10px 14px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.6;
+  color: var(--ink2);
+}
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:hover td { background: var(--surface2); }
+.compare-table td:first-child {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--ink);
+}
+
+/* ─── Tag chips ─── */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.chip {
+  font-family: var(--mono);
+  font-size: 10.5px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid;
+  white-space: nowrap;
+}
+
+/* ─── Highlight boxes ─── */
+.hbox {
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  margin-bottom: 10px;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+.hbox-icon { flex-shrink: 0; font-size: 15px; margin-top: 1px; }
+.hbox-body { color: var(--ink2); }
+.hbox-body strong { color: var(--ink); }
+.hbox.warn { background: rgba(245,180,50,.05); border: 1px solid rgba(245,180,50,.22); }
+.hbox.info { background: rgba(82,152,248,.05); border: 1px solid rgba(82,152,248,.22); }
+.hbox.tip  { background: rgba(52,212,138,.05); border: 1px solid rgba(52,212,138,.22); }
+.hbox.danger { background: rgba(240,96,96,.05); border: 1px solid rgba(240,96,96,.22); }
+
+/* ─── Code block ─── */
+.code-block {
+  background: #1e1e2e;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-family: var(--mono);
+  font-size: 12px;
+  line-height: 1.7;
+  color: #cdd6f4;
+  overflow-x: auto;
+  margin: 8px 0;
+}
+.code-block .cm { color: #6c7086; }
+.code-block .kw { color: #89b4fa; }
+.code-block .str { color: #a6e3a1; }
+.code-block .tag { color: #f38ba8; }
+.code-block .attr { color: #fab387; }
+.code-block .val { color: #a6e3a1; }
+
+/* ─── Interview badge ─── */
+.interview-star {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: #f5a030;
+  background: rgba(245,160,48,.1);
+  border: 1px solid rgba(245,160,48,.25);
+  border-radius: 3px;
+  padding: 1px 5px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+/* ─── Two-col detail ─── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ─── Divider label ─── */
+.divider-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink3);
+  margin: 16px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.divider-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ─── Color helpers ─── */
+.c1 { color: var(--c1); } .c2 { color: var(--c2); } .c3 { color: var(--c3); }
+.c4 { color: var(--c4); } .c5 { color: var(--c5); } .c6 { color: var(--c6); }
+.c7 { color: var(--c7); } .c8 { color: var(--c8); }
+
+.bg1 { background: color-mix(in srgb, var(--c1) 8%, transparent); border-color: color-mix(in srgb, var(--c1) 25%, transparent); }
+.bg2 { background: color-mix(in srgb, var(--c2) 8%, transparent); border-color: color-mix(in srgb, var(--c2) 25%, transparent); }
+.bg3 { background: color-mix(in srgb, var(--c3) 8%, transparent); border-color: color-mix(in srgb, var(--c3) 25%, transparent); }
+.bg4 { background: color-mix(in srgb, var(--c4) 8%, transparent); border-color: color-mix(in srgb, var(--c4) 25%, transparent); }
+.bg5 { background: color-mix(in srgb, var(--c5) 8%, transparent); border-color: color-mix(in srgb, var(--c5) 25%, transparent); }
+.bg6 { background: color-mix(in srgb, var(--c6) 8%, transparent); border-color: color-mix(in srgb, var(--c6) 25%, transparent); }
+.bg7 { background: color-mix(in srgb, var(--c7) 8%, transparent); border-color: color-mix(in srgb, var(--c7) 25%, transparent); }
+.bg8 { background: color-mix(in srgb, var(--c8) 10%, transparent); border-color: color-mix(in srgb, var(--c8) 20%, transparent); }
+
+.accent1::before { background: var(--c1); }
+.accent2::before { background: var(--c2); }
+.accent3::before { background: var(--c3); }
+.accent4::before { background: var(--c4); }
+.accent5::before { background: var(--c5); }
+.accent6::before { background: var(--c6); }
+.accent7::before { background: var(--c7); }
+.accent8::before { background: var(--c8); }
+
+.icon1 { background: color-mix(in srgb, var(--c1) 12%, transparent); }
+.icon2 { background: color-mix(in srgb, var(--c2) 12%, transparent); }
+.icon3 { background: color-mix(in srgb, var(--c3) 12%, transparent); }
+.icon4 { background: color-mix(in srgb, var(--c4) 12%, transparent); }
+.icon5 { background: color-mix(in srgb, var(--c5) 12%, transparent); }
+.icon6 { background: color-mix(in srgb, var(--c6) 12%, transparent); }
+.icon7 { background: color-mix(in srgb, var(--c7) 12%, transparent); }
+.icon8 { background: color-mix(in srgb, var(--c8) 12%, transparent); }
+
+.badge1 { background: color-mix(in srgb, var(--c1) 10%, transparent); color: var(--c1); border: 1px solid color-mix(in srgb, var(--c1) 25%, transparent); }
+.badge2 { background: color-mix(in srgb, var(--c2) 10%, transparent); color: var(--c2); border: 1px solid color-mix(in srgb, var(--c2) 25%, transparent); }
+.badge3 { background: color-mix(in srgb, var(--c3) 10%, transparent); color: var(--c3); border: 1px solid color-mix(in srgb, var(--c3) 25%, transparent); }
+.badge4 { background: color-mix(in srgb, var(--c4) 10%, transparent); color: var(--c4); border: 1px solid color-mix(in srgb, var(--c4) 25%, transparent); }
+.badge5 { background: color-mix(in srgb, var(--c5) 10%, transparent); color: var(--c5); border: 1px solid color-mix(in srgb, var(--c5) 25%, transparent); }
+.badge6 { background: color-mix(in srgb, var(--c6) 10%, transparent); color: var(--c6); border: 1px solid color-mix(in srgb, var(--c6) 25%, transparent); }
+.badge7 { background: color-mix(in srgb, var(--c7) 10%, transparent); color: var(--c7); border: 1px solid color-mix(in srgb, var(--c7) 25%, transparent); }
+.badge8 { background: color-mix(in srgb, var(--c8) 10%, transparent); color: var(--c8); border: 1px solid color-mix(in srgb, var(--c8) 25%, transparent); }
+
+.pill1 { border-color: var(--c1); color: var(--c1); } .pill1:hover { background: rgba(240,112,96,.14); }
+.pill2 { border-color: var(--c2); color: var(--c2); } .pill2:hover { background: rgba(82,152,248,.14); }
+.pill3 { border-color: var(--c3); color: var(--c3); } .pill3:hover { background: rgba(52,212,138,.14); }
+.pill4 { border-color: var(--c4); color: var(--c4); } .pill4:hover { background: rgba(168,122,255,.14); }
+.pill5 { border-color: var(--c5); color: var(--c5); } .pill5:hover { background: rgba(245,160,48,.14); }
+.pill6 { border-color: var(--c6); color: var(--c6); } .pill6:hover { background: rgba(34,200,216,.14); }
+.pill7 { border-color: var(--c7); color: var(--c7); } .pill7:hover { background: rgba(240,104,152,.14); }
+.pill8 { border-color: var(--c8); color: var(--c8); } .pill8:hover { background: rgba(138,170,200,.14); }
+.dot1{background:var(--c1);} .dot2{background:var(--c2);} .dot3{background:var(--c3);}
+.dot4{background:var(--c4);} .dot5{background:var(--c5);} .dot6{background:var(--c6);}
+.dot7{background:var(--c7);} .dot8{background:var(--c8);}
+
+/* full-width table card */
+.full-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+.full-card-head {
+  padding: 10px 16px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.full-card-body { padding: 14px 16px; }
+
+/* grid 2 for comparison */
+.vs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+@media (max-width: 640px) { .vs-grid { grid-template-columns: 1fr; } }
+.vs-card {
+  border-radius: 8px;
+  padding: 14px 16px;
+  border: 1px solid;
+}
+.vs-card .vs-title {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.vs-card .vs-body {
+  font-size: 12px;
+  color: var(--ink2);
+  line-height: 1.65;
+}
+.vs-card .vs-body li { list-style: none; padding: 1.5px 0; display: flex; gap: 5px; }
+.vs-card .vs-body li::before { content: '·'; color: var(--ink3); }
+
+/* ─── Sticky TOC on large screens ─── */
+@media (min-width: 1200px) {
+  .layout { display: grid; grid-template-columns: 1fr 200px; gap: 40px; align-items: start; }
+  .side-toc {
+    position: sticky;
+    top: 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .side-toc-title { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink3); margin-bottom: 10px; }
+  .side-toc a { display: flex; align-items: center; gap: 7px; padding: 5px 0; font-size: 12px; text-decoration: none; color: var(--ink2); border-bottom: 1px solid var(--border); transition: color 0.15s; }
+  .side-toc a:last-child { border-bottom: none; }
+  .side-toc a:hover { color: var(--ink); }
+  .side-toc .s-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- MASTHEAD -->
+  <div class="masthead">
+    <div class="masthead-left">
+      <div class="masthead-tag">Senior Frontend · Interview Prep · 2025</div>
+      <h1>HTML<em>5</em> 知识体系全图</h1>
+    </div>
+    <div class="masthead-meta">
+      <div>适用：<strong>13年经验 / 资深前端</strong></div>
+      <div>覆盖：<strong>语义 · API · 表单 · 存储</strong></div>
+      <div>含：<strong>规范细节 · 对比 · 面试高频</strong></div>
+      <div style="margin-top:4px; font-family:var(--mono); font-size:10px;">HTML Living Standard · WHATWG</div>
+    </div>
+  </div>
+
+  <!-- TOC PILLS -->
+  <div class="toc">
+    <a href="#s1" class="toc-pill pill1"><span class="dot dot1"></span>语义化元素</a>
+    <a href="#s2" class="toc-pill pill2"><span class="dot dot2"></span>表单增强</a>
+    <a href="#s3" class="toc-pill pill3"><span class="dot dot3"></span>核心 API</a>
+    <a href="#s4" class="toc-pill pill4"><span class="dot dot4"></span>存储体系</a>
+    <a href="#s5" class="toc-pill pill5"><span class="dot dot5"></span>多媒体 & 图形</a>
+    <a href="#s6" class="toc-pill pill6"><span class="dot dot6"></span>性能 & 加载</a>
+    <a href="#s7" class="toc-pill pill7"><span class="dot dot7"></span>安全 & 隐私</a>
+    <a href="#s8" class="toc-pill pill8"><span class="dot dot8"></span>规范 & 易混点</a>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 1 · 语义化元素
+  ══════════════════════════════════════════════ -->
+  <div class="section" id="s1">
+    <div class="section-head">
+      <div class="section-num">01</div>
+      <div class="section-icon icon1">🏗</div>
+      <div class="section-title c1">语义化元素与文档结构</div>
+      <div class="section-badge badge1">Semantics</div>
+    </div>
+
+    <div class="divider-label">结构元素对比</div>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <tr>
+          <th>元素</th><th>语义</th><th>典型场景</th><th>常见误用</th>
+        </tr>
+        <tr>
+          <td>&lt;header&gt;</td>
+          <td>页面或区块的头部，可多次使用</td>
+          <td>站点顶部 nav、article 标题区</td>
+          <td>只用一次，误以为=&lt;head&gt;</td>
+        </tr>
+        <tr>
+          <td>&lt;nav&gt;</td>
+          <td>主导航链接组</td>
+          <td>顶部/侧栏导航，面包屑</td>
+          <td>页脚版权链接也套 nav</td>
+        </tr>
+        <tr>
+          <td>&lt;main&gt;</td>
+          <td>页面主体内容，每页唯一</td>
+          <td>内容区域，跳过导航 landmark</td>
+          <td>放在 article/section 内</td>
+        </tr>
+        <tr>
+          <td>&lt;article&gt;</td>
+          <td>独立可分发内容单元</td>
+          <td>博客文章、评论、新闻</td>
+          <td>与 section 混淆</td>
+        </tr>
+        <tr>
+          <td>&lt;section&gt;</td>
+          <td>按主题分组内容，通常含标题</td>
+          <td>文章章节、功能板块</td>
+          <td>当 div 用，无实际主题</td>
+        </tr>
+        <tr>
+          <td>&lt;aside&gt;</td>
+          <td>与主内容相关但可独立的内容</td>
+          <td>侧边栏、广告、相关链接</td>
+          <td>放在 article 内做注释区</td>
+        </tr>
+        <tr>
+          <td>&lt;footer&gt;</td>
+          <td>区块或页面的页脚</td>
+          <td>版权、联系、文章元数据</td>
+          <td>与 &lt;address&gt; 混淆</td>
+        </tr>
+        <tr>
+          <td>&lt;figure&gt; / &lt;figcaption&gt;</td>
+          <td>独立的自含内容（图、代码、表格）</td>
+          <td>图文说明、代码示例</td>
+          <td>只用于图片，忽略代码/表格场景</td>
+        </tr>
+        <tr>
+          <td>&lt;details&gt; / &lt;summary&gt;</td>
+          <td>可折叠的披露控件，原生 accordion</td>
+          <td>FAQ、折叠说明</td>
+          <td>不知道可用 JS 控制 open 属性</td>
+        </tr>
+        <tr>
+          <td>&lt;dialog&gt;</td>
+          <td>模态/非模态对话框，原生弹窗</td>
+          <td>确认框、表单弹窗</td>
+          <td>直接用 div 模拟，忽略焦点管理</td>
+        </tr>
+        <tr>
+          <td>&lt;mark&gt;</td>
+          <td>与上下文相关的高亮文本</td>
+          <td>搜索词高亮</td>
+          <td>用 span+style 代替</td>
+        </tr>
+        <tr>
+          <td>&lt;time&gt;</td>
+          <td>机器可读的时间/日期</td>
+          <td>文章发布时间，datetime 属性</td>
+          <td>直接输出文字，不加 datetime</td>
+        </tr>
+        <tr>
+          <td>&lt;address&gt;</td>
+          <td>联系信息，属于最近祖先 article/body</td>
+          <td>作者邮箱、公司地址</td>
+          <td>当通用地址标签用</td>
+        </tr>
+        <tr>
+          <td>&lt;picture&gt;</td>
+          <td>响应式图片，多源条件切换</td>
+          <td>不同屏幕尺寸/格式的图</td>
+          <td>只用 img srcset，忽略 type 格式切换</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="divider-label">内联文本语义</div>
+    <div class="cards cards-3">
+      <div class="card accent1">
+        <div class="card-title c1">strong vs b / em vs i</div>
+        <div class="card-body">
+          <ul>
+            <li><code>&lt;strong&gt;</code> = 重要性（语义），<code>&lt;b&gt;</code> = 视觉加粗（无语义权重）</li>
+            <li><code>&lt;em&gt;</code> = 强调/语气（影响读音），<code>&lt;i&gt;</code> = 专业术语/外语/内心独白</li>
+            <li>屏幕阅读器会读出 em/strong 的语气差异</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent1">
+        <div class="card-title c1">del / ins / s</div>
+        <div class="card-body">
+          <ul>
+            <li><code>&lt;del&gt;</code> 表示已删除内容（文档编辑），可附 cite/datetime</li>
+            <li><code>&lt;ins&gt;</code> 表示插入的新内容，与 del 配对</li>
+            <li><code>&lt;s&gt;</code> 表示不再准确/过时（如原价），非删除操作</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent1">
+        <div class="card-title c1">abbr / dfn / cite / q / blockquote</div>
+        <div class="card-body">
+          <ul>
+            <li><code>&lt;abbr title="..."&gt;</code> 缩写，hover 提示全称</li>
+            <li><code>&lt;dfn&gt;</code> 定义项，首次引入术语</li>
+            <li><code>&lt;cite&gt;</code> 作品标题引用（书、电影、论文）</li>
+            <li><code>&lt;q&gt;</code> 行内引用，自动加引号；<code>&lt;blockquote cite&gt;</code> 块级引用</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-label">WAI-ARIA 与语义化协同 <span class="interview-star">★ 高频</span></div>
+    <div class="hbox tip">
+      <span class="hbox-icon">💡</span>
+      <div class="hbox-body">
+        <strong>第一原则：优先使用原生语义元素。</strong> 若必须用 div/span，才补 ARIA role。<br>
+        <code>role="button"</code> + <code>tabindex="0"</code> + 键盘事件 ≠ 真正的 <code>&lt;button&gt;</code>（原生有焦点管理、Enter/Space、禁用态等）。
+      </div>
+    </div>
+    <div class="cards cards-2">
+      <div class="card accent1">
+        <div class="card-title c1">Landmark roles（地标）</div>
+        <div class="card-body">
+          <ul>
+            <li><code>banner</code> → &lt;header&gt; （顶层）</li>
+            <li><code>navigation</code> → &lt;nav&gt;</li>
+            <li><code>main</code> → &lt;main&gt;</li>
+            <li><code>complementary</code> → &lt;aside&gt;</li>
+            <li><code>contentinfo</code> → &lt;footer&gt; （顶层）</li>
+            <li><code>region</code> + aria-label → &lt;section&gt;</li>
+            <li><code>search</code> → 搜索表单（新增 role）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent1">
+        <div class="card-title c1">关键 ARIA 属性</div>
+        <div class="card-body">
+          <ul>
+            <li><code>aria-label</code> / <code>aria-labelledby</code> — 控件可访问名称</li>
+            <li><code>aria-describedby</code> — 补充描述，如错误提示</li>
+            <li><code>aria-live="polite|assertive"</code> — 动态内容播报</li>
+            <li><code>aria-expanded</code> — 折叠/展开状态</li>
+            <li><code>aria-hidden="true"</code> — 从 AT 树中移除</li>
+            <li><code>aria-current="page"</code> — 当前导航项</li>
+            <li><code>aria-busy="true"</code> — 加载中状态</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 2 · 表单增强
+  ══════════════════════════════════════════════ -->
+  <div class="section" id="s2">
+    <div class="section-head">
+      <div class="section-num">02</div>
+      <div class="section-icon icon2">📋</div>
+      <div class="section-title c2">表单增强 & 验证</div>
+      <div class="section-badge badge2">Forms</div>
+    </div>
+
+    <div class="divider-label">Input type 大全对比</div>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <tr><th>type</th><th>功能</th><th>特殊属性 / 备注</th></tr>
+        <tr><td>email</td><td>邮件格式验证（客户端）</td><td>multiple 属性允许多值，移动端弹出邮件键盘</td></tr>
+        <tr><td>url</td><td>URL 格式验证</td><td>必须含协议头</td></tr>
+        <tr><td>tel</td><td>电话（无格式验证）</td><td>移动端弹出数字键盘，pattern 自定义格式</td></tr>
+        <tr><td>number</td><td>数字输入</td><td>min / max / step，valueAsNumber 属性</td></tr>
+        <tr><td>range</td><td>滑块选值</td><td>min / max / step / list（datalist 刻度）</td></tr>
+        <tr><td>date / time / datetime-local / month / week</td><td>日期时间选择器</td><td>valueAsDate，min/max 限范围；Safari 长期不支持</td></tr>
+        <tr><td>color</td><td>颜色选择器</td><td>value = hex，不支持透明度</td></tr>
+        <tr><td>search</td><td>搜索框</td><td>有清空按钮，Safari 特有圆角样式</td></tr>
+        <tr><td>file</td><td>文件上传</td><td>accept / multiple / capture（相机/麦克风）</td></tr>
+        <tr><td>checkbox / radio</td><td>多选/单选</td><td>indeterminate 属性（JS设置）、checked 属性</td></tr>
+        <tr><td>hidden</td><td>隐藏数据</td><td>不参与约束验证，但随表单提交</td></tr>
+      </table>
+    </div>
+
+    <div class="divider-label">约束验证 API <span class="interview-star">★ 高频</span></div>
+    <div class="cards cards-2">
+      <div class="card accent2">
+        <div class="card-title c2">内置验证属性</div>
+        <div class="card-body">
+          <ul>
+            <li><code>required</code> — 必填</li>
+            <li><code>pattern="[regex]"</code> — 正则匹配</li>
+            <li><code>minlength / maxlength</code> — 字符数</li>
+            <li><code>min / max</code> — 数值/日期范围</li>
+            <li><code>step</code> — 步进，影响有效性</li>
+            <li><code>novalidate</code>（form 属性）— 关闭内置验证</li>
+            <li><code>formnovalidate</code>（submit 按钮）— 仅此提交跳过验证</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent2">
+        <div class="card-title c2">Constraint Validation API</div>
+        <div class="card-body">
+          <ul>
+            <li><code>el.validity</code> — ValidityState 对象（valueMissing / typeMismatch / patternMismatch / tooLong / rangeOverflow 等）</li>
+            <li><code>el.checkValidity()</code> — 触发验证，返回 bool</li>
+            <li><code>el.reportValidity()</code> — 验证并显示气泡提示</li>
+            <li><code>el.setCustomValidity("msg")</code> — 自定义错误（空字符串=清除）</li>
+            <li><code>:valid / :invalid / :user-invalid</code> CSS 伪类</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-label">表单新特性</div>
+    <div class="cards cards-3">
+      <div class="card accent2">
+        <div class="card-title c2">&lt;datalist&gt;</div>
+        <div class="card-body">
+          为 input 提供可搜索的建议列表（非强制选择），通过 <code>list</code> 属性关联。与 <code>&lt;select&gt;</code> 的本质区别：用户可输入任意值。
+        </div>
+      </div>
+      <div class="card accent2">
+        <div class="card-title c2">&lt;output&gt;</div>
+        <div class="card-body">
+          表示计算结果。<code>for</code> 属性关联输入控件，ARIA role=status，适合实时计算展示（如 range + output 显示当前值）。
+        </div>
+      </div>
+      <div class="card accent2">
+        <div class="card-title c2">autocomplete 精细控制</div>
+        <div class="card-body">
+          <code>autocomplete="new-password"</code> 阻止密码管理器自动填充。<code>"cc-number"</code> 提示信用卡。<code>"one-time-code"</code> 短信验证码自动填充（OTP）。<code>"off"</code> 已基本被忽略。
+        </div>
+      </div>
+      <div class="card accent2">
+        <div class="card-title c2">inputmode 属性</div>
+        <div class="card-body">
+          控制移动端软键盘类型，独立于 type：<code>inputmode="numeric"</code>（纯数字）、<code>"decimal"</code>（含小数点）、<code>"tel"</code>、<code>"email"</code>、<code>"url"</code>、<code>"search"</code>、<code>"none"</code>（不弹键盘）。
+        </div>
+      </div>
+      <div class="card accent2">
+        <div class="card-title c2">enterkeyhint 属性</div>
+        <div class="card-body">
+          控制移动端回车键显示文字：<code>"search"</code>、<code>"send"</code>、<code>"go"</code>、<code>"done"</code>、<code>"next"</code>、<code>"previous"</code>。提升移动端表单体验。
+        </div>
+      </div>
+      <div class="card accent2">
+        <div class="card-title c2">form 关联属性</div>
+        <div class="card-body">
+          <code>form="formId"</code> 使控件关联非父级表单（实现跨位置提交）。<code>formaction / formmethod / formenctype</code> 在 submit 按钮上覆盖 form 设置，实现"保存草稿"与"正式提交"差异化。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 3 · 核心 API
+  ══════════════════════════════════════════════ -->
+  <div class="section" id="s3">
+    <div class="section-head">
+      <div class="section-num">03</div>
+      <div class="section-icon icon3">⚡</div>
+      <div class="section-title c3">核心浏览器 API</div>
+      <div class="section-badge badge3">APIs</div>
+    </div>
+
+    <div class="divider-label">通信 API 对比 <span class="interview-star">★ 高频</span></div>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <tr><th>API</th><th>方向</th><th>协议</th><th>适用场景</th><th>关键点</th></tr>
+        <tr>
+          <td>XMLHttpRequest</td><td>双向</td><td>HTTP</td>
+          <td>兼容旧代码</td>
+          <td>事件驱动，回调地狱，支持进度事件 progress</td>
+        </tr>
+        <tr>
+          <td>Fetch API</td><td>双向</td><td>HTTP</td>
+          <td>现代 Ajax</td>
+          <td>Promise，需手动处理 404（非 reject），AbortController 取消，默认不带 cookie（credentials: 'include'）</td>
+        </tr>
+        <tr>
+          <td>WebSocket</td><td>全双工</td><td>ws://</td>
+          <td>实时推送、聊天、游戏</td>
+          <td>握手后保持连接，二进制/文本帧，心跳 ping/pong</td>
+        </tr>
+        <tr>
+          <td>SSE (EventSource)</td><td>服务器→客户端</td><td>HTTP</td>
+          <td>股价推送、通知流</td>
+          <td>自动重连，支持事件命名/id，HTTP/2 下无连接数限制</td>
+        </tr>
+        <tr>
+          <td>WebRTC</td><td>P2P 全双工</td><td>DTLS/SRTP</td>
+          <td>视频通话、屏幕共享</td>
+          <td>ICE/STUN/TURN 穿透，DataChannel 传数据</td>
+        </tr>
+        <tr>
+          <td>BroadcastChannel</td><td>同源标签间</td><td>-</td>
+          <td>多标签页同步状态</td>
+          <td>同源限制，postMessage 类 API，无 SharedWorker 复杂</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="divider-label">Worker 体系对比 <span class="interview-star">★ 高频</span></div>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <tr><th>类型</th><th>数量</th><th>生命周期</th><th>典型用途</th><th>通信</th></tr>
+        <tr>
+          <td>Web Worker</td><td>多实例</td><td>页面控制</td>
+          <td>CPU 密集计算（图像处理、加密）</td>
+          <td>postMessage，可 Transferable（零拷贝）</td>
+        </tr>
+        <tr>
+          <td>SharedWorker</td><td>同源共享一个</td><td>所有关联页面</td>
+          <td>多标签共享连接（如 WebSocket）</td>
+          <td>MessagePort，需 port.start()</td>
+        </tr>
+        <tr>
+          <td>Service Worker</td><td>域级单例</td><td>独立于页面</td>
+          <td>离线缓存、推送、请求拦截</td>
+          <td>postMessage、Cache API、Fetch 事件</td>
+        </tr>
+        <tr>
+          <td>Worklet</td><td>-</td><td>浏览器控制</td>
+          <td>CSS Paint/Layout/Audio 扩展</td>
+          <td>无通信，轻量沙箱</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="divider-label">Observer API 族</div>
+    <div class="cards cards-2">
+      <div class="card accent3">
+        <div class="card-title c3">IntersectionObserver</div>
+        <div class="card-body">
+          检测元素与视口（或祖先）的交叉比例。<code>threshold</code> 设触发点，<code>rootMargin</code> 提前触发。适合：懒加载、曝光埋点、无限滚动。<br><br>
+          ⚠️ <code>isIntersecting</code> 与 <code>intersectionRatio</code> 区别：ratio=0 时 isIntersecting 可能为 true（仅边缘接触）。
+        </div>
+      </div>
+      <div class="card accent3">
+        <div class="card-title c3">MutationObserver</div>
+        <div class="card-body">
+          监听 DOM 变化（子树、属性、文本）。<code>subtree:true</code> 深度监听。<code>disconnect()</code> 主动断开防泄漏。适合：第三方内容监控、实现撤销/重做。<br><br>
+          ⚠️ 回调在微任务队列执行（Promise 之后、宏任务之前）。
+        </div>
+      </div>
+      <div class="card accent3">
+        <div class="card-title c3">ResizeObserver</div>
+        <div class="card-body">
+          监听元素尺寸变化（非 window.resize）。<code>borderBoxSize / contentBoxSize / devicePixelContentBoxSize</code> 三种尺寸。适合：响应式图表、自适应组件。<br><br>
+          ⚠️ 注意循环触发（修改尺寸又触发 resize）。
+        </div>
+      </div>
+      <div class="card accent3">
+        <div class="card-title c3">PerformanceObserver</div>
+        <div class="card-body">
+          订阅性能条目流（paint、navigation、resource、longtask、largest-contentful-paint、layout-shift）。替代 performance.getEntries()。<br><br>
+          <code>buffered:true</code> 获取历史条目，适合 LCP/CLS 测量。
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-label">重要 API 速查</div>
+    <div class="cards cards-3">
+      <div class="card accent3">
+        <div class="card-title c3">History API</div>
+        <div class="card-body">
+          <ul>
+            <li><code>pushState(state, '', url)</code> — 不刷新修改 URL</li>
+            <li><code>replaceState</code> — 替换当前历史条目</li>
+            <li><code>popstate</code> 事件 — 前进/后退触发</li>
+            <li>SPA 路由基础；注意 state 有 640KB 限制</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent3">
+        <div class="card-title c3">Clipboard API</div>
+        <div class="card-body">
+          <ul>
+            <li><code>navigator.clipboard.writeText()</code> — 写文本</li>
+            <li><code>navigator.clipboard.write([ClipboardItem])</code> — 写富内容（图片）</li>
+            <li><code>navigator.clipboard.readText()</code> — 需用户授权</li>
+            <li>仅 HTTPS + focus 状态可用</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent3">
+        <div class="card-title c3">File System Access API</div>
+        <div class="card-body">
+          <ul>
+            <li><code>showOpenFilePicker()</code> 打开文件</li>
+            <li><code>showSaveFilePicker()</code> 另存为</li>
+            <li><code>showDirectoryPicker()</code> 目录访问</li>
+            <li>Chrome 主导，Firefox 不支持（截止2024）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent3">
+        <div class="card-title c3">Geolocation API</div>
+        <div class="card-body">
+          <ul>
+            <li><code>navigator.geolocation.getCurrentPosition()</code></li>
+            <li><code>watchPosition()</code> — 持续追踪</li>
+            <li>HTTPS 必须；coords 含 accuracy 精度</li>
+            <li>timeout / maximumAge 选项控制缓存</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent3">
+        <div class="card-title c3">Drag and Drop API</div>
+        <div class="card-body">
+          <ul>
+            <li>draggable="true" 启用</li>
+            <li>事件：dragstart / drag / dragenter / dragover / dragleave / drop / dragend</li>
+            <li><code>dataTransfer.setData() / getData()</code></li>
+            <li><code>dragover</code> 必须 preventDefault() 才能触发 drop</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent3">
+        <div class="card-title c3">Web Share API</div>
+        <div class="card-body">
+          <ul>
+            <li><code>navigator.share({ title, text, url, files })</code></li>
+            <li>调用系统级分享菜单</li>
+            <li>需用户手势触发，HTTPS 必须</li>
+            <li><code>navigator.canShare()</code> 先检测能力</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-label">新兴 API（2023-2025）</div>
+    <div class="cards cards-2">
+      <div class="card accent3">
+        <div class="card-title c3">View Transitions API <span class="interview-star">★ 新</span></div>
+        <div class="card-body">
+          原生页面/状态切换动画。<code>document.startViewTransition(callback)</code> 自动截图新旧状态并过渡。CSS 中用 <code>::view-transition-old</code> 和 <code>::view-transition-new</code> 定制动画。支持 MPA（跨页面）模式（需 opt-in）。
+        </div>
+      </div>
+      <div class="card accent3">
+        <div class="card-title c3">Popover API <span class="interview-star">★ 新</span></div>
+        <div class="card-body">
+          原生弹出层。<code>popover</code> 属性 + <code>popovertarget</code> 无需 JS 即可控制。<code>popover="auto"</code>（点外关闭，互斥）vs <code>"manual"</code>（手动控制）。<code>showPopover() / hidePopover() / togglePopover()</code> JS API。Top Layer 渲染，自动焦点管理。
+        </div>
+      </div>
+      <div class="card accent3">
+        <div class="card-title c3">Speculation Rules API <span class="interview-star">★ 新</span></div>
+        <div class="card-body">
+          预测性预渲染。<code>&lt;script type="speculationrules"&gt;</code> 定义预取/预渲染规则。浏览器在空闲时后台渲染目标页，实现"即时跳转"。比 <code>&lt;link rel="prefetch"&gt;</code> 更激进（完整渲染）。
+        </div>
+      </div>
+      <div class="card accent3">
+        <div class="card-title c3">Navigation API <span class="interview-star">★ 新</span></div>
+        <div class="card-body">
+          替代 History API 的现代路由基础。<code>navigation.navigate()</code> / <code>navigation.back()</code>。<code>navigate</code> 事件可拦截并处理转场。解决了 popstate 无法区分前进/后退的问题。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 4 · 存储体系
+  ══════════════════════════════════════════════ -->
+  <div class="section" id="s4">
+    <div class="section-head">
+      <div class="section-num">04</div>
+      <div class="section-icon icon4">🗄</div>
+      <div class="section-title c4">存储体系全对比</div>
+      <div class="section-badge badge4">Storage</div>
+    </div>
+
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <tr><th>方案</th><th>容量</th><th>生命周期</th><th>线程</th><th>适用场景</th><th>关键限制</th></tr>
+        <tr>
+          <td>Cookie</td><td>~4KB/条</td><td>expires/session</td><td>主线程（document.cookie）</td>
+          <td>会话认证、服务端读取</td>
+          <td>每次请求携带，SameSite/HttpOnly/Secure，第三方 Cookie 已逐步淘汰</td>
+        </tr>
+        <tr>
+          <td>localStorage</td><td>~5-10MB</td><td>永久（手动清除）</td><td>主线程（同步）</td>
+          <td>持久化偏好设置</td>
+          <td>同步阻塞，无法在 Worker 中使用，隐身模式受限</td>
+        </tr>
+        <tr>
+          <td>sessionStorage</td><td>~5-10MB</td><td>标签页关闭</td><td>主线程（同步）</td>
+          <td>表单暂存、单次会话数据</td>
+          <td>标签页隔离（新标签不继承），不跨页面</td>
+        </tr>
+        <tr>
+          <td>IndexedDB</td><td>动态（磁盘%）</td><td>永久</td><td>主线程+Worker（异步）</td>
+          <td>大量结构化数据、离线应用</td>
+          <td>API 复杂（Dexie.js 封装），事务模型</td>
+        </tr>
+        <tr>
+          <td>Cache API</td><td>动态</td><td>Service Worker 控制</td><td>SW + 主线程</td>
+          <td>离线资源缓存（PWA）</td>
+          <td>仅存 Request/Response 对，需手动清理</td>
+        </tr>
+        <tr>
+          <td>OPFS (Origin Private File System)</td><td>动态（磁盘%）</td><td>永久</td><td>主线程+Worker</td>
+          <td>大文件读写（SQLite WASM）</td>
+          <td>用户不可见，同步 API 仅 Worker 中可用（2023+）</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="divider-label">Storage 配额与管理</div>
+    <div class="cards cards-2">
+      <div class="card accent4">
+        <div class="card-title c4">StorageManager API</div>
+        <div class="card-body">
+          <ul>
+            <li><code>navigator.storage.estimate()</code> — 查询已用/总配额</li>
+            <li><code>navigator.storage.persist()</code> — 申请持久化（防浏览器自动清除）</li>
+            <li><code>navigator.storage.persisted()</code> — 检查是否已授权</li>
+            <li>Bucket Storage API（草案）— 分桶管理，各自独立配额</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent4">
+        <div class="card-title c4">Cookie 现代属性 <span class="interview-star">★ 高频</span></div>
+        <div class="card-body">
+          <ul>
+            <li><code>SameSite=Strict</code> — 跨站不发送（防 CSRF 最强）</li>
+            <li><code>SameSite=Lax</code> — 顶级 GET 导航发送（Chrome 默认）</li>
+            <li><code>SameSite=None; Secure</code> — 第三方必须加 Secure</li>
+            <li><code>HttpOnly</code> — 禁止 JS 读取（防 XSS 窃取）</li>
+            <li><code>__Host-</code> 前缀 — 必须 HTTPS+Secure+无 Domain+Path=/</li>
+            <li>Cookie Store API — 异步 cookie 读写（新，SW 可用）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 5 · 多媒体 & 图形
+  ══════════════════════════════════════════════ -->
+  <div class="section" id="s5">
+    <div class="section-head">
+      <div class="section-num">05</div>
+      <div class="section-icon icon5">🎨</div>
+      <div class="section-title c5">多媒体 & 图形</div>
+      <div class="section-badge badge5">Media & Graphics</div>
+    </div>
+
+    <div class="divider-label">图片响应式方案对比 <span class="interview-star">★ 高频</span></div>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <tr><th>方案</th><th>用途</th><th>浏览器选择权</th><th>代码示例要点</th></tr>
+        <tr>
+          <td>img srcset + sizes</td><td>同内容不同分辨率</td><td>浏览器自选最优</td>
+          <td><code>srcset="img-1x.jpg 1x, img-2x.jpg 2x"</code> 或 <code>srcset="img-400.jpg 400w" sizes="(max-width:600px) 100vw, 50vw"</code></td>
+        </tr>
+        <tr>
+          <td>picture + source media</td><td>Art Direction（不同裁剪）</td><td>开发者指定条件</td>
+          <td><code>&lt;source media="(max-width:600px)" srcset="mobile.jpg"&gt;</code></td>
+        </tr>
+        <tr>
+          <td>picture + source type</td><td>格式降级（AVIF→WebP→JPEG）</td><td>浏览器按支持选</td>
+          <td><code>&lt;source type="image/avif" srcset="img.avif"&gt;</code></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="divider-label">现代图片格式</div>
+    <div class="cards cards-3">
+      <div class="card accent5">
+        <div class="card-title c5">WebP</div>
+        <div class="card-body">Google 研发，支持有损/无损/动画/透明。比 JPEG 小 25-34%，比 PNG 小约 26%。全浏览器支持（IE 除外）。</div>
+      </div>
+      <div class="card accent5">
+        <div class="card-title c5">AVIF</div>
+        <div class="card-body">基于 AV1 编码，压缩率更高（比 WebP 再小 20%+）。支持 HDR、宽色域。编码慢（适合预生成）。Chrome/Firefox 支持，Safari 16+。</div>
+      </div>
+      <div class="card accent5">
+        <div class="card-title c5">SVG</div>
+        <div class="card-body">矢量无损。内联 SVG 可 CSS/JS 控制。<code>currentColor</code> 继承颜色。<code>viewBox</code> 控制坐标系。<code>use</code> 元素复用。SMIL 动画（逐渐废弃）→ CSS 动画代替。</div>
+      </div>
+    </div>
+
+    <div class="divider-label">Canvas vs WebGL vs SVG</div>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <tr><th>技术</th><th>渲染</th><th>适合场景</th><th>性能特点</th></tr>
+        <tr><td>Canvas 2D</td><td>像素（位图）</td><td>图表、截图、滤镜处理</td><td>单线程，OffscreenCanvas 可 Worker</td></tr>
+        <tr><td>WebGL (1.0/2.0)</td><td>GPU 着色器</td><td>3D、粒子、数据可视化</td><td>GPU 并行，着色器语言 GLSL</td></tr>
+        <tr><td>WebGPU</td><td>现代 GPU API</td><td>复杂 3D、AI 推理、通用计算</td><td>比 WebGL 更底层，支持 Compute Shader</td></tr>
+        <tr><td>SVG</td><td>矢量（DOM）</td><td>图标、可交互图形、数据可视化</td><td>可 CSS/JS 动画，节点多时性能下降</td></tr>
+        <tr><td>CSS Houdini</td><td>自定义渲染</td><td>自定义背景、布局、动画</td><td>Paint/Layout/Animation Worklet</td></tr>
+      </table>
+    </div>
+
+    <div class="divider-label">Audio / Video API</div>
+    <div class="cards cards-2">
+      <div class="card accent5">
+        <div class="card-title c5">HTMLMediaElement 关键 API</div>
+        <div class="card-body">
+          <ul>
+            <li><code>play() / pause()</code> — 返回 Promise（play 需用户手势）</li>
+            <li><code>currentTime</code> — 设置/获取播放进度</li>
+            <li><code>playbackRate</code> — 倍速（0.25 - 16）</li>
+            <li><code>buffered</code> — TimeRanges，缓冲进度</li>
+            <li><code>readyState</code> — 0~4 加载状态</li>
+            <li><code>preload="none|metadata|auto"</code></li>
+            <li>Media Session API — 锁屏/通知栏控制</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent5">
+        <div class="card-title c5">Web Audio API</div>
+        <div class="card-body">
+          <ul>
+            <li><code>AudioContext</code> — 音频处理图</li>
+            <li>节点图：Source → Effects → Destination</li>
+            <li><code>GainNode</code> 音量，<code>AnalyserNode</code> 频谱可视化</li>
+            <li><code>AudioWorkletProcessor</code> — 自定义音频处理（替代 ScriptProcessorNode）</li>
+            <li><code>AudioContext.resume()</code> — 需用户手势解除 suspended 状态</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 6 · 性能 & 加载
+  ══════════════════════════════════════════════ -->
+  <div class="section" id="s6">
+    <div class="section-head">
+      <div class="section-num">06</div>
+      <div class="section-icon icon6">🚀</div>
+      <div class="section-title c6">性能优化 & 资源加载</div>
+      <div class="section-badge badge6">Performance</div>
+    </div>
+
+    <div class="divider-label">资源提示（Resource Hints）全对比 <span class="interview-star">★ 高频</span></div>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <tr><th>rel 值</th><th>作用</th><th>是否执行</th><th>跨域</th><th>典型用法</th></tr>
+        <tr>
+          <td>dns-prefetch</td><td>预解析 DNS</td><td>否</td><td>✅</td>
+          <td>CDN 域名、第三方服务</td>
+        </tr>
+        <tr>
+          <td>preconnect</td><td>DNS+TCP+TLS 握手</td><td>否</td><td>✅（需 crossorigin）</td>
+          <td>字体服务、API 域名（8s 内必用）</td>
+        </tr>
+        <tr>
+          <td>prefetch</td><td>空闲时获取未来页面资源</td><td>否（脚本不执行）</td><td>✅</td>
+          <td>下一步可能的页面、懒加载资源</td>
+        </tr>
+        <tr>
+          <td>preload</td><td>高优先级获取当前页资源</td><td>否（需 as 属性）</td><td>同源优先</td>
+          <td>LCP 图片、关键字体、首屏 JS</td>
+        </tr>
+        <tr>
+          <td>modulepreload</td><td>预加载+解析 ES Module</td><td>解析（不执行）</td><td>CORS</td>
+          <td>ES Module 依赖树预热</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="hbox warn">
+      <span class="hbox-icon">⚠️</span>
+      <div class="hbox-body">
+        <strong>preload 陷阱：</strong>必须配合 <code>as</code> 属性（font/image/script/style/fetch），否则优先级失效且产生重复请求。字体 preload 必须加 <code>crossorigin</code>（即使同源）。未在页面实际使用的 preload 资源会触发 Chrome 警告。
+      </div>
+    </div>
+
+    <div class="divider-label">Script 加载策略对比 <span class="interview-star">★ 高频</span></div>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <tr><th>属性</th><th>下载</th><th>执行时机</th><th>顺序保证</th><th>适用</th></tr>
+        <tr><td>（无）</td><td>阻塞 HTML 解析</td><td>立即执行</td><td>✅</td><td>遗留代码</td></tr>
+        <tr><td>async</td><td>并行下载</td><td>下载完立即执行（可能乱序）</td><td>❌</td><td>独立无依赖脚本（统计、广告）</td></tr>
+        <tr><td>defer</td><td>并行下载</td><td>DOM 解析完成后，DOMContentLoaded 前</td><td>✅</td><td>需 DOM 的脚本，推荐默认方案</td></tr>
+        <tr><td>type="module"</td><td>并行下载</td><td>等同 defer + 严格模式 + 独立作用域</td><td>✅</td><td>ES Module</td></tr>
+        <tr><td>type="module" async</td><td>并行下载</td><td>下载完立即执行</td><td>❌</td><td>独立 ES Module</td></tr>
+      </table>
+    </div>
+
+    <div class="divider-label">Web Vitals & 性能指标</div>
+    <div class="cards cards-3">
+      <div class="card accent6">
+        <div class="card-title c6">LCP（最大内容绘制）</div>
+        <div class="card-body">
+          &lt;2.5s 为优。候选元素：img、video poster、背景图、块级文本。优化：<code>fetchpriority="high"</code> 图片、preload LCP 图、SSR 直出、CDN。
+        </div>
+      </div>
+      <div class="card accent6">
+        <div class="card-title c6">INP（交互到下一帧）</div>
+        <div class="card-body">
+          替代 FID（2024 年 3 月）。&lt;200ms 为优。测量所有交互的响应延迟。优化：长任务拆分（scheduler.yield）、避免主线程阻塞、减少 Input Delay。
+        </div>
+      </div>
+      <div class="card accent6">
+        <div class="card-title c6">CLS（累积布局偏移）</div>
+        <div class="card-body">
+          &lt;0.1 为优。图片/视频设 width/height 避免跳变。字体用 <code>font-display:optional</code>。动态内容预留空间。<code>transform</code> 动画不触发 layout shift。
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-label">lazy loading & fetchpriority</div>
+    <div class="cards cards-2">
+      <div class="card accent6">
+        <div class="card-title c6">loading="lazy"</div>
+        <div class="card-body">
+          原生图片/iframe 懒加载。浏览器自动计算阈值（视口距离）。<br>
+          ⚠️ LCP 图片禁止加 lazy（会延迟最重要图片）。<br>
+          ⚠️ 首屏内图片不需要 lazy，浏览器自动调优。
+        </div>
+      </div>
+      <div class="card accent6">
+        <div class="card-title c6">fetchpriority 属性</div>
+        <div class="card-body">
+          <code>fetchpriority="high|low|auto"</code>，用于 img/link/script/fetch。<br>
+          LCP 图片设 <code>high</code> 可显著提升加载优先级。<code>low</code> 用于折叠下图片。
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 7 · 安全 & 隐私
+  ══════════════════════════════════════════════ -->
+  <div class="section" id="s7">
+    <div class="section-head">
+      <div class="section-num">07</div>
+      <div class="section-icon icon7">🔒</div>
+      <div class="section-title c7">安全 & 隐私</div>
+      <div class="section-badge badge7">Security</div>
+    </div>
+
+    <div class="divider-label">关键安全 HTTP Headers <span class="interview-star">★ 高频</span></div>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <tr><th>Header</th><th>防御目标</th><th>关键值示例</th></tr>
+        <tr>
+          <td>Content-Security-Policy</td><td>XSS、数据注入</td>
+          <td><code>default-src 'self'; script-src 'self' 'nonce-xxx'</code><br>nonce/hash 替代 unsafe-inline；<code>report-uri</code> 收集违规</td>
+        </tr>
+        <tr>
+          <td>X-Frame-Options / CSP frame-ancestors</td><td>点击劫持</td>
+          <td><code>DENY</code> / <code>SAMEORIGIN</code>；CSP frame-ancestors 更现代</td>
+        </tr>
+        <tr>
+          <td>Strict-Transport-Security</td><td>降级攻击</td>
+          <td><code>max-age=31536000; includeSubDomains; preload</code></td>
+        </tr>
+        <tr>
+          <td>X-Content-Type-Options</td><td>MIME 嗅探</td>
+          <td><code>nosniff</code>（唯一值）</td>
+        </tr>
+        <tr>
+          <td>Permissions-Policy</td><td>功能权限控制</td>
+          <td><code>camera=(), microphone=(), geolocation=(self)</code></td>
+        </tr>
+        <tr>
+          <td>Cross-Origin-Opener-Policy</td><td>Spectre 旁信道</td>
+          <td><code>same-origin</code> — 隔离浏览器上下文组；启用 SharedArrayBuffer 必需</td>
+        </tr>
+        <tr>
+          <td>Cross-Origin-Embedder-Policy</td><td>跨域资源隔离</td>
+          <td><code>require-corp</code> — 与 COOP 配合启用跨源隔离</td>
+        </tr>
+        <tr>
+          <td>Cross-Origin-Resource-Policy</td><td>跨站资源读取</td>
+          <td><code>same-site</code> / <code>same-origin</code> / <code>cross-origin</code></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="divider-label">Subresource Integrity & Trusted Types</div>
+    <div class="cards cards-2">
+      <div class="card accent7">
+        <div class="card-title c7">Subresource Integrity (SRI)</div>
+        <div class="card-body">
+          <code>&lt;script src="cdn/lib.js" integrity="sha384-xxxx" crossorigin="anonymous"&gt;</code><br><br>
+          浏览器验证资源哈希，防 CDN 被篡改。<code>crossorigin</code> 必须设置（CORS 预检）。可同时列多个哈希算法。
+        </div>
+      </div>
+      <div class="card accent7">
+        <div class="card-title c7">Trusted Types API</div>
+        <div class="card-body">
+          通过 CSP <code>require-trusted-types-for 'script'</code> 强制要求所有 sink（innerHTML/eval/script.src 等）接受 TrustedHTML/TrustedScript 对象，从源头消除 DOM XSS。Chrome 支持，Firefox 实验性。
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-label">隐私相关 & 第三方 Cookie 替代</div>
+    <div class="cards cards-3">
+      <div class="card accent7">
+        <div class="card-title c7">Privacy Sandbox</div>
+        <div class="card-body">Chrome 推进中。Topics API（兴趣分类广告）、Protected Audience（再营销）、Attribution Reporting（转化归因）替代第三方 Cookie 追踪。</div>
+      </div>
+      <div class="card accent7">
+        <div class="card-title c7">Storage Partitioning</div>
+        <div class="card-body">2023+ 主流浏览器将三方 Cookie 及部分存储按 (top-site, frame-site) 分区，防止跨站追踪。iframe 中的 localStorage 与顶层隔离。</div>
+      </div>
+      <div class="card accent7">
+        <div class="card-title c7">Sanitizer API</div>
+        <div class="card-body">浏览器原生 XSS 净化。<code>el.setHTML(dirty, { sanitizer })</code>，可配置允许/禁止的标签和属性。替代 DOMPurify 的未来方向（规范仍在演进）。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 8 · 规范 & 易混点
+  ══════════════════════════════════════════════ -->
+  <div class="section" id="s8">
+    <div class="section-head">
+      <div class="section-num">08</div>
+      <div class="section-icon icon8">📐</div>
+      <div class="section-title c8">规范细节 & 易混淆点</div>
+      <div class="section-badge badge8">Spec & Gotchas</div>
+    </div>
+
+    <div class="divider-label">DOCTYPE & 解析模式 <span class="interview-star">★ 必知</span></div>
+    <div class="cards cards-2">
+      <div class="card accent8">
+        <div class="card-title c8">解析模式</div>
+        <div class="card-body">
+          <ul>
+            <li><strong>Quirks Mode</strong> — 无 DOCTYPE 或 HTML4 怪异 DOCTYPE，模拟旧浏览器</li>
+            <li><strong>Limited Quirks</strong> — 部分旧 DOCTYPE 触发</li>
+            <li><strong>Standards Mode</strong> — <code>&lt;!DOCTYPE html&gt;</code> 触发，现代标准</li>
+            <li>差异：盒模型（IE box-sizing）、表格样式、行高计算</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent8">
+        <div class="card-title c8">HTML vs XHTML vs HTML5</div>
+        <div class="card-body">
+          <ul>
+            <li>XHTML：严格 XML 语法，自闭合标签必须 <code>/&gt;</code>，属性必须引号</li>
+            <li>HTML5：容错解析，Living Standard（WHATWG 维护，无版本号）</li>
+            <li><code>text/html</code> → HTML 解析器；<code>application/xhtml+xml</code> → XML 解析器（严格）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-label">常见易混淆对比 <span class="interview-star">★ 高频</span></div>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <tr><th>概念A</th><th>vs</th><th>概念B</th><th>核心差异</th></tr>
+        <tr>
+          <td>innerHTML</td><td>vs</td><td>textContent / innerText</td>
+          <td>innerHTML 解析 HTML（XSS 风险）；textContent 纯文本（性能好）；innerText 感知 CSS（visibility:hidden 内容会被忽略，触发 reflow）</td>
+        </tr>
+        <tr>
+          <td>attribute</td><td>vs</td><td>property</td>
+          <td>attribute 是 HTML 初始值（字符串，getAttribute）；property 是 DOM 当前状态（类型丰富）。checked attribute 是默认值，checked property 是当前值</td>
+        </tr>
+        <tr>
+          <td>document.querySelector</td><td>vs</td><td>getElementById 等</td>
+          <td>querySelector 返回静态 Node；getElementsBy* 返回动态 HTMLCollection（DOM 变化实时反映）</td>
+        </tr>
+        <tr>
+          <td>event.target</td><td>vs</td><td>event.currentTarget</td>
+          <td>target = 实际触发元素；currentTarget = 绑定监听器的元素（在捕获/冒泡过程中变化）</td>
+        </tr>
+        <tr>
+          <td>stopPropagation</td><td>vs</td><td>stopImmediatePropagation</td>
+          <td>stopPropagation 阻止事件冒泡/捕获；stopImmediatePropagation 还阻止同元素上其他监听器</td>
+        </tr>
+        <tr>
+          <td>DOMContentLoaded</td><td>vs</td><td>load</td>
+          <td>DCL: DOM 解析完成（CSS/图片未必加载完）；load: 所有资源（图片、样式表、iframe）加载完毕</td>
+        </tr>
+        <tr>
+          <td>clientWidth</td><td>vs</td><td>offsetWidth / scrollWidth / getBoundingClientRect</td>
+          <td>clientWidth = 内容+padding（不含边框、滚动条）；offsetWidth = 内容+padding+border；scrollWidth = 含溢出内容；getBCR = 含 transform 的视口坐标</td>
+        </tr>
+        <tr>
+          <td>&lt;link rel="stylesheet"&gt;</td><td>vs</td><td>@import</td>
+          <td>link 并行加载；@import 串行（在 CSS 解析阶段触发）；link 可被 JS 动态控制；@import 不支持媒体查询（仅支持媒体类型）</td>
+        </tr>
+        <tr>
+          <td>meta viewport</td><td>vs</td><td>@viewport（废弃）</td>
+          <td><code>&lt;meta name="viewport" content="width=device-width,initial-scale=1"&gt;</code> 是标准；initial-scale=1 防 iOS 自动缩放；user-scalable=no 损害无障碍，不推荐</td>
+        </tr>
+        <tr>
+          <td>tabindex="0"</td><td>vs</td><td>tabindex="-1"</td>
+          <td>0 = 加入 tab 序（顺序由 DOM 决定）；-1 = 不在 tab 序但可 focus()（用于 JS 控制焦点）；正数（1+）= 优先 tab，不推荐（破坏顺序）</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="divider-label">HTML 解析容错 & 陷阱</div>
+    <div class="cards cards-2">
+      <div class="card accent8">
+        <div class="card-title c8">可选标签 & 隐式结构</div>
+        <div class="card-body">
+          <ul>
+            <li>HTML5 允许省略 <code>&lt;html&gt;</code>、<code>&lt;head&gt;</code>、<code>&lt;body&gt;</code>，浏览器自动补全</li>
+            <li><code>&lt;p&gt;</code> 遇到块级元素自动关闭（隐式关闭）</li>
+            <li><code>&lt;table&gt;</code> 外的文本会被浏览器移到表格之前（foster parenting）</li>
+            <li><code>&lt;li&gt;</code> 不需要关闭标签（遇到下一个 li 自动关闭）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent8">
+        <div class="card-title c8">字符实体 & 编码</div>
+        <div class="card-body">
+          <ul>
+            <li>推荐直接 UTF-8 + <code>&lt;meta charset="UTF-8"&gt;</code>，减少实体使用</li>
+            <li>必须转义：<code>&amp;amp; &amp;lt; &amp;gt; &amp;quot; &amp;apos;</code></li>
+            <li>不可见字符：<code>&amp;nbsp;</code>（不折行空格）、<code>&amp;shy;</code>（软连字符）</li>
+            <li><code>&amp;#8203;</code> 零宽断行符，避免长单词溢出</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-label">PWA & 离线能力关键点</div>
+    <div class="cards cards-3">
+      <div class="card accent8">
+        <div class="card-title c8">Web App Manifest</div>
+        <div class="card-body">
+          <ul>
+            <li><code>display</code>: standalone/fullscreen/minimal-ui/browser</li>
+            <li><code>start_url</code>、<code>scope</code>、<code>shortcuts</code></li>
+            <li><code>icons</code>：maskable（安全区域）vs any</li>
+            <li><code>share_target</code>：接收系统分享</li>
+            <li><code>protocol_handlers</code>：自定义协议</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent8">
+        <div class="card-title c8">Service Worker 生命周期</div>
+        <div class="card-body">
+          <ul>
+            <li>installing → waiting → activating → activated</li>
+            <li><code>skipWaiting()</code> 跳过等待立即激活</li>
+            <li><code>clients.claim()</code> 激活后控制现有页面</li>
+            <li>fetch 事件：Cache First / Network First / Stale While Revalidate</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card accent8">
+        <div class="card-title c8">Push & Notifications</div>
+        <div class="card-body">
+          <ul>
+            <li>Notification API — 显示系统通知（需用户授权）</li>
+            <li>Push API — 服务端推送到 SW（VAPID 密钥）</li>
+            <li>Background Sync — 网络恢复后发送请求</li>
+            <li>Periodic Background Sync — 定期同步（需授权）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider-label">面试高频原理题速查</div>
+    <div class="compare-wrap">
+      <table class="compare-table">
+        <tr><th>问题</th><th>核心答案</th></tr>
+        <tr>
+          <td>从输入 URL 到页面展示</td>
+          <td>DNS解析→TCP连接→TLS握手→HTTP请求→服务器响应→HTML解析（DOM）→CSS解析（CSSOM）→渲染树→Layout→Paint→Composite；JS阻塞解析；资源并行加载</td>
+        </tr>
+        <tr>
+          <td>重排（Reflow）vs 重绘（Repaint）</td>
+          <td>Reflow：几何变化，影响布局，代价最高；Repaint：外观变化，不影响布局；只改 transform/opacity 仅走 Composite，最廉价</td>
+        </tr>
+        <tr>
+          <td>script async vs defer</td>
+          <td>async：下载完立即执行，不保证顺序；defer：DOM 解析完执行，保序，推荐默认方案</td>
+        </tr>
+        <tr>
+          <td>什么是跨源隔离</td>
+          <td>COOP: same-origin + COEP: require-corp 开启，允许 SharedArrayBuffer，防 Spectre 攻击</td>
+        </tr>
+        <tr>
+          <td>meta charset 必须在 head 最前</td>
+          <td>浏览器在读取 1024 字节内必须确定编码，charset 必须在文件前 1KB 且在任何含非 ASCII 内容之前</td>
+        </tr>
+        <tr>
+          <td>HTML 解析遇到 script 为何阻塞</td>
+          <td>脚本可能调用 document.write 修改 DOM，解析器无法预知，必须等脚本执行完才能继续（预加载扫描器优化了资源下载）</td>
+        </tr>
+        <tr>
+          <td>为什么 CSS 放 head，JS 放底部</td>
+          <td>CSS 放 head：避免 FOUC（无样式内容闪现），CSSOM 需在渲染前就绪；JS 放底部：避免阻塞 HTML 解析（现代推荐 defer 代替）</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="hbox tip" style="margin-top:16px;">
+      <span class="hbox-icon">🎯</span>
+      <div class="hbox-body">
+        <strong>13 年经验面试加分项：</strong>能从规范角度（WHATWG Living Standard / W3C TAG Findings）解释设计决策；能结合 Chromium 架构（Blink 渲染引擎、V8、Compositor线程）回答底层原理；能对比不同浏览器实现差异；能说出自己在实际项目中踩过的坑与解决方案。
+      </div>
+    </div>
+  </div>
+
+  <div style="text-align:center; padding-top:32px; border-top: 1px solid var(--border); font-family:var(--mono); font-size:10px; color:var(--ink3); letter-spacing:0.15em;">
+    HTML LIVING STANDARD · WHATWG · 2025 · 8 MODULES · 60+ KNOWLEDGE POINTS
+  </div>
+</div>
+</body>
+</html>

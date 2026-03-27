@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypeScript 知识体系与面试指南 | 资深前端</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #161b22;
+      --surface2: #1c2128;
+      --surface3: #21262d;
+      --border: #30363d;
+      --border2: #484f58;
+      --ink: #e6edf3;
+      --ink2: #7d8590;
+      --ink3: #484f58;
+      --accent: #3178c6;
+      --accent2: #235a97;
+      --accent3: #e5bf7f;
+      --accent4: #7ee787;
+      --accent5: #79c0ff;
+      --warning: #ffa657;
+      --success: #7ee787;
+      --danger: #f85149;
+      --mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .layout { min-height: 100vh; }
+
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 280px;
+      height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 24px 0;
+      z-index: 100;
+    }
+
+    .sidebar-header {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .sidebar-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .sidebar-subtitle { font-size: 12px; color: var(--ink2); }
+
+    .nav-section { margin-bottom: 8px; }
+
+    .nav-header {
+      padding: 10px 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--ink2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-header::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .nav-list { list-style: none; }
+
+    .nav-item a {
+      display: block;
+      padding: 8px 20px 8px 32px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+      transition: all 0.2s;
+      border-left: 2px solid transparent;
+    }
+
+    .nav-item a:hover {
+      background: var(--surface2);
+      color: var(--accent);
+      border-left-color: var(--accent);
+    }
+
+    .main {
+      margin-left: 280px;
+      padding: 40px 48px;
+      max-width: 900px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 .version {
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-left: 12px;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 48px 0 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink);
+    }
+
+    h2 .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 12px;
+      vertical-align: middle;
+    }
+
+    .tag-core { background: var(--accent4); color: var(--bg); }
+    .tag-advanced { background: var(--accent5); color: var(--bg); }
+    .tag-interview { background: var(--accent3); color: var(--bg); }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 32px 0 16px;
+      color: var(--accent);
+    }
+
+    h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 24px 0 12px;
+      color: var(--ink);
+    }
+
+    p { margin-bottom: 16px; color: var(--ink); }
+
+    pre {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      margin: 16px 0;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    code {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: var(--surface2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent5);
+    }
+
+    pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+
+    .compare-table th,
+    .compare-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+
+    .compare-table th {
+      background: var(--surface2);
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .compare-table tr:hover td { background: var(--surface2); }
+    .compare-table .highlight { color: var(--accent4); font-weight: 500; }
+
+    .knowledge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .knowledge-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+
+    .knowledge-card:hover { border-color: var(--border2); }
+
+    .knowledge-card h4 {
+      margin: 0 0 12px;
+      color: var(--accent);
+      font-size: 14px;
+    }
+
+    .knowledge-card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--ink2);
+    }
+
+    .interview-q {
+      background: var(--surface);
+      border-left: 4px solid var(--accent3);
+      padding: 20px 24px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .interview-q .q {
+      font-weight: 600;
+      color: var(--accent3);
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    .interview-q .a { color: var(--ink); }
+
+    .interview-q .key-point {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--ink2);
+    }
+
+    .interview-q .key-point strong { color: var(--accent4); }
+
+    .highlight-box {
+      background: rgba(49, 120, 198, 0.08);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+
+    .highlight-box.warning {
+      background: rgba(255, 166, 87, 0.08);
+      border-color: var(--warning);
+    }
+
+    .highlight-box.success {
+      background: rgba(126, 231, 135, 0.08);
+      border-color: var(--success);
+    }
+
+    ul, ol { margin: 16px 0; padding-left: 24px; }
+    li { margin: 8px 0; }
+
+    .attr-table {
+      width: 100%;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    .attr-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .attr-table td:first-child {
+      width: 200px;
+      color: var(--accent5);
+      font-family: var(--mono);
+    }
+
+    section { scroll-margin-top: 40px; }
+
+    @media print {
+      .sidebar { display: none; }
+      .main { margin-left: 0; max-width: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">TypeScript 知识体系</div>
+        <div class="sidebar-subtitle">面试复习指南 · 2025版</div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">基础类型</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#basic-types">基本类型</a></li>
+          <li class="nav-item"><a href="#interface">Interface</a></li>
+          <li class="nav-item"><a href="#type-alias">Type Alias</a></li>
+          <li class="nav-item"><a href="#union-intersection">联合/交叉</a></li>
+          <li class="nav-item"><a href="#generic">泛型</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">类型操作</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#type-inference">类型推断</a></li>
+          <li class="nav-item"><a href="#type-narrowing">类型收窄</a></li>
+          <li class="nav-item"><a href="#type-guard">类型保护</a></li>
+          <li class="nav-item"><a href="#mapped-types">映射类型</a></li>
+          <li class="nav-item"><a href="#conditional-types">条件类型</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">高级类型</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#utility-types">工具类型</a></li>
+          <li class="nav-item"><a href="#infer">infer</a></li>
+          <li class="nav-item"><a href="#template-literal">模板字面量</a></li>
+          <li class="nav-item"><a href="#recursion">递归类型</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">工程配置</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#tsconfig">tsconfig.json</a></li>
+          <li class="nav-item"><a href="#declaration">声明文件</a></li>
+          <li class="nav-item"><a href="#module">模块</a></li>
+          <li class="nav-item"><a href="#namespace">Namespace</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">面试专题</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#interview-trick">类型体操</a></li>
+          <li class="nav-item"><a href="#interview-scenario">场景题</a></li>
+          <li class="nav-item"><a href="#interview-compare">对比分析</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="main">
+      <h1>TypeScript 知识体系与面试指南 <span class="version">TS 5.4</span></h1>
+
+      <section id="basic-types">
+        <h2>基础类型系统 <span class="tag tag-core">核心</span></h2>
+
+        <h3>TypeScript 独有的类型</h3>
+        <table class="compare-table">
+          <tr>
+            <th>类型</th>
+            <th>说明</th>
+            <th>示例</th>
+          </tr>
+          <tr>
+            <td><code>any</code></td>
+            <td>关闭类型检查，任意类型</td>
+            <td>let x: any = 4;</td>
+          </tr>
+          <tr>
+            <td><code>unknown</code></td>
+            <td>类型安全的 any，需类型收窄后使用</td>
+            <td>let x: unknown = 4;</td>
+          </tr>
+          <tr>
+            <td><code>never</code></td>
+            <td>永不存在的值（用于穷尽检查）</td>
+            <td>function err(): never { throw new Error() }</td>
+          </tr>
+          <tr>
+            <td><code>void</code></td>
+            <td>无返回值（undefined 或 null）</td>
+            <td>function log(): void {}</td>
+          </tr>
+          <tr>
+            <td><code>tuple</code></td>
+            <td>固定长度、固定类型的数组</td>
+            <td>let point: [number, number]</td>
+          </tr>
+          <tr>
+            <td><code>enum</code></td>
+            <td>枚举类型</td>
+            <td>enum Color { Red, Green }</td>
+          </tr>
+          <tr>
+            <td><code>literal</code></td>
+            <td>字面量类型</td>
+            <td>let x: 'foo' | 'bar'</td>
+          </tr>
+        </table>
+
+        <h3>any vs unknown 对比</h3>
+        <pre><code>// any：完全放弃类型检查
+let notSure: any = 4;
+notSure.toFixed();  // OK，但运行时才可能报错
+notSure.foo.bar;    // OK，编译不检查
+
+// unknown：类型安全的 any
+let maybe: unknown = 4;
+// maybe.toFixed();  // Error: 'unknown' 上不存在 'toFixed'
+
+// 必须使用类型收窄
+if (typeof maybe === 'number') {
+  maybe.toFixed();  // OK，类型已收窄为 number
+}
+
+// 类型断言（慎用）
+(maybe as number).toFixed();
+
+// unknown 的推荐用法
+function parseJSON(json: string): unknown {
+  return JSON.parse(json);
+}
+
+const data = parseJSON('{"name": "Alice"}');
+// 必须类型检查后才能使用
+if (data && typeof data === 'object' && 'name' in data) {
+  console.log(data.name);
+}</code></pre>
+
+        <h3>Tuple 元组详解</h3>
+        <pre><code>// 基础元组
+let point: [number, number] = [10, 20];
+
+// 可选元素（TS 3.0+）
+let optional: [number, number?] = [10];
+
+// 剩余元素（TS 4.0+）
+let rest: [number, ...string[]] = [1, 'a', 'b'];
+
+// 只读元组
+const readonly: readonly [number, string] = [1, 'a'];
+// readonly[0] = 2;  // Error
+
+// 具名元组（TS 4.0+）
+type Point = [x: number, y: number, z?: number];
+const p: Point = [1, 2, 3];
+
+// 解构
+const [x, y] = point;
+
+// 越界访问（开启 strict 会报错）
+// point[2];  // Error: Tuple type '[number, number]' of length '2' has no element at index '2'
+
+// 元组作为函数参数
+type Callback = [string, (data: string) => void];
+function handleEvent([event, callback]: Callback) {
+  callback(event);
+}</code></pre>
+      </section>
+
+      <section id="interface">
+        <h2>Interface 详解 <span class="tag tag-core">核心</span></h2>
+
+        <h3>Interface 与 Type Alias 对比</h3>
+        <table class="compare-table">
+          <tr>
+            <th>特性</th>
+            <th>interface</th>
+            <th>type</th>
+          </tr>
+          <tr>
+            <td>扩展方式</td>
+            <td>extends（声明合并）</td>
+            <td>&（交叉类型）</td>
+          </tr>
+          <tr>
+            <td>同名声明</td>
+            <td>自动合并（声明合并）</td>
+            <td>报错</td>
+          </tr>
+          <tr>
+            <td>实现类</td>
+            <td>class implements</td>
+            <td>不可</td>
+          </tr>
+          <tr>
+            <td>联合/交叉</td>
+            <td>不支持直接定义</td>
+            <td>type A = B | C</td>
+          </tr>
+          <tr>
+            <td>映射类型</td>
+            <td>不支持</td>
+            <td>type A = { [K in T]: V }</td>
+          </tr>
+          <tr>
+            <td>计算属性</td>
+            <td>不支持</td>
+            <td>支持</td>
+          </tr>
+          <tr>
+            <td>性能</td>
+            <td>更快（缓存）</td>
+            <td>稍慢</td>
+          </tr>
+        </table>
+
+        <h3>Interface 高级特性</h3>
+        <pre><code>// 可选属性
+interface Person {
+  name: string;
+  age?: number;
+}
+
+// 只读属性
+interface Config {
+  readonly apiUrl: string;
+}
+
+// 索引签名
+interface Dict {
+  [key: string]: number;
+}
+
+// 混合类型（函数+属性）
+interface Counter {
+  (start: number): void;
+  interval: number;
+  reset(): void;
+}
+
+function getCounter(): Counter {
+  const counter = function(start: number) {} as Counter;
+  counter.interval = 100;
+  counter.reset = () => {};
+  return counter;
+}
+
+// 继承
+interface Animal {
+  name: string;
+}
+interface Dog extends Animal {
+  breed: string;
+}
+
+// 多重继承
+interface Hybrid extends Animal, CanWalk {}
+
+// 声明合并
+interface Window {
+  myLib: any;
+}
+// 其他地方再次声明
+interface Window {
+  myOtherLib: any;
+}
+// 最终 Window 包含两个属性
+
+// 接口的兼容性（鸭子类型）
+interface Point { x: number; y: number; }
+function logPoint(p: Point) {
+  console.log(`${p.x}, ${p.y}`);
+}
+const point = { x: 1, y: 2, z: 3 };
+logPoint(point);  // OK，有 x 和 y 即可</code></pre>
+
+        <h3>抽象类 vs Interface</h3>
+        <pre><code>// 抽象类：可以有实现，有运行时
+abstract class Animal {
+  abstract name: string;
+  abstract makeSound(): void;
+
+  move(): void {  // 可以有实现
+    console.log('moving');
+  }
+}
+
+// 接口：纯结构，无运行时
+interface IAnimal {
+  name: string;
+  makeSound(): void;
+}
+
+// 类实现接口
+class Dog implements IAnimal {
+  name = 'Dog';
+  makeSound() {
+    console.log('bark');
+  }
+}
+
+// 类继承抽象类
+class Cat extends Animal {
+  name = 'Cat';
+  makeSound() {
+    console.log('meow');
+  }
+}
+
+// 选择建议：
+// - 需要默认实现/运行时检查 -> 抽象类
+// - 纯类型约束/需要多重实现 -> 接口
+// - 现代 TS 推荐优先使用接口</code></pre>
+      </section>
+
+      <section id="generic">
+        <h2>泛型 Generics <span class="tag tag-core">核心</span> <span class="tag tag-interview">必考</span></h2>
+
+        <h3>泛型基础</h3>
+        <pre><code>// 基础泛型函数
+function identity<T>(arg: T): T {
+  return arg;
+}
+
+// 调用方式
+identity<string>('hello');  // 显式指定
+identity('hello');          // 类型推断
+
+// 泛型接口
+interface GenericIdentity<T> {
+  (arg: T): T;
+}
+
+// 泛型类
+class GenericNumber<T> {
+  zeroValue: T;
+  add: (x: T, y: T) => T;
+}
+
+// 泛型约束
+interface HasLength {
+  length: number;
+}
+function logLength<T extends HasLength>(arg: T): T {
+  console.log(arg.length);
+  return arg;
+}
+
+// 多类型参数
+function swap<T, U>(tuple: [T, U]): [U, T] {
+  return [tuple[1], tuple[0]];
+}
+
+// 默认类型参数
+function createArray<T = string>(length: number, value: T): T[] {
+  return Array(length).fill(value);
+}</code></pre>
+
+        <h3>泛型约束进阶</h3>
+        <pre><code>// keyof 约束
+function getProperty<T, K extends keyof T>(obj: T, key: K): T[K] {
+  return obj[key];
+}
+
+const obj = { a: 1, b: 2, c: 3 };
+getProperty(obj, 'a');  // OK
+// getProperty(obj, 'd');  // Error: 'd' 不存在
+
+// 结合类型映射
+type Pick<T, K extends keyof T> = {
+  [P in K]: T[P];
+};
+
+type Person = { name: string; age: number; email: string };
+type PersonPreview = Pick<Person, 'name' | 'age'>;
+// { name: string; age: number }
+
+// 构造签名约束
+interface Constructable {
+  new (...args: any[]): any;
+}
+function create<T extends Constructable>(ctor: T): InstanceType<T> {
+  return new ctor();
+}
+
+// 递归约束
+type NestedArray<T> = T | NestedArray<T>[];
+const value: NestedArray<number> = [1, [2, [3]]];</code></pre>
+
+        <h3>泛型实战：类型安全的 Event Emitter</h3>
+        <pre><code>type EventMap = {
+  [eventName: string]: any[];
+};
+
+class TypedEmitter<Events extends EventMap> {
+  private listeners: { [K in keyof Events]?: Array<(...args: Events[K]) => void> } = {};
+
+  on<K extends keyof Events>(event: K, listener: (...args: Events[K]) => void) {
+    if (!this.listeners[event]) {
+      this.listeners[event] = [];
+    }
+    this.listeners[event]!.push(listener);
+  }
+
+  emit<K extends keyof Events>(event: K, ...args: Events[K]) {
+    this.listeners[event]?.forEach(listener => listener(...args));
+  }
+}
+
+// 使用
+interface MyEvents {
+  data: [string];
+  error: [Error];
+  complete: [];
+}
+
+const emitter = new TypedEmitter<MyEvents>();
+emitter.on('data', (data) => {
+  // data 自动推断为 string
+  console.log(data.toUpperCase());
+});
+emitter.emit('data', 'hello');</code></pre>
+      </section>
+
+      <section id="type-narrowing">
+        <h2>类型收窄 Type Narrowing <span class="tag tag-core">核心</span></h2>
+
+        <h3>类型收窄方式</h3>
+        <pre><code>// 1. typeof 收窄
+function padLeft(value: string | number) {
+  if (typeof value === 'string') {
+    return value.padStart(10, '0');  // value 是 string
+  }
+  return value.toFixed(2);  // value 是 number
+}
+
+// 2. 真值收窄
+function getLength(str: string | null | undefined) {
+  if (str) {
+    return str.length;  // str 是 string
+  }
+  return 0;
+}
+
+// 3. instanceof 收窄
+function logDate(value: Date | string) {
+  if (value instanceof Date) {
+    console.log(value.toISOString());
+  } else {
+    console.log(new Date(value).toISOString());
+  }
+}
+
+// 4. in 运算符收窄
+type Fish = { swim: () => void };
+type Bird = { fly: () => void };
+
+function move(animal: Fish | Bird) {
+  if ('swim' in animal) {
+    animal.swim();  // animal 是 Fish
+  } else {
+    animal.fly();   // animal 是 Bird
+  }
+}
+
+// 5. 自定义类型保护（type predicate）
+function isFish(animal: Fish | Bird): animal is Fish {
+  return (animal as Fish).swim !== undefined;
+}
+
+function move2(animal: Fish | Bird) {
+  if (isFish(animal)) {
+    animal.swim();
+  } else {
+    animal.fly();
+  }
+}
+
+// 6. 可辨识联合（Discriminated Union）
+type Circle = { kind: 'circle'; radius: number };
+type Square = { kind: 'square'; side: number };
+type Shape = Circle | Square;
+
+function area(shape: Shape) {
+  switch (shape.kind) {
+    case 'circle':
+      return Math.PI * shape.radius ** 2;  // shape 是 Circle
+    case 'square':
+      return shape.side ** 2;              // shape 是 Square
+    default:
+      // exhaustive check
+      const _exhaustive: never = shape;
+      return _exhaustive;
+  }
+}</code></pre>
+
+        <h3>断言函数 (Assertion Functions)</h3>
+        <pre><code>// TS 3.7+ 断言函数
+function assertIsString(val: any): asserts val is string {
+  if (typeof val !== 'string') {
+    throw new Error('Not a string!');
+  }
+}
+
+function assert(condition: any, msg?: string): asserts condition {
+  if (!condition) {
+    throw new Error(msg || 'Assertion failed');
+  }
+}
+
+// 使用
+function multiply(x: unknown, y: unknown) {
+  assertIsString(x);
+  assertIsString(y);
+  // x 和 y 在此处都是 string
+  return x.concat(y);
+}
+
+// 另一种形式
+function assertNonNull<T>(val: T): asserts val is NonNullable<T> {
+  if (val === undefined || val === null) {
+    throw new Error('Value is null or undefined');
+  }
+}</code></pre>
+      </section>
+
+      <section id="mapped-types">
+        <h2>映射类型 Mapped Types <span class="tag tag-advanced">进阶</span></h2>
+
+        <h3>基础映射类型</h3>
+        <pre><code>// 基础语法：{ [K in Keys]: ValueType }
+type Person = { name: string; age: number };
+
+// 只读版本
+type ReadonlyPerson = { readonly [K in keyof Person]: Person[K] };
+// { readonly name: string; readonly age: number }
+
+// 可选版本
+type PartialPerson = { [K in keyof Person]?: Person[K] };
+// { name?: string; age?: number }
+
+// 使用泛型封装
+type MyReadonly<T> = { readonly [K in keyof T]: T[K] };
+type MyPartial<T> = { [K in keyof T]?: T[K] };
+type MyRequired<T> = { [K in keyof T]-?: T[K] };  // -? 移除可选
+
+// 修改属性类型
+type Nullable<T> = { [K in keyof T]: T[K] | null };
+
+// key remapping (TS 4.1+)
+type Getters<T> = {
+  [K in keyof T as `get${Capitalize<string & K>}`]: () => T[K];
+};
+type PersonGetters = Getters<Person>;
+// { getName: () => string; getAge: () => number }</code></pre>
+
+        <h3>内置映射类型工具</h3>
+        <table class="compare-table">
+          <tr>
+            <th>工具类型</th>
+            <th>作用</th>
+            <th>实现</th>
+          </tr>
+          <tr>
+            <td>Partial&lt;T&gt;</td>
+            <td>所有属性可选</td>
+            <td>{ [K in keyof T]?: T[K] }</td>
+          </tr>
+          <tr>
+            <td>Required&lt;T&gt;</td>
+            <td>所有属性必选</td>
+            <td>{ [K in keyof T]-?: T[K] }</td>
+          </tr>
+          <tr>
+            <td>Readonly&lt;T&gt;</td>
+            <td>所有属性只读</td>
+            <td>{ readonly [K in keyof T]: T[K] }</td>
+          </tr>
+          <tr>
+            <td>Pick&lt;T, K&gt;</td>
+            <td>选取部分属性</td>
+            <td>{ [P in K]: T[P] }</td>
+          </tr>
+          <tr>
+            <td>Omit&lt;T, K&gt;</td>
+            <td>排除部分属性</td>
+            <td>Pick&lt;T, Exclude&lt;keyof T, K&gt;&gt;</td>
+          </tr>
+          <tr>
+            <td>Record&lt;K, T&gt;</td>
+            <td>创建字典类型</td>
+            <td>{ [P in K]: T }</td>
+          </tr>
+          <tr>
+            <td>Exclude&lt;T, U&gt;</td>
+            <td>从T中排除U</td>
+            <td>T extends U ? never : T</td>
+          </tr>
+          <tr>
+            <td>Extract&lt;T, U&gt;</td>
+            <td>提取T中的U类型</td>
+            <td>T extends U ? T : never</td>
+          </tr>
+          <tr>
+            <td>NonNullable&lt;T&gt;</td>
+            <td>排除null/undefined</td>
+            <td>T extends null | undefined ? never : T</td>
+          </tr>
+          <tr>
+            <td>ReturnType&lt;T&gt;</td>
+            <td>提取返回类型</td>
+            <td>T extends (...) => infer R ? R : any</td>
+          </tr>
+          <tr>
+            <td>Parameters&lt;T&gt;</td>
+            <td>提取参数类型</td>
+            <td>T extends (...args: infer P) => any ? P : never</td>
+          </tr>
+        </table>
+
+        <h3>实用自定义映射类型</h3>
+        <pre><code>// 深度只读
+type DeepReadonly<T> = {
+  readonly [K in keyof T]: T[K] extends object
+    ? DeepReadonly<T[K]>
+    : T[K];
+};
+
+// 深度可选
+type DeepPartial<T> = {
+  [K in keyof T]?: T[K] extends object
+    ? DeepPartial<T[K]>
+    : T[K];
+};
+
+// 扁平化对象（将嵌套转为扁平路径）
+type Flatten<T extends Record<string, any>, Key extends keyof T = keyof T> =
+  Key extends string
+    ? T[Key] extends Record<string, any>
+      ? { [K in `${Key}.${Flatten<T[Key]>}`]: string }
+      : { [K in Key]: T[Key] }
+    : never;
+
+// 将对象转为 FormData 类型
+type FormData<T> = {
+  [K in keyof T]: T[K] extends File | Blob
+    ? T[K]
+    : string;
+};
+
+// 为特定属性添加前缀
+type WithPrefix<T, P extends string> = {
+  [K in keyof T as `${P}${string & K}`]: T[K];
+};</code></pre>
+      </section>
+
+      <section id="conditional-types">
+        <h2>条件类型 Conditional Types <span class="tag tag-advanced">进阶</span></h2>
+
+        <h3>基础条件类型</h3>
+        <pre><code>// 基本语法：T extends U ? X : Y
+type IsString<T> = T extends string ? true : false;
+
+type A = IsString<'hello'>;  // true
+type B = IsString<123>;      // false
+
+// 分布式条件类型（Distributive Conditional Types）
+type ToArray<T> = T extends any ? T[] : never;
+
+type StrOrNumArray = ToArray<string | number>;
+// string[] | number[] （分发到每个成员）
+
+// 阻止分发
+
+[tpe NoDistribute<T> = [T] extends [any] ? T[] : never;
+type ArrayOrNever = NoDistribute<string | number>;  // (string | number)[]
+
+// 实际应用：过滤类型
+type Filter<T, U> = T extends U ? T : never;
+type Strings = Filter<string | number | boolean, string>;  // string
+
+// 从联合类型中排除
+type Exclude<T, U> = T extends U ? never : T;
+type Remaining = Exclude<'a' | 'b' | 'c', 'a' | 'b'>;  // 'c'</code></pre>
+
+        <h3>infer 关键字</h3>
+        <pre><code>// infer 用于在条件类型中推断类型
+type ReturnType<T> = T extends (...args: any[]) => infer R ? R : never;
+
+function greet() {
+  return 'hello';
+}
+type GreetReturn = ReturnType<typeof greet>;  // string
+
+// 提取 Promise 的返回类型
+type Awaited<T> = T extends Promise<infer U> ? U : T;
+type Result = Awaited<Promise<string>>;  // string
+
+// 提取数组元素类型
+type ElementType<T> = T extends (infer E)[] ? E : never;
+type Num = ElementType<number[]>;  // number
+
+// 提取函数参数
+type Parameters<T> = T extends (...args: infer P) => any ? P : never;
+
+// 提取元组中的类型
+type Head<T extends any[]> = T extends [infer H, ...any[]] ? H : never;
+type Tail<T extends any[]> = T extends [any, ...infer Rest] ? Rest : never;
+
+type First = Head<[1, 2, 3]>;  // 1
+type Rest = Tail<[1, 2, 3]>;   // [2, 3]
+
+// 递归 infer 提取嵌套 Promise
+type DeepAwaited<T> = T extends Promise<infer U>
+  ? DeepAwaited<U>
+  : T;
+
+type DeepResult = DeepAwaited<Promise<Promise<string>>>;  // string</code></pre>
+
+        <h3>条件类型实战</h3>
+        <pre><code>// 根据类型选择实现
+type ApiResponse<T> = T extends { success: true }
+  ? { data: T; error: null }
+  : { data: null; error: string };
+
+// 类型安全的解析器
+type ParseResult<T> =
+  | { success: true; value: T }
+  | { success: false; error: Error };
+
+// 扁平化数组类型
+type Flatten<T> = T extends (infer U)[]
+  ? U extends any[]
+    ? Flatten<U>
+    : U
+  : T;
+
+type DeepFlat = Flatten<number[][][]>;  // number
+
+// 提取对象中值为函数的属性
+type FunctionProperties<T> = {
+  [K in keyof T as T[K] extends Function ? K : never]: T[K];
+};
+
+type User = {
+  name: string;
+  age: number;
+  greet: () => void;
+};
+
+type UserMethods = FunctionProperties<User>;  // { greet: () => void }</code></pre>
+      </section>
+
+      <section id="template-literal">
+        <h2>模板字面量类型 <span class="tag tag-advanced">进阶</span></h2>
+
+        <h3>基础用法</h3>
+        <pre><code>// 模板字面量类型（TS 4.1+）
+type World = 'world';
+type Greeting = `hello ${World}`;  // "hello world"
+
+// 联合类型的自动分发
+type EventName<T extends string> = `on${Capitalize<T>}`;
+type Events = EventName<'click' | 'hover' | 'focus'>;
+// "onClick" | "onHover" | "onFocus"
+
+// 内置字符串操作类型
+type A = Uppercase<'hello'>;   // "HELLO"
+type B = Lowercase<'HELLO'>;   // "hello"
+type C = Capitalize<'hello'>;  // "Hello"
+type D = Uncapitalize<'Hello'>; // "hello"
+
+// 实际应用：CSS 变量名
+type Spacing = 'sm' | 'md' | 'lg';
+type Margin = `margin-${Spacing}`;  // "margin-sm" | "margin-md" | "margin-lg"
+type Padding = `padding-${Spacing}`;
+
+// 对象路径类型
+type Path<T, K extends keyof T = keyof T> = K extends string
+  ? T[K] extends Record<string, any>
+    ? `${K}.${Path<T[K]>}` | K
+    : K
+  : never;
+
+type User = {
+  name: string;
+  address: { city: string; zip: number };
+};
+type UserPaths = Path<User>;  // "name" | "address" | "address.city" | "address.zip"</code></pre>
+
+        <h3>模板字面量类型实战</h3>
+        <pre><code>// 类型安全的 getter/setter 路径
+function get<T, P extends Path<T>>(obj: T, path: P): any {
+  return path.split('.').reduce((o, k) => o?.[k], obj);
+}
+
+// 带单位的 CSS 值
+type Unit = 'px' | 'rem' | 'em' | '%';
+type CSSValue<T extends number = number> = `${T}${Unit}`;
+
+const width: CSSValue = '100px';
+const fontSize: CSSValue = '1.5rem';
+
+// 日期格式化
+type DateFormat = `${number}-${number}-${number}`;
+const date: DateFormat = '2024-01-15';
+
+// HTTP 方法 + 路径
+type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type Endpoint = `/api/${string}`;
+type ApiCall = `${HttpMethod} ${Endpoint}`;
+
+const call: ApiCall = 'GET /api/users';</code></pre>
+      </section>
+
+      <section id="tsconfig">
+        <h2>tsconfig.json 配置 <span class="tag tag-core">核心</span></h2>
+
+        <h3>关键编译选项</h3>
+        <pre><code>{
+  "compilerOptions": {
+    // 基础配置
+    "target": "ES2022",           // 编译目标版本
+    "module": "ESNext",           // 模块系统
+    "moduleResolution": "bundler", // 模块解析策略
+    "lib": ["ES2022", "DOM"],     // 包含的类型定义
+
+    // 严格模式（推荐全开）
+    "strict": true,               // 启用所有严格类型检查
+    "noImplicitAny": true,        // 禁止隐式 any
+    "strictNullChecks": true,     // 严格 null 检查
+    "strictFunctionTypes": true,  // 严格函数类型
+    "strictBindCallApply": true,  // 严格 bind/call/apply
+    "strictPropertyInitialization": true, // 严格属性初始化
+    "noImplicitThis": true,       // 禁止隐式 this
+    "alwaysStrict": true,         // 在严格模式解析
+
+    // 代码质量
+    "noUnusedLocals": true,       // 未使用变量报错
+    "noUnusedParameters": true,   // 未使用参数报错
+    "noImplicitReturns": true,    // 必须显式返回
+    "noFallthroughCasesInSwitch": true, // switch 必须有 break
+
+    // 路径配置
+    "baseUrl": ".",               // 基础路径
+    "paths": {                    // 路径映射
+      "@/*": ["src/*"],
+      "@components/*": ["src/components/*"]
+    },
+    "rootDirs": ["src", "tests"], // 根目录列表
+
+    // 输出配置
+    "outDir": "./dist",           // 输出目录
+    "declaration": true,          // 生成 .d.ts
+    "declarationMap": true,       // 生成 .d.ts.map
+    "sourceMap": true,            // 生成 .js.map
+
+    // JSX
+    "jsx": "react-jsx",           // JSX 转换模式
+
+    // 其他
+    "esModuleInterop": true,      // 兼容 CommonJS
+    "skipLibCheck": true,         // 跳过库类型检查
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,    // 支持导入 JSON
+    "isolatedModules": true       // 确保文件可被独立编译
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "**/*.spec.ts"]
+}</code></pre>
+
+        <h3>严格模式选项详解</h3>
+        <table class="compare-table">
+          <tr>
+            <th>选项</th>
+            <th>作用</th>
+            <th>示例</th>
+          </tr>
+          <tr>
+            <td>strictNullChecks</td>
+            <td>null/undefined 需要显式处理</td>
+            <td>let s: string = null; // Error</td>
+          </tr>
+          <tr>
+            <td>noImplicitAny</td>
+            <td>禁止隐式 any 类型</td>
+            <td>function f(x) {} // Error: x 隐式为 any</td>
+          </tr>
+          <tr>
+            <td>strictFunctionTypes</td>
+            <td>函数参数双向协变检查</td>
+            <td>interface Method { (x: string | number): void }</td>
+          </tr>
+          <tr>
+            <td>strictPropertyInitialization</td>
+            <td>类属性必须在声明或构造函数中初始化</td>
+            <td>class C { name: string; } // Error</td>
+          </tr>
+        </table>
+      </section>
+
+      <section id="declaration">
+        <h2>声明文件 .d.ts <span class="tag tag-advanced">进阶</span></h2>
+
+        <h3>声明文件基础</h3>
+        <pre><code>// types.d.ts - 声明文件
+
+// 声明全局变量
+declare const API_VERSION: string;
+declare function greet(name: string): string;
+
+// 声明模块
+declare module 'my-lib' {
+  export interface Config {
+    apiUrl: string;
+    timeout: number;
+  }
+  export function init(config: Config): void;
+  export const version: string;
+}
+
+// 声明全局模块扩展
+declare global {
+  interface Window {
+    myApp: {
+      version: string;
+      init(): void;
+    };
+  }
+}
+export {};  // 使文件成为模块
+
+// 为第三方库补充声明
+// lodash-addons.d.ts
+declare module 'lodash' {
+  export function myCustomMethod(): void;
+}</code></pre>
+
+        <h3>自动生成声明文件</h3>
+        <pre><code>// tsconfig.json
+{
+  "compilerOptions": {
+    "declaration": true,      // 生成 .d.ts
+    "declarationMap": true,   // 生成 .d.ts.map
+    "emitDeclarationOnly": true  // 只输出声明文件
+  }
+}
+
+// package.json
+{
+  "types": "dist/index.d.ts",
+  "files": ["dist"]
+}</code></pre>
+
+        <h3>三斜杠指令</h3>
+        <pre><code>/// <reference path="./other-types.d.ts" />
+/// <reference types="node" />
+/// <reference lib="es2022" />
+
+// 使用示例：需要依赖其他声明文件
+/// <reference types="jquery" />
+
+declare function $(selector: string): JQuery;</code></pre>
+      </section>
+
+      <section id="interview-trick">
+        <h2>类型体操实战 <span class="tag tag-interview">高难度</span></h2>
+
+        <h3>1. 深度 Readonly</h3>
+        <pre><code>type DeepReadonly<T> = {
+  readonly [K in keyof T]: T[K] extends object
+    ? T[K] extends Function
+      ? T[K]
+      : DeepReadonly<T[K]>
+    : T[K];
+};
+
+// 测试
+interface User {
+  name: string;
+  address: {
+    city: string;
+    coords: { lat: number; lng: number };
+  };
+  update(): void;
+}
+
+type ReadonlyUser = DeepReadonly<User>;
+// 所有嵌套属性都是 readonly，但方法保持原样</code></pre>
+
+        <h3>2. 提取 Promise 嵌套类型</h3>
+        <pre><code>type DeepPromiseValue<T> = T extends Promise<infer U>
+  ? DeepPromiseValue<U>
+  : T;
+
+// 测试
+type A = DeepPromiseValue<Promise<Promise<string>>>;  // string
+type B = DeepPromiseValue<Promise<number>>;           // number</code></pre>
+
+        <h3>3. 柯里化类型</h3>
+        <pre><code>type Curried<T extends (...args: any[]) => any> =
+  T extends (first: infer F, ...rest: infer R) => infer Ret
+    ? R extends [any, ...any[]]
+      ? (first: F) => Curried<(...args: R) => Ret>
+      : (first: F) => Ret
+    : never;
+
+// 使用
+declare function curry<T extends (...args: any[]) => any>(
+  fn: T
+): Curried<T>;
+
+const add = (a: number, b: number, c: number) => a + b + c;
+const curriedAdd = curry(add);
+// curriedAdd(1)(2)(3) 正确推断</code></pre>
+
+        <h3>4. 类型安全的事件总线</h3>
+        <pre><code>type EventMap = Record<string, any[]>;
+
+class EventBus<Events extends EventMap> {
+  private listeners: {
+    [K in keyof Events]?: Array<(...args: Events[K]) => void>;
+  } = {};
+
+  on<K extends keyof Events>(
+    event: K,
+    listener: (...args: Events[K]) => void
+  ): () => void {
+    if (!this.listeners[event]) {
+      this.listeners[event] = [];
+    }
+    this.listeners[event]!.push(listener);
+
+    return () => this.off(event, listener);
+  }
+
+  off<K extends keyof Events>(
+    event: K,
+    listener: (...args: Events[K]) => void
+  ): void {
+    const listeners = this.listeners[event];
+    if (listeners) {
+      const index = listeners.indexOf(listener);
+      if (index > -1) {
+        listeners.splice(index, 1);
+      }
+    }
+  }
+
+  emit<K extends keyof Events>(event: K, ...args: Events[K]): void {
+    this.listeners[event]?.forEach(listener => listener(...args));
+  }
+}
+
+// 使用
+type MyEvents = {
+  userLogin: [userId: string, timestamp: number];
+  dataUpdate: [payload: { id: string; data: unknown }];
+};
+
+const bus = new EventBus<MyEvents>();
+bus.on('userLogin', (userId, timestamp) => {
+  // userId: string, timestamp: number
+});</code></pre>
+
+        <h3>5. 实现 Awaited (TS 4.5+ 内置)</h3>
+        <pre><code>// TS 内置实现
+type Awaited<T> = T extends null | undefined
+  ? T
+  : T extends object & { then(onfulfilled: infer F, ...args: infer _): any }
+    ? F extends (value: infer V, ...args: infer _) => any
+      ? Awaited<V>
+      : never
+    : T;
+
+// 简化版（假设只有 Promise）
+type MyAwaited<T> = T extends Promise<infer U>
+  ? MyAwaited<U>
+  : T;
+
+// 测试
+type A = MyAwaited<Promise<string>>;           // string
+type B = MyAwaited<Promise<Promise<number>>>;  // number</code></pre>
+      </section>
+
+      <section id="interview-scenario">
+        <h2>场景题与最佳实践 <span class="tag tag-interview">热门</span></h2>
+
+        <div class="interview-q">
+          <div class="q">Q: 如何为第三方库补充类型定义？</div>
+          <div class="a">
+            <pre><code>// 1. 创建声明文件（如缺少 @types/xxx）
+// types/my-lib.d.ts
+declare module 'my-lib' {
+  export function init(config: { apiKey: string }): void;
+  export const version: string;
+}
+
+// 2. 扩展现有类型（模块扩展）
+// types/vue.d.ts
+declare module 'vue' {
+  export interface ComponentCustomProperties {
+    $myProperty: string;
+  }
+}
+
+// 3. 全局声明（非模块库）
+// types/globals.d.ts
+declare const $: JQueryStatic;
+declare interface Window {
+  MY_CONFIG: { env: string };
+}
+
+// tsconfig.json 包含声明文件
+{
+  "compilerOptions": {
+    "typeRoots": ["./node_modules/@types", "./types"]
+  }
+}</code></pre>
+          </div>
+        </div>
+
+        <div class="interview-q">
+          <div class="q">Q: 如何设计一个类型安全的 API 客户端？</div>
+          <div class="a">
+            <pre><code>// 定义 API 端点
+type Endpoints = {
+  '/users': {
+    GET: { response: User[] };
+    POST: { body: CreateUserDTO; response: User };
+  };
+  '/users/:id': {
+    GET: { params: { id: string }; response: User };
+    PUT: { params: { id: string }; body: UpdateUserDTO; response: User };
+    DELETE: { params: { id: string }; response: void };
+  };
+};
+
+// 提取路径参数
+type PathParams<T extends string> =
+  T extends `${string}:${infer Param}/${infer Rest}`
+    ? { [K in Param]: string } & PathParams<`/${Rest}`>
+    : T extends `${string}:${infer Param}`
+      ? { [K in Param]: string }
+      : {};
+
+// API 客户端实现
+class ApiClient {
+  async request<
+    T extends keyof Endpoints,
+    M extends keyof Endpoints[T]
+  >(
+    method: M,
+    url: T,
+    ...args: Endpoints[T][M] extends { body: infer B }
+      ? Endpoints[T][M] extends { params: infer P }
+        ? [P, B]
+        : [B]
+      : Endpoints[T][M] extends { params: infer P }
+        ? [P]
+        : []
+  ): Promise<Endpoints[T][M] extends { response: infer R } ? R : never> {
+    // 实现...
+    return fetch(url, { method, body: JSON.stringify(args) }).then(r => r.json());
+  }
+}
+
+// 使用
+const api = new ApiClient();
+const users = await api.request('GET', '/users');  // User[]
+const user = await api.request('GET', '/users/:id', { id: '1' });  // User</code></pre>
+          </div>
+        </div>
+
+        <div class="interview-q">
+          <div class="q">Q: TS 项目中的 any 应该如何处理？</div>
+          <div class="a">
+            <p><strong>避免 any 的策略：</strong></p>
+            <pre><code>// 1. 使用 unknown 替代 any
+function parseData(input: unknown): Data {
+  // 需要类型收窄后才能使用
+  if (isValidData(input)) {
+    return input;
+  }
+  throw new Error('Invalid data');
+}
+
+// 2. 使用类型断言（明确知道类型时）
+const element = document.getElementById('app') as HTMLElement;
+
+// 3. 为第三方库添加声明
+// 渐进式类型化：先用松散类型，再收紧
+type LooseObject = Record<string, any>;  // 临时方案
+type StrictObject = { id: string; name: string };  // 目标
+
+// 4. 使用 @ts-expect-error（比 @ts-ignore 更好）
+// @ts-expect-error 旧 API 已废弃，待重构
+oldApi.call();
+
+// 5. eslint 规则禁止隐式 any
+// .eslintrc
+{
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unsafe-argument": "error"
+  }
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="interview-compare">
+        <h2>对比分析 <span class="tag tag-interview">必考</span></h2>
+
+        <h3>Type vs Interface 选择指南</h3>
+        <div class="highlight-box">
+          <strong>推荐原则：</strong>
+          <ul>
+            <li>优先使用 interface，需要时再使用 type</li>
+            <li>需要 extends 类或实现 -> interface</li>
+            <li>需要联合/交叉/映射 -> type</li>
+            <li>需要条件类型 -> type</li>
+            <li>简单对象结构 -> interface</li>
+          </ul>
+        </div>
+
+        <h3>extends vs implements</h3>
+        <pre><code>// extends：继承实现
+class Animal {
+  move() {}
+}
+class Dog extends Animal {
+  bark() {}
+}
+
+// implements：实现接口（只有类型约束）
+interface CanWalk {
+  walk(): void;
+}
+class Person implements CanWalk {
+  walk() {}  // 必须实现
+}
+
+// interface extends interface
+interface Animal {
+  name: string;
+}
+interface Dog extends Animal {
+  breed: string;
+}
+
+// class implements 多个 interface
+class Service implements CanWalk, CanEat {
+  walk() {}
+  eat() {}
+}</code></pre>
+
+        <h3>type 和 interface 的合并行为</h3>
+        <pre><code>// interface：声明合并（Declaration Merging）
+interface User {
+  name: string;
+}
+interface User {
+  age: number;
+}
+// 结果：User { name: string; age: number; }
+
+// type：重复定义报错
+type User = { name: string };
+// type User = { age: number };  // Error: Duplicate identifier
+
+// type 通过交叉类型实现类似效果
+type User1 = { name: string };
+type User2 = { age: number };
+type User = User1 & User2;  // { name: string; age: number }</code></pre>
+      </section>
+
+      <div style="margin-top: 80px; padding-top: 40px; border-top: 2px solid var(--border); color: var(--ink2); text-align: center;">
+        <p>TypeScript 让 JavaScript 更有底气 💪</p>
+        <p style="font-size: 12px; margin-top: 8px;">基于 TypeScript 5.4 | 严格模式开启 | 持续更新</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    const sections = document.querySelectorAll('section[id]');
+    const navItems = document.querySelectorAll('.nav-item a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navItems.forEach(item => {
+            item.style.color = '';
+            item.style.borderLeftColor = '';
+          });
+          const activeLink = document.querySelector(`.nav-item a[href="#${entry.target.id}"]`);
+          if (activeLink) {
+            activeLink.style.color = 'var(--accent)';
+            activeLink.style.borderLeftColor = 'var(--accent)';
+          }
+        }
+      });
+    }, { rootMargin: '-20% 0px -80% 0px', threshold: 0 });
+
+    sections.forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>

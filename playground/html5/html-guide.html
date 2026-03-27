@@ -1,0 +1,2158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML5 知识体系与面试指南 | 资深前端</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --surface: #161b22;
+      --surface2: #1c2128;
+      --surface3: #21262d;
+      --border: #30363d;
+      --border2: #484f58;
+      --ink: #e6edf3;
+      --ink2: #7d8590;
+      --ink3: #484f58;
+      --accent: #58a6ff;
+      --accent2: #3fb950;
+      --accent3: #f0883e;
+      --accent4: #a371f7;
+      --accent5: #f778ba;
+      --danger: #f85149;
+      --warning: #f0883e;
+      --success: #3fb950;
+      --mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    /* 布局 */
+    .layout {
+      min-height: 100vh;
+    }
+
+    /* 侧边导航 */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 280px;
+      height: 100vh;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 24px 0;
+      z-index: 100;
+    }
+
+    .sidebar-header {
+      padding: 0 20px 20px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .sidebar-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .sidebar-subtitle {
+      font-size: 12px;
+      color: var(--ink2);
+    }
+
+    .nav-section {
+      margin-bottom: 8px;
+    }
+
+    .nav-header {
+      padding: 10px 20px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--ink2);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-header::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .nav-list {
+      list-style: none;
+    }
+
+    .nav-item a {
+      display: block;
+      padding: 8px 20px 8px 32px;
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+      transition: all 0.2s;
+      border-left: 2px solid transparent;
+    }
+
+    .nav-item a:hover {
+      background: var(--surface2);
+      color: var(--accent);
+      border-left-color: var(--accent);
+    }
+
+    /* 主内容区 */
+    .main {
+      margin-left: 280px;
+      padding: 40px 48px;
+      max-width: 900px;
+      min-height: 100vh;
+    }
+
+    /* 内容样式 */
+    h1 {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    h1 .version {
+      font-size: 14px;
+      color: var(--accent);
+      font-weight: 500;
+      margin-left: 12px;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin: 48px 0 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink);
+    }
+
+    h2 .tag {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-left: 12px;
+      vertical-align: middle;
+    }
+
+    .tag-new { background: var(--accent4); color: var(--bg); }
+    .tag-core { background: var(--accent2); color: var(--bg); }
+    .tag-interview { background: var(--accent3); color: var(--bg); }
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 32px 0 16px;
+      color: var(--accent);
+    }
+
+    h4 {
+      font-size: 15px;
+      font-weight: 600;
+      margin: 24px 0 12px;
+      color: var(--ink);
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: var(--ink);
+    }
+
+    /* 对比表格 */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+
+    .compare-table th,
+    .compare-table td {
+      padding: 12px 16px;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+
+    .compare-table th {
+      background: var(--surface2);
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .compare-table tr:hover td {
+      background: var(--surface2);
+    }
+
+    .compare-table .highlight {
+      color: var(--accent2);
+      font-weight: 500;
+    }
+
+    /* 代码块 */
+    pre {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      overflow-x: auto;
+      margin: 16px 0;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    code {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: var(--surface2);
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: var(--accent5);
+    }
+
+    pre code {
+      background: transparent;
+      padding: 0;
+      color: inherit;
+    }
+
+    /* 知识点卡片 */
+    .knowledge-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin: 20px 0;
+    }
+
+    .knowledge-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      transition: border-color 0.2s;
+    }
+
+    .knowledge-card:hover {
+      border-color: var(--border2);
+    }
+
+    .knowledge-card h4 {
+      margin: 0 0 12px;
+      color: var(--accent);
+      font-size: 14px;
+    }
+
+    .knowledge-card p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--ink2);
+    }
+
+    /* 面试题块 */
+    .interview-q {
+      background: var(--surface);
+      border-left: 4px solid var(--accent3);
+      padding: 20px 24px;
+      margin: 20px 0;
+      border-radius: 0 8px 8px 0;
+    }
+
+    .interview-q .q {
+      font-weight: 600;
+      color: var(--accent3);
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    .interview-q .a {
+      color: var(--ink);
+    }
+
+    .interview-q .key-point {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--ink2);
+    }
+
+    .interview-q .key-point strong {
+      color: var(--accent2);
+    }
+
+    /* 标签组 */
+    .tag-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .tag-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: var(--ink2);
+    }
+
+    .tag-item.highlight {
+      background: rgba(88, 166, 255, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* 列表 */
+    ul, ol {
+      margin: 16px 0;
+      padding-left: 24px;
+    }
+
+    li {
+      margin: 8px 0;
+    }
+
+    /* 重点强调 */
+    .highlight-box {
+      background: rgba(88, 166, 255, 0.08);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin: 20px 0;
+    }
+
+    .highlight-box.warning {
+      background: rgba(240, 136, 62, 0.08);
+      border-color: var(--warning);
+    }
+
+    .highlight-box.success {
+      background: rgba(63, 185, 80, 0.08);
+      border-color: var(--success);
+    }
+
+    /* 属性表格 */
+    .attr-table {
+      width: 100%;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    .attr-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    .attr-table td:first-child {
+      width: 160px;
+      color: var(--accent5);
+      font-family: var(--mono);
+    }
+
+    .attr-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* 浏览器支持 */
+    .browser-support {
+      display: flex;
+      gap: 16px;
+      margin: 12px 0;
+      font-size: 12px;
+    }
+
+    .browser {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--ink2);
+    }
+
+    .browser.supported { color: var(--success); }
+    .browser.partial { color: var(--warning); }
+    .browser.unsupported { color: var(--danger); }
+
+    /* 层级结构 */
+    .hierarchy {
+      background: var(--surface);
+      padding: 20px;
+      border-radius: 8px;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 2;
+      margin: 16px 0;
+    }
+
+    .hierarchy .level-1 { color: var(--accent); }
+    .hierarchy .level-2 { padding-left: 24px; color: var(--accent2); }
+    .hierarchy .level-3 { padding-left: 48px; color: var(--accent4); }
+
+    /* 进度指示器 */
+    .progress-bar {
+      height: 4px;
+      background: var(--surface2);
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 8px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      border-radius: 2px;
+    }
+
+    /* 打印样式 */
+    @media print {
+      .sidebar { display: none; }
+      .main { margin-left: 0; max-width: none; }
+      body { background: white; color: black; }
+    }
+
+    /* 锚点偏移 */
+    section { scroll-margin-top: 40px; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <!-- 侧边导航 -->
+    <nav class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">HTML5 知识体系</div>
+        <div class="sidebar-subtitle">面试复习指南 · 2025版</div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">基础与规范</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#doctype">文档声明</a></li>
+          <li class="nav-item"><a href="#semantic">语义化标签</a></li>
+          <li class="nav-item"><a href="#meta">Meta 标签</a></li>
+          <li class="nav-item"><a href="#structure">文档结构</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">表单与交互</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#form">表单增强</a></li>
+          <li class="nav-item"><a href="#input-types">Input 类型</a></li>
+          <li class="nav-item"><a href="#validation">表单验证</a></li>
+          <li class="nav-item"><a href="#form-api">Form API</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">多媒体</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#video-audio">音视频</a></li>
+          <li class="nav-item"><a href="#canvas">Canvas</a></li>
+          <li class="nav-item"><a href="#svg">SVG</a></li>
+          <li class="nav-item"><a href="#webgl">WebGL/WebGPU</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">存储与离线</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#storage">本地存储</a></li>
+          <li class="nav-item"><a href="#indexeddb">IndexedDB</a></li>
+          <li class="nav-item"><a href="#pwa">PWA 相关</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">性能与优化</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#performance">性能优化</a></li>
+          <li class="nav-item"><a href="#lazy-loading">懒加载</a></li>
+          <li class="nav-item"><a href="#preload">预加载</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">高级特性</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#web-components">Web Components</a></li>
+          <li class="nav-item"><a href="#shadow-dom">Shadow DOM</a></li>
+          <li class="nav-item"><a href="#template">Template/Slot</a></li>
+          <li class="nav-item"><a href="#web-workers">Web Workers</a></li>
+          <li class="nav-item"><a href="#sse">SSE</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-header">面试专题</div>
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#interview-html">HTML 经典题</a></li>
+          <li class="nav-item"><a href="#interview-seo">SEO 与语义化</a></li>
+          <li class="nav-item"><a href="#interview-a11y">无障碍</a></li>
+          <li class="nav-item"><a href="#interview-security">安全</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- 主内容 -->
+    <main class="main">
+      <h1>HTML5 知识体系与面试指南 <span class="version">2025 Edition</span></h1>
+
+      <section id="doctype">
+        <h2>文档声明与渲染模式 <span class="tag tag-core">核心</span></h2>
+
+        <h3>DOCTYPE 声明演进</h3>
+        <table class="compare-table">
+          <tr>
+            <th>版本</th>
+            <th>声明方式</th>
+            <th>渲染模式</th>
+            <th>特点</th>
+          </tr>
+          <tr>
+            <td>HTML4.01</td>
+            <td><code>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" ...&gt;</code></td>
+            <td>Quirks/Standard</td>
+            <td>基于SGML，三种DTD</td>
+          </tr>
+          <tr>
+            <td>XHTML1.0</td>
+            <td><code>&lt;!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" ...&gt;</code></td>
+            <td>XML解析</td>
+            <td>严格的XML语法</td>
+          </tr>
+          <tr>
+            <td class="highlight">HTML5</td>
+            <td><code>&lt;!DOCTYPE html&gt;</code></td>
+            <td>标准模式</td>
+            <td>不基于SGML，无DTD</td>
+          </tr>
+        </table>
+
+        <div class="interview-q">
+          <div class="q">Q: DOCTYPE 的作用是什么？不写的后果？</div>
+          <div class="a">
+            DOCTYPE 告知浏览器使用何种 HTML 版本进行解析，触发对应的渲染模式。
+            省略 DOCTYPE 会导致浏览器进入 <strong>怪异模式(Quirks Mode)</strong>，
+            以兼容旧版网页的方式渲染，造成盒模型、样式计算等差异。
+          </div>
+          <div class="key-point">
+            <strong>关键：</strong>HTML5 的 DOCTYPE 不区分大小写，且必须位于文档第一行
+          </div>
+        </div>
+
+        <h3>渲染模式对比</h3>
+        <div class="knowledge-grid">
+          <div class="knowledge-card">
+            <h4>Quirks Mode (怪异模式)</h4>
+            <p>向后兼容旧版浏览器，模拟 IE5.5 的非标准行为。盒模型使用 content+padding+border = width</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>Standards Mode (标准模式)</h4>
+            <p>W3C 标准行为。盒模型中 width 仅指 content 宽度，符合 CSS 规范</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>Almost Standards Mode</h4>
+            <p>几乎标准模式，仅表格单元格内图片的垂直对齐有差异</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="semantic">
+        <h2>语义化标签 <span class="tag tag-core">核心</span> <span class="tag tag-interview">面试热点</span></h2>
+
+        <h3>HTML5 新增语义标签</h3>
+        <div class="hierarchy">
+          <div class="level-1">&lt;body&gt;</div>
+          <div class="level-2">&lt;header&gt; - 页眉/章节头</div>
+          <div class="level-2">&lt;nav&gt; - 导航链接区</div>
+          <div class="level-2">&lt;main&gt; - 文档主要内容（唯一）</div>
+          <div class="level-3">&lt;article&gt; - 独立的内容单元</div>
+          <div class="level-3">&lt;section&gt; - 文档章节</div>
+          <div class="level-3">&lt;aside&gt; - 侧边栏/附属信息</div>
+          <div class="level-2">&lt;footer&gt; - 页脚/章节尾</div>
+        </div>
+
+        <h4>article vs section vs div</h4>
+        <table class="compare-table">
+          <tr>
+            <th>标签</th>
+            <th>语义</th>
+            <th>使用场景</th>
+            <th>是否独立</th>
+          </tr>
+          <tr>
+            <td><code>&lt;article&gt;</code></td>
+            <td>独立、完整的内容块</td>
+            <td>博客文章、新闻、评论卡片</td>
+            <td class="highlight">是，可单独分发</td>
+          </tr>
+          <tr>
+            <td><code>&lt;section&gt;</code></td>
+            <td>主题性内容分组</td>
+            <td>章节划分、功能模块</td>
+            <td>否，依赖上下文</td>
+          </tr>
+          <tr>
+            <td><code>&lt;div&gt;</code></td>
+            <td>无语义，纯容器</td>
+            <td>样式钩子、布局容器</td>
+            <td>否</td>
+          </tr>
+        </table>
+
+        <h4>其他重要语义标签</h4>
+        <div class="tag-group">
+          <span class="tag-item highlight">&lt;figure&gt; / &lt;figcaption&gt;</span>
+          <span class="tag-item highlight">&lt;time datetime=""&gt;</span>
+          <span class="tag-item">&lt;mark&gt; - 高亮标记</span>
+          <span class="tag-item">&lt;details&gt; / &lt;summary&gt;</span>
+          <span class="tag-item">&lt;dialog&gt;</span>
+          <span class="tag-item">&lt;address&gt;</span>
+          <span class="tag-item">&lt;cite&gt;</span>
+          <span class="tag-item">&lt;blockquote&gt; / &lt;q&gt;</span>
+          <span class="tag-item">&lt;abbr&gt;</span>
+          <span class="tag-item">&lt;dfn&gt;</span>
+          <span class="tag-item">&lt;kbd&gt; / &lt;samp&gt; / &lt;var&gt;</span>
+        </div>
+
+        <div class="interview-q">
+          <div class="q">Q: 为什么需要语义化？</div>
+          <div class="a">
+            <ol>
+              <li><strong>SEO优化</strong>：搜索引擎更好理解内容结构，提升排名</li>
+              <li><strong>可访问性</strong>：屏幕阅读器依赖语义标签提供导航</li>
+              <li><strong>代码可读性</strong>：开发者能快速理解页面结构</li>
+              <li><strong>团队协作</strong>：统一的结构规范降低沟通成本</li>
+              <li><strong>响应式图片</strong>：picture 元素依赖语义结构</li>
+            </ol>
+          </div>
+        </div>
+
+        <h3>Document Outline 算法</h3>
+        <div class="highlight-box">
+          <p>HTML5 大纲算法通过 <code>&lt;h1&gt;-&lt;h6&gt;</code> 和 <strong>sectioning elements</strong> 生成文档目录结构。</p>
+          <ul>
+            <li>Sectioning elements: <code>article, aside, nav, section</code> 会创建新的 outline 层级</li>
+            <li>每个 section 可以有自己的 h1，形成嵌套层级</li>
+            <li>实际浏览器实现：只有 Safari Reader Mode 等少量工具使用此算法</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="meta">
+        <h2>Meta 标签详解 <span class="tag tag-core">核心</span></h2>
+
+        <h3>常用 Meta 标签分类</h3>
+
+        <h4>1. 字符编码与视口</h4>
+        <pre><code>&lt;!-- 字符编码 --&gt;
+&lt;meta charset="UTF-8"&gt;
+
+&lt;!-- 视口设置（移动端必备） --&gt;
+&lt;meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"&gt;</code></pre>
+
+        <table class="attr-table">
+          <tr>
+            <td>width</td>
+            <td>视口宽度，device-width 表示设备宽度</td>
+          </tr>
+          <tr>
+            <td>initial-scale</td>
+            <td>初始缩放比例，1.0 表示不缩放</td>
+          </tr>
+          <tr>
+            <td>maximum-scale</td>
+            <td>最大缩放比例（会影响无障碍访问）</td>
+          </tr>
+          <tr>
+            <td>user-scalable</td>
+            <td>是否允许用户缩放（no 会影响无障碍）</td>
+          </tr>
+          <tr>
+            <td>viewport-fit</td>
+            <td>适配刘海屏：contain/cover</td>
+          </tr>
+        </table>
+
+        <h4>2. SEO 相关</h4>
+        <pre><code>&lt;meta name="description" content="页面描述，搜索引擎显示"&gt;
+&lt;meta name="keywords" content="关键词1, 关键词2"&gt;
+&lt;meta name="author" content="作者名"&gt;
+&lt;meta name="robots" content="index, follow"&gt;
+&lt;link rel="canonical" href="https://example.com/page"&gt;</code></pre>
+
+        <h4>3. Open Graph (社交媒体分享)</h4>
+        <pre><code>&lt;meta property="og:title" content="分享标题"&gt;
+&lt;meta property="og:description" content="分享描述"&gt;
+&lt;meta property="og:image" content="https://example.com/image.jpg"&gt;
+&lt;meta property="og:url" content="https://example.com"&gt;
+&lt;meta property="og:type" content="website"&gt;</code></pre>
+
+        <h4>4. PWA 相关</h4>
+        <pre><code>&lt;meta name="theme-color" content="#000000"&gt;
+&lt;meta name="apple-mobile-web-app-capable" content="yes"&gt;
+&lt;meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"&gt;
+&lt;link rel="manifest" href="/manifest.json"&gt;
+&lt;link rel="apple-touch-icon" href="/icon-192.png"&gt;</code></pre>
+
+        <h4>5. 安全相关 (CSP)</h4>
+        <pre><code>&lt;!-- 内容安全策略 --&gt;
+&lt;meta http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"&gt;
+
+&lt;!-- 其他安全头部 --&gt;
+&lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+&lt;meta http-equiv="X-Content-Type-Options" content="nosniff"&gt;</code></pre>
+
+        <div class="interview-q">
+          <div class="q">Q: viewport 中 width=device-width 的原理？</div>
+          <div class="a">
+            移动设备有两个 viewport：<strong>layout viewport</strong>（默认约 980px）和
+            <strong>visual viewport</strong>（屏幕可视区域）。
+            device-width 设置的是 layout viewport 的宽度等于设备屏幕宽度，
+            使页面以 1:1 比例渲染，CSS 像素与屏幕像素对应。
+          </div>
+        </div>
+      </section>
+
+      <section id="structure">
+        <h2>文档结构进阶 <span class="tag tag-core">核心</span></h2>
+
+        <h3>Head 中的关键元素顺序</h3>
+        <pre><code>&lt;head&gt;
+  &lt;!-- 1. 编码必须在最前（前1024字节内） --&gt;
+  &lt;meta charset="UTF-8"&gt;
+
+  &lt;!-- 2. IE 兼容模式 --&gt;
+  &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+
+  &lt;!-- 3. 视口（必须在 CSS 前） --&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+
+  &lt;!-- 4. Preconnect / DNS-Prefetch --&gt;
+  &lt;link rel="preconnect" href="https://cdn.example.com"&gt;
+  &lt;link rel="dns-prefetch" href="https://api.example.com"&gt;
+
+  &lt;!-- 5. 预加载关键资源 --&gt;
+  &lt;link rel="preload" href="/critical.css" as="style"&gt;
+  &lt;link rel="preload" href="/font.woff2" as="font" type="font/woff2" crossorigin&gt;
+
+  &lt;!-- 6. CSS（避免 @import） --&gt;
+  &lt;link rel="stylesheet" href="/styles.css"&gt;
+
+  &lt;!-- 7. 其他 meta --&gt;
+  &lt;meta name="description" content="..."&gt;
+  &lt;title&gt;页面标题&lt;/title&gt;
+&lt;/head&gt;</code></pre>
+
+        <h3>Script 加载优化</h3>
+        <table class="compare-table">
+          <tr>
+            <th>属性</th>
+            <th>加载时机</th>
+            <th>执行时机</th>
+            <th>阻塞渲染</th>
+            <th>使用场景</th>
+          </tr>
+          <tr>
+            <td>无</td>
+            <td>立即</td>
+            <td>下载完立即</td>
+            <td>阻塞</td>
+            <td>关键脚本（已不推荐）</td>
+          </tr>
+          <tr>
+            <td><code>async</code></td>
+            <td>并行下载</td>
+            <td>下载完立即</td>
+            <td>不阻塞（执行时阻塞）</td>
+            <td>独立脚本（统计、广告）</td>
+          </tr>
+          <tr>
+            <td class="highlight"><code>defer</code></td>
+            <td>并行下载</td>
+            <td>DOM 解析后</td>
+            <td>不阻塞</td>
+            <td>依赖 DOM 的脚本（推荐）</td>
+          </tr>
+          <tr>
+            <td><code>type="module"</code></td>
+            <td>默认 defer</td>
+            <td>DOM 解析后</td>
+            <td>不阻塞</td>
+            <td>ES Module</td>
+          </tr>
+          <tr>
+            <td><code>nomodule</code></td>
+            <td>-</td>
+            <td>-</td>
+            <td>-</td>
+            <td>旧浏览器降级方案</td>
+          </tr>
+        </table>
+
+        <div class="highlight-box">
+          <strong>async vs defer 执行顺序：</strong>
+          <ul>
+            <li>多个 async 脚本：加载完成顺序 = 执行顺序（不确定）</li>
+            <li>多个 defer 脚本：按文档出现顺序执行（确定）</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="form">
+        <h2>表单增强 <span class="tag tag-new">HTML5</span></h2>
+
+        <h3>Input 新类型</h3>
+        <div class="knowledge-grid">
+          <div class="knowledge-card">
+            <h4>email / url / tel</h4>
+            <p>自带格式验证，移动端唤起对应键盘</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>number / range</h4>
+            <p>数值输入，支持 min/max/step</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>date / time / datetime-local</h4>
+            <p>日期时间选择器（样式各浏览器不同）</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>color</h4>
+            <p>颜色选择器，返回 #rrggbb 格式</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>search</h4>
+            <p>搜索框，部分浏览器显示清除按钮</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>file (accept/multiple)</h4>
+            <p>文件选择，accept 限制类型</p>
+          </div>
+        </div>
+
+        <h3>表单属性增强</h3>
+        <table class="attr-table">
+          <tr>
+            <td>placeholder</td>
+            <td>输入提示文本，CSS 可通过 ::placeholder 控制样式</td>
+          </tr>
+          <tr>
+            <td>required</td>
+            <td>必填验证，:required :invalid 伪类控制样式</td>
+          </tr>
+          <tr>
+            <td>pattern</td>
+            <td>正则验证，如 pattern="[0-9]{3}"</td>
+          </tr>
+          <tr>
+            <td>min / max</td>
+            <td>数值/日期范围限制</td>
+          </tr>
+          <tr>
+            <td>step</td>
+            <td>步进值，用于 number/range/date</td>
+          </tr>
+          <tr>
+            <td>minlength / maxlength</td>
+            <td>字符长度限制</td>
+          </tr>
+          <tr>
+            <td>autocomplete</td>
+            <td>自动完成：on/off 或具体值（name, email, tel 等）</td>
+          </tr>
+          <tr>
+            <td>autofocus</td>
+            <td>页面加载后自动聚焦</td>
+          </tr>
+          <tr>
+            <td>readonly</td>
+            <td>只读，值会随表单提交</td>
+          </tr>
+          <tr>
+            <td>disabled</td>
+            <td>禁用，值不会提交</td>
+          </tr>
+          <tr>
+            <td>form</td>
+            <td>关联外部表单 id，元素可放在 form 外部</td>
+          </tr>
+          <tr>
+            <td>formaction / formmethod</td>
+            <td>覆盖 form 的 action/method</td>
+          </tr>
+          <tr>
+            <td>novalidate</td>
+            <td>form 属性，提交时不验证</td>
+          </tr>
+        </table>
+      </section>
+
+      <section id="validation">
+        <h2>表单验证 API <span class="tag tag-interview">面试热点</span></h2>
+
+        <h3>约束验证 API (Constraint Validation API)</h3>
+        <pre><code>const input = document.querySelector('input');
+
+// 验证状态属性
+input.validity.valueMissing      // 必填但为空
+input.validity.typeMismatch      // 类型不匹配（email/url）
+input.validity.patternMismatch   // 正则不匹配
+input.validity.tooLong / tooShort // 长度超出限制
+input.validity.rangeUnderflow / rangeOverflow // 数值超出范围
+input.validity.stepMismatch      // 步进值不匹配
+input.validity.customError       // 自定义错误
+input.validity.valid             // 是否全部有效
+
+// 方法
+input.checkValidity()            // 检查有效性，返回 boolean
+input.reportValidity()           // 检查并显示错误提示
+input.setCustomValidity('错误信息') // 设置自定义错误</code></pre>
+
+        <div class="interview-q">
+          <div class="q">Q: 如何实现自定义表单验证样式？</div>
+          <div class="a">
+            <pre><code>/* 未通过验证时的样式 */
+input:invalid {
+  border-color: red;
+}
+
+/* 已输入内容后的验证（避免初始状态显示错误） */
+input:not(:placeholder-shown):invalid {
+  border-color: red;
+}
+
+/* 通过验证 */
+input:valid {
+  border-color: green;
+}
+
+/* 自定义验证消息样式（有限支持） */
+input::placeholder {
+  color: #999;
+}</code></pre>
+          </div>
+          <div class="key-point">
+            <strong>注意：</strong>:invalid 在页面加载时就会应用，需要配合 :placeholder-shown 或其他技巧
+          </div>
+        </div>
+
+        <h3>原生表单提交流程</h3>
+        <ol>
+          <li>触发 submit 事件（点击提交按钮或调用 form.submit()）</li>
+          <li>浏览器执行 <strong>约束验证</strong>（检查所有约束属性）</li>
+          <li>如果验证通过，触发表单的 submit 事件，然后提交</li>
+          <li>如果验证失败，阻止提交，显示第一个无效元素的提示</li>
+          <li>调用 event.preventDefault() 可阻止默认提交行为</li>
+        </ol>
+
+        <div class="highlight-box warning">
+          <strong>坑点：</strong>调用 form.submit() 方法不会触发表单的 submit 事件，也不会进行约束验证。
+          如需验证，应使用 form.requestSubmit() 或先调用 form.reportValidity()。
+        </div>
+      </section>
+
+      <section id="video-audio">
+        <h2>音视频 <span class="tag tag-core">核心</span></h2>
+
+        <h3>Video 标签核心属性</h3>
+        <table class="attr-table">
+          <tr>
+            <td>src / &lt;source&gt;</td>
+            <td>视频源，支持多 source 提供不同格式</td>
+          </tr>
+          <tr>
+            <td>controls</td>
+            <td>显示默认播放控制条</td>
+          </tr>
+          <tr>
+            <td>autoplay</td>
+            <td>自动播放（现代浏览器需要 muted 或用户交互）</td>
+          </tr>
+          <tr>
+            <td>muted</td>
+            <td>默认静音（解决 autoplay 限制）</td>
+          </tr>
+          <tr>
+            <td>loop</td>
+            <td>循环播放</td>
+          </tr>
+          <tr>
+            <td>preload</td>
+            <td>预加载策略：auto/metadata/none</td>
+          </tr>
+          <tr>
+            <td>poster</td>
+            <td>封面图 URL</td>
+          </tr>
+          <tr>
+            <td>playsinline</td>
+            <td>iOS 内联播放（不全屏）</td>
+          </tr>
+          <tr>
+            <td>crossorigin</td>
+            <td>CORS 设置：anonymous/use-credentials</td>
+          </tr>
+        </table>
+
+        <h3>多格式支持</h3>
+        <pre><code>&lt;video controls width="640" height="360"&gt;
+  &lt;source src="video.webm" type="video/webm"&gt;
+  &lt;source src="video.mp4" type="video/mp4"&gt;
+  &lt;track kind="subtitles" src="subtitles.vtt" srclang="zh" label="中文"&gt;
+  您的浏览器不支持视频播放。
+&lt;/video&gt;</code></pre>
+
+        <div class="highlight-box">
+          <strong>格式选择优先级：</strong>
+          <ol>
+            <li><strong>VP9/AV1 + WebM</strong>：最佳压缩率，开源免费</li>
+            <li><strong>H.264 + MP4</strong>：兼容性最好，需专利费</li>
+            <li><strong>HEVC/H.265</strong>：更好压缩，但兼容性差</li>
+          </ol>
+        </div>
+
+        <h3>Media API 常用方法</h3>
+        <pre><code>const video = document.querySelector('video');
+
+// 播放控制
+video.play()     // 返回 Promise
+video.pause()
+video.load()     // 重新加载
+
+// 属性
+video.currentTime    // 当前播放位置（秒）
+video.duration       // 总时长（秒）
+video.volume         // 音量 0-1
+video.playbackRate   // 播放速率（1.0 正常）
+video.buffered       // TimeRanges 已缓冲区域
+video.readyState     // 0=无数据 1=元数据 2=当前数据 3=未来数据 4=足够播放
+
+// 事件
+video.addEventListener('loadedmetadata', () => {});  // 元数据加载
+video.addEventListener('canplay', () => {});         // 可以播放
+video.addEventListener('playing', () => {});         // 开始播放
+video.addEventListener('ended', () => {});           // 播放结束
+video.addEventListener('timeupdate', () => {});      // 进度更新（节流）</code></pre>
+
+        <h3>自动播放策略</h3>
+        <div class="highlight-box warning">
+          <strong>Chrome 自动播放策略（2018年起）：</strong>
+          <ul>
+            <li>静音视频可以 autoplay</li>
+            <li>用户与域名有交互后，该域名下的视频可以自动播放</li>
+            <li>移动端通常需要用户手势触发首次播放</li>
+            <li>Media Engagement Index (MEI) 高的网站可自动播放</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="canvas">
+        <h2>Canvas <span class="tag tag-interview">面试热点</span></h2>
+
+        <h3>Canvas vs SVG</h3>
+        <table class="compare-table">
+          <tr>
+            <th>特性</th>
+            <th>Canvas</th>
+            <th>SVG</th>
+          </tr>
+          <tr>
+            <td>技术类型</td>
+            <td>位图，即时模式渲染</td>
+            <td>矢量，保留 DOM 结构</td>
+          </tr>
+          <tr>
+            <td>分辨率</td>
+            <td>固定分辨率，缩放失真</td>
+            <td>无限缩放，不失真</td>
+          </tr>
+          <tr>
+            <td>元素数量</td>
+            <td>大量元素性能更好（像素操作）</td>
+            <td>元素多导致 DOM 庞大，性能下降</td>
+          </tr>
+          <tr>
+            <td>事件处理</td>
+            <td>需自己计算坐标判断</td>
+            <td>每个元素可绑定事件</td>
+          </tr>
+          <tr>
+            <td>适用场景</td>
+            <td>游戏、图像处理、复杂动画</td>
+            <td>图标、数据可视化、响应式图形</td>
+          </tr>
+          <tr>
+            <td>导出</td>
+            <td>toDataURL() / toBlob()</td>
+            <td>序列化 SVG XML</td>
+          </tr>
+        </table>
+
+        <h3>Canvas 高 DPI 适配</h3>
+        <pre><code>function setupHiDPICanvas(canvas, cssWidth, cssHeight) {
+  const dpr = window.devicePixelRatio || 1;
+
+  // 设置实际像素尺寸
+  canvas.width = cssWidth * dpr;
+  canvas.height = cssHeight * dpr;
+
+  // 设置 CSS 尺寸
+  canvas.style.width = cssWidth + 'px';
+  canvas.style.height = cssHeight + 'px';
+
+  // 缩放上下文
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  return ctx;
+}</code></pre>
+
+        <h3>离屏 Canvas (OffscreenCanvas)</h3>
+        <pre><code>// 主线程创建
+const offscreen = canvas.transferControlToOffscreen();
+
+// 传给 Worker
+worker.postMessage({ canvas: offscreen }, [offscreen]);
+
+// Worker 中渲染
+self.onmessage = function(e) {
+  const canvas = e.data.canvas;
+  const ctx = canvas.getContext('2d');
+  // 绘制操作...
+};</code></pre>
+
+        <div class="browser-support">
+          <span class="browser supported">Chrome 69+</span>
+          <span class="browser supported">Firefox 105+</span>
+          <span class="browser supported">Safari 16.4+</span>
+        </div>
+      </section>
+
+      <section id="storage">
+        <h2>本地存储对比 <span class="tag tag-core">核心</span> <span class="tag tag-interview">必考</span></h2>
+
+        <table class="compare-table">
+          <tr>
+            <th>特性</th>
+            <th>Cookies</th>
+            <th>localStorage</th>
+            <th>sessionStorage</th>
+            <th>IndexedDB</th>
+          </tr>
+          <tr>
+            <td>容量</td>
+            <td>4KB</td>
+            <td>5-10MB</td>
+            <td>5-10MB</td>
+            <td>较大（几百MB）</td>
+          </tr>
+          <tr>
+            <td>生命周期</td>
+            <td>可设置 Expires</td>
+            <td>永久（除非手动清除）</td>
+            <td>页面会话结束</td>
+            <td>永久</td>
+          </tr>
+          <tr>
+            <td>服务端读取</td>
+            <td class="highlight">自动携带</td>
+            <td>否</td>
+            <td>否</td>
+            <td>否</td>
+          </tr>
+          <tr>
+            <td>作用域</td>
+            <td>Domain + Path</td>
+            <td>同源窗口共享</td>
+            <td>同源同标签页</td>
+            <td>同源共享</td>
+          </tr>
+          <tr>
+            <td>数据类型</td>
+            <td>字符串</td>
+            <td>字符串</td>
+            <td>字符串</td>
+            <td>结构化数据</td>
+          </tr>
+          <tr>
+            <td>API 类型</td>
+            <td>同步</td>
+            <td>同步</td>
+            <td>同步</td>
+            <td>异步（基于 Promise）</td>
+          </tr>
+          <tr>
+            <td>索引/查询</td>
+            <td>否</td>
+            <td>否</td>
+            <td>否</td>
+            <td class="highlight">支持</td>
+          </tr>
+        </table>
+
+        <h3>localStorage 注意事项</h3>
+        <div class="highlight-box warning">
+          <ul>
+            <li><strong>同步阻塞</strong>：大量数据操作会阻塞主线程</li>
+            <li><strong>无过期机制</strong>：需要自行实现过期清理</li>
+            <li><strong>存储事件</strong>：同域名下其他页面修改会触发 storage 事件</li>
+            <li><strong>隐私模式</strong>：部分浏览器隐私模式下可能无法使用或数据被清空</li>
+            <li><strong>异常处理</strong>：需捕获 QuotaExceededError</li>
+          </ul>
+        </div>
+
+        <pre><code>// 安全的 localStorage 封装
+const safeStorage = {
+  set(key, value, ttl) {
+    try {
+      const item = {
+        value,
+        expiry: ttl ? Date.now() + ttl : null
+      };
+      localStorage.setItem(key, JSON.stringify(item));
+    } catch (e) {
+      if (e.name === 'QuotaExceededError') {
+        // 清理过期项或 LRU 淘汰
+        this.clearExpired();
+      }
+    }
+  },
+  get(key) {
+    const item = localStorage.getItem(key);
+    if (!item) return null;
+    const parsed = JSON.parse(item);
+    if (parsed.expiry && Date.now() > parsed.expiry) {
+      localStorage.removeItem(key);
+      return null;
+    }
+    return parsed.value;
+  },
+  clearExpired() {
+    // 实现清理逻辑
+  }
+};</code></pre>
+      </section>
+
+      <section id="indexeddb">
+        <h2>IndexedDB <span class="tag tag-new">现代应用</span></h2>
+
+        <h3>核心概念</h3>
+        <div class="hierarchy">
+          <div class="level-1">Database（数据库）</div>
+          <div class="level-2">Object Store（对象存储）≈ 表</div>
+          <div class="level-3">Index（索引）- 加速查询</div>
+          <div class="level-3">Record（记录）- { key: value }</div>
+        </div>
+
+        <h3>基本使用</h3>
+        <pre><code>// 打开数据库
+const request = indexedDB.open('myDB', 1);
+
+request.onupgradeneeded = (e) => {
+  const db = e.target.result;
+
+  // 创建对象存储
+  const store = db.createObjectStore('users', { keyPath: 'id' });
+
+  // 创建索引
+  store.createIndex('name', 'name', { unique: false });
+  store.createIndex('email', 'email', { unique: true });
+};
+
+request.onsuccess = (e) => {
+  const db = e.target.result;
+  // 进行 CRUD 操作
+};
+
+// 使用 Promise 封装（推荐）
+async function getUser(id) {
+  const db = await openDB('myDB', 1);
+  return db.get('users', id);
+}</code></pre>
+
+        <h3>IndexedDB vs localStorage 选择</h3>
+        <table class="compare-table">
+          <tr>
+            <th>场景</th>
+            <th>推荐方案</th>
+            <th>原因</th>
+          </tr>
+          <tr>
+            <td>简单的键值对（token、主题设置）</td>
+            <td>localStorage</td>
+            <td>API 简单，同步访问</td>
+          </tr>
+          <tr>
+            <td>大量结构化数据（离线应用数据）</td>
+            <td class="highlight">IndexedDB</td>
+            <td>支持索引、事务、大数据量</td>
+          </tr>
+          <tr>
+            <td>需要搜索/过滤/排序</td>
+            <td class="highlight">IndexedDB</td>
+            <td>原生索引支持</td>
+          </tr>
+          <tr>
+            <td>二进制数据（Blob, ArrayBuffer）</td>
+            <td class="highlight">IndexedDB</td>
+            <td>原生支持结构化克隆</td>
+          </tr>
+        </table>
+      </section>
+
+      <section id="performance">
+        <h2>性能优化策略 <span class="tag tag-core">核心</span></h2>
+
+        <h3>资源预加载</h3>
+        <table class="compare-table">
+          <tr>
+            <th>方式</th>
+            <th>语法</th>
+            <th>用途</th>
+            <th>优先级</th>
+          </tr>
+          <tr>
+            <td>preload</td>
+            <td><code>&lt;link rel="preload"&gt;</code></td>
+            <td>当前页面必定需要的资源</td>
+            <td class="highlight">高</td>
+          </tr>
+          <tr>
+            <td>prefetch</td>
+            <td><code>&lt;link rel="prefetch"&gt;</code></td>
+            <td>下一页可能需要的资源</td>
+            <td>低（浏览器空闲）</td>
+          </tr>
+          <tr>
+            <td>preconnect</td>
+            <td><code>&lt;link rel="preconnect"&gt;</code></td>
+            <td>提前建立连接（DNS+TCP+TLS）</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>dns-prefetch</td>
+            <td><code>&lt;link rel="dns-prefetch"&gt;</code></td>
+            <td>仅提前 DNS 解析</td>
+            <td>-</td>
+          </tr>
+          <tr>
+            <td>prerender</td>
+            <td><code>&lt;link rel="prerender"&gt;</code></td>
+            <td>后台渲染整个页面（已废弃）</td>
+            <td>-</td>
+          </tr>
+        </table>
+
+        <h3>图片懒加载</h3>
+        <pre><code>&lt;!-- 原生懒加载（现代浏览器） --&gt;
+&lt;img src="placeholder.jpg" data-src="real-image.jpg" loading="lazy" alt=""&gt;
+
+&lt;!-- 配合 Intersection Observer --&gt;
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const img = entry.target;
+      img.src = img.dataset.src;
+      observer.unobserve(img);
+    }
+  });
+}, { rootMargin: '50px' });
+
+document.querySelectorAll('img[data-src]').forEach(img => observer.observe(img));</code></pre>
+
+        <h3>图片响应式</h3>
+        <pre><code>&lt;!-- srcset + sizes 根据 DPR 和视口选择 --&gt;
+&lt;img srcset="
+  image-400.jpg 400w,
+  image-800.jpg 800w,
+  image-1200.jpg 1200w
+" sizes="
+  (max-width: 600px) 100vw,
+  (max-width: 1000px) 50vw,
+  33vw
+" src="image-800.jpg" alt=""&gt;
+
+&lt;!-- picture 元素按格式/特性选择 --&gt;
+&lt;picture&gt;
+  &lt;source srcset="image.avif" type="image/avif"&gt;
+  &lt;source srcset="image.webp" type="image/webp"&gt;
+  &lt;img src="image.jpg" alt=""&gt;
+&lt;/picture&gt;</code></pre>
+
+        <div class="interview-q">
+          <div class="q">Q: loading="lazy" 和 Intersection Observer 的区别？</div>
+          <div class="a">
+            <ul>
+              <li><strong>loading="lazy"</strong>：浏览器原生实现，使用简单但控制粒度粗，距离阈值由浏览器决定</li>
+              <li><strong>Intersection Observer</strong>：开发者控制，可自定义 rootMargin、threshold，兼容旧浏览器</li>
+              <li>最佳实践：用 loading="lazy" 作为渐进增强，IO 作为 polyfill 降级方案</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="web-components">
+        <h2>Web Components <span class="tag tag-new">现代标准</span></h2>
+
+        <h3>三大核心技术</h3>
+        <div class="knowledge-grid">
+          <div class="knowledge-card">
+            <h4>Custom Elements</h4>
+            <p>自定义 HTML 标签，继承 HTMLElement 类，定义元素生命周期和行为</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>Shadow DOM</h4>
+            <p>封装的 DOM 子树，与主文档隔离，实现样式和结构的封装</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>HTML Templates</h4>
+            <p>&lt;template&gt; 和 &lt;slot&gt; 定义可复用的 HTML 模板结构</p>
+          </div>
+        </div>
+
+        <h3>完整示例</h3>
+        <pre><code>// 定义 Custom Element
+class MyButton extends HTMLElement {
+  static get observedAttributes() {
+    return ['variant', 'disabled'];
+  }
+
+  constructor() {
+    super();
+
+    // 创建 Shadow Root
+    const shadow = this.attachShadow({ mode: 'open' });
+
+    // 使用 template
+    shadow.innerHTML = `
+      &lt;style&gt;
+        :host { display: inline-block; }
+        :host([disabled]) { opacity: 0.5; pointer-events: none; }
+        button {
+          padding: 8px 16px;
+          border: none;
+          border-radius: 4px;
+          background: var(--btn-bg, #0066ff);
+          color: white;
+          cursor: pointer;
+        }
+        button:hover { background: #0052cc; }
+      &lt;/style&gt;
+      &lt;button&gt;
+        &lt;slot name="icon"&gt;&lt;/slot&gt;
+        &lt;slot&gt;默认文字&lt;/slot&gt;
+      &lt;/button&gt;
+    `;
+
+    this._button = shadow.querySelector('button');
+  }
+
+  // 生命周期
+  connectedCallback() { /* 插入 DOM */ }
+  disconnectedCallback() { /* 移除 DOM */ }
+  attributeChangedCallback(name, oldVal, newVal) {
+    /* 属性变化 */
+  }
+
+  // 属性反射
+  get variant() { return this.getAttribute('variant'); }
+  set variant(val) { this.setAttribute('variant', val); }
+}
+
+customElements.define('my-button', MyButton);</code></pre>
+
+        <h3>Shadow DOM 特性</h3>
+        <table class="compare-table">
+          <tr>
+            <th>特性</th>
+            <th>open mode</th>
+            <th>closed mode</th>
+          </tr>
+          <tr>
+            <td>访问方式</td>
+            <td>element.shadowRoot 可访问</td>
+            <td>shadowRoot 返回 null</td>
+          </tr>
+          <tr>
+            <td>安全性</td>
+            <td>可访问，不防开发者</td>
+            <td>防意外访问，但可绕过</td>
+          </tr>
+          <tr>
+            <td>事件 target</td>
+            <td>重定向到 host 元素</td>
+            <td>同上</td>
+          </tr>
+          <tr>
+            <td>推荐使用</td>
+            <td class="highlight">是，便于调试和测试</td>
+            <td>特殊安全需求</td>
+          </tr>
+        </table>
+
+        <div class="interview-q">
+          <div class="q">Q: Web Components 与 React/Vue 组件的区别？</div>
+          <div class="a">
+            <table class="compare-table">
+              <tr>
+                <th>维度</th>
+                <th>Web Components</th>
+                <th>React/Vue</th>
+              </tr>
+              <tr>
+                <td>运行环境</td>
+                <td>浏览器原生</td>
+                <td>需要框架运行时</td>
+              </tr>
+              <tr>
+                <td>渲染方式</td>
+                <td>命令式 DOM 操作</td>
+                <td>声明式，虚拟 DOM  Diff</td>
+              </tr>
+              <tr>
+                <td>数据绑定</td>
+                <td>手动处理属性/事件</td>
+                <td>响应式自动更新</td>
+              </tr>
+              <tr>
+                <td>生态工具</td>
+                <td>较少，自行搭建</td>
+                <td>丰富（路由、状态管理等）</td>
+              </tr>
+              <tr>
+                <td>SSR 支持</td>
+                <td>较弱</td>
+                <td>完善</td>
+              </tr>
+            </table>
+            <div class="key-point">
+              <strong>总结：</strong>Web Components 适合构建跨框架的 UI 组件库（如 Shoelace, Spectrum），
+              而框架组件适合构建完整的应用。
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="web-workers">
+        <h2>Web Workers <span class="tag tag-new">多线程</span></h2>
+
+        <h3>Worker 类型对比</h3>
+        <table class="compare-table">
+          <tr>
+            <th>类型</th>
+            <th>创建方式</th>
+            <th>全局对象</th>
+            <th>DOM 访问</th>
+            <th>使用场景</th>
+          </tr>
+          <tr>
+            <td>Dedicated Worker</td>
+            <td>new Worker('file.js')</td>
+            <td>self</td>
+            <td>否</td>
+            <td>单一页面后台计算</td>
+          </tr>
+          <tr>
+            <td>Shared Worker</td>
+            <td>new SharedWorker('file.js')</td>
+            <td>self</td>
+            <td>否</td>
+            <td>多页面/多 iframe 共享（Safari 不支持）</td>
+          </tr>
+          <tr>
+            <td>Service Worker</td>
+            <td>navigator.serviceWorker.register()</td>
+            <td>self</td>
+            <td>否</td>
+            <td>PWA、离线缓存、推送通知</td>
+          </tr>
+          <tr>
+            <td>Worklet</td>
+            <td>CSS.paintWorklet.addModule()</td>
+            <td>-</td>
+            <td>有限</td>
+            <td>CSS Houdini 自定义渲染</td>
+          </tr>
+        </table>
+
+        <h3>基本用法</h3>
+        <pre><code>// main.js
+const worker = new Worker('worker.js');
+
+worker.postMessage({ data: largeArray }, [transferable]); // Transferable Objects
+
+worker.onmessage = (e) => {
+  console.log('Result:', e.data);
+};
+
+worker.terminate(); // 终止 Worker
+
+// worker.js
+self.onmessage = (e) => {
+  const result = heavyComputation(e.data);
+  self.postMessage(result);
+};
+
+// 动态创建 Inline Worker
+const blob = new Blob([workerCode], { type: 'application/javascript' });
+const worker = new Worker(URL.createObjectURL(blob));</code></pre>
+
+        <div class="highlight-box warning">
+          <strong>Worker 限制：</strong>
+          <ul>
+            <li>无 DOM 访问（可用 postMessage 与主线程通信）</li>
+            <li>同源策略限制</li>
+            <li>无法使用 alert/confirm</li>
+            <li>需要通过 importScripts() 或 ES Module 导入依赖</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="pwa">
+        <h2>PWA 核心技术 <span class="tag tag-new">现代应用</span></h2>
+
+        <h3>Service Worker 生命周期</h3>
+        <ol>
+          <li><strong>Register</strong>：主线程注册，浏览器后台安装</li>
+          <li><strong>Install</strong>：触发 install 事件，适合缓存静态资源</li>
+          <li><strong>Activate</strong>：安装完成，清理旧缓存，开始拦截请求</li>
+          <li><strong>Idle</strong>：等待 fetch/message 事件</li>
+          <li><strong>Terminate</strong>：浏览器回收资源，下次事件重新激活</li>
+        </ol>
+
+        <pre><code>// sw.js - 缓存策略示例
+const CACHE_NAME = 'v1';
+const STATIC_ASSETS = ['/index.html', '/app.js', '/styles.css'];
+
+// 安装时缓存静态资源
+self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(STATIC_ASSETS))
+      .then(() => self.skipWaiting())
+  );
+});
+
+// 激活时清理旧缓存
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(
+        keys.filter(key => key !== CACHE_NAME)
+            .map(key => caches.delete(key))
+      )
+    ).then(() => self.clients.claim())
+  );
+});
+
+// 拦截请求 - Cache First 策略
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then(response =>
+      response || fetch(e.request)
+        .then(fetchRes => {
+          // 动态缓存
+          return caches.open(CACHE_NAME).then(cache => {
+            cache.put(e.request, fetchRes.clone());
+            return fetchRes;
+          });
+        })
+    )
+  );
+});</code></pre>
+
+        <h3>缓存策略</h3>
+        <table class="compare-table">
+          <tr>
+            <th>策略</th>
+            <th>描述</th>
+            <th>适用场景</th>
+          </tr>
+          <tr>
+            <td>Cache First</td>
+            <td>先读缓存，无缓存再网络请求</td>
+            <td>静态资源（JS/CSS/图片）</td>
+          </tr>
+          <tr>
+            <td>Network First</td>
+            <td>先网络请求，失败用缓存</td>
+            <td>实时数据（API 请求）</td>
+          </tr>
+          <tr>
+            <td>Stale While Revalidate</td>
+            <td>立即返回缓存，后台更新</td>
+            <td>新闻列表、非关键数据</td>
+          </tr>
+          <tr>
+            <td>Network Only</td>
+            <td>只走网络</td>
+            <td>支付、表单提交</td>
+          </tr>
+          <tr>
+            <td>Cache Only</td>
+            <td>只读缓存</td>
+            <td>离线页面</td>
+          </tr>
+        </table>
+      </section>
+
+      <section id="interview-html">
+        <h2>HTML 经典面试题 <span class="tag tag-interview">重点</span></h2>
+
+        <div class="interview-q">
+          <div class="q">Q: 什么是渐进增强和优雅降级？</div>
+          <div class="a">
+            <ul>
+              <li><strong>渐进增强 (Progressive Enhancement)</strong>：从基础功能开始，根据浏览器能力逐步添加增强功能。
+                先保证核心功能可用，再用新特性提升体验。</li>
+              <li><strong>优雅降级 (Graceful Degradation)</strong>：先构建完整功能，再为旧浏览器提供降级方案。
+                从高级体验出发，保证基础可用性。</li>
+            </ul>
+            <p>现代开发推荐 <strong>渐进增强</strong>，配合特性检测（Modernizr）或 @supports 使用。</p>
+          </div>
+        </div>
+
+        <div class="interview-q">
+          <div class="q">Q: data-* 属性的作用？与 JSON 存储的选择？</div>
+          <div class="a">
+            <p><strong>data-* 属性：</strong></p>
+            <ul>
+              <li>存储页面元素相关的轻量级元数据</li>
+              <li>可通过 element.dataset 访问（驼峰命名转换）</li>
+              <li>适合存储 ID、状态标记、配置参数等</li>
+            </ul>
+            <p><strong>选择建议：</strong></p>
+            <ul>
+              <li>少量简单数据 → data-* 属性</li>
+              <li>复杂结构数据 → data-* 存 ID，实际数据放 JS 变量/Store</li>
+              <li>大量数据 → 完全避免，使用 JavaScript 内存或 IndexedDB</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="interview-q">
+          <div class="q">Q: iframe 的优缺点及替代方案？</div>
+          <div class="a">
+            <p><strong>优点：</strong>独立文档、样式隔离、可嵌入第三方内容、实现无刷新上传</p>
+            <p><strong>缺点：</strong></p>
+            <ul>
+              <li>性能：阻塞主页面的 onload，额外 HTTP 请求</li>
+              <li>SEO：内容难以被搜索引擎索引</li>
+              <li>体验：无障碍支持差，移动端适配困难</li>
+              <li>安全：XSS 风险，需配置 sandbox 和 CSP</li>
+            </ul>
+            <p><strong>替代方案：</strong></p>
+            <ul>
+              <li>组件化（React/Vue 组件）替代页面嵌入</li>
+              <li>Shadow DOM 实现样式隔离</li>
+              <li>Micro-frontend 使用 Web Components 或 Module Federation</li>
+              <li>Object/Embed 嵌入特定内容</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="interview-q">
+          <div class="q">Q: HTML 解析过程中遇到 script 标签会怎样？</div>
+          <div class="a">
+            <ol>
+              <li>浏览器解析 HTML，构建 DOM Tree</li>
+              <li>遇到 &lt;script&gt; 标签（无 async/defer）：
+                <ul>
+                  <li>暂停 HTML 解析</li>
+                  <li>下载脚本（外部脚本）</li>
+                  <li>执行脚本</li>
+                  <li>恢复 HTML 解析</li>
+                </ul>
+              </li>
+              <li>脚本执行期间，如果操作 DOM，可以访问到已解析的部分</li>
+              <li>脚本中访问未解析的元素会得到 null</li>
+            </ol>
+            <div class="key-point">
+              <strong>优化：</strong>将脚本放在 &lt;/body&gt; 前，或使用 defer/async 属性
+            </div>
+          </div>
+        </div>
+
+        <div class="interview-q">
+          <div class="q">Q: 如何理解 HTML 的解析过程（构建 DOM/CSSOM/渲染树）？</div>
+          <div class="a">
+            <ol>
+              <li><strong>字节流 → 字符流</strong>：根据编码（BOM/HTTP Header/meta）解码</li>
+              <li><strong>Tokenization</strong>：将字符流解析为 Token（标签、文本、属性）</li>
+              <li><strong>构建 DOM</strong>：Token 转换为节点，构建树形结构
+                <ul>
+                  <li>遇到开始标签：创建元素，入栈</li>
+                  <li>遇到文本：创建文本节点，挂到当前元素</li>
+                  <li>遇到结束标签：出栈</li>
+                </ul>
+              </li>
+              <li><strong>并行构建 CSSOM</strong>：解析 CSS 文件和 style 标签</li>
+              <li><strong>合并 Render Tree</strong>：DOM + CSSOM，排除不可见元素（display:none）</li>
+              <li><strong>Layout（Reflow）</strong>：计算元素几何信息</li>
+              <li><strong>Paint</strong>：绘制像素到屏幕</li>
+              <li><strong>Composite</strong>：合成图层（GPU 加速）</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="interview-seo">
+        <h2>SEO 与语义化 <span class="tag tag-interview">重点</span></h2>
+
+        <h3>SEO 优化要点</h3>
+        <div class="knowledge-grid">
+          <div class="knowledge-card">
+            <h4>标题层级</h4>
+            <p>一个页面一个 h1，标题层级连续不跳级，包含核心关键词</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>Meta 信息</h4>
+            <p>description 控制在 150 字符内，keywords 已不被 Google 使用</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>结构化数据</h4>
+            <p>使用 JSON-LD 格式的 Schema.org 标记，支持富媒体摘要</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>语义化链接</h4>
+            <p>a 标签的 href 要有效，使用有意义的锚文本，避免 "点击这里"</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>图片优化</h4>
+            <p>alt 属性必须，描述图片内容而非仅 SEO 堆砌关键词</p>
+          </div>
+          <div class="knowledge-card">
+            <h4>Canonical</h4>
+            <p>重复内容使用 canonical 标签指定规范 URL，避免权重分散</p>
+          </div>
+        </div>
+
+        <h3>SSR vs CSR 对 SEO 的影响</h3>
+        <table class="compare-table">
+          <tr>
+            <th>方案</th>
+            <th>SEO 友好度</th>
+            <th>首屏时间</th>
+            <th>适用场景</th>
+          </tr>
+          <tr>
+            <td>SSR（服务端渲染）</td>
+            <td class="highlight">优秀</td>
+            <td>快</td>
+            <td>内容型站点（新闻、博客、电商）</td>
+          </tr>
+          <tr>
+            <td>CSR（客户端渲染）</td>
+            <td>需配合预渲染</td>
+            <td>慢（需加载 JS）</td>
+            <td>强交互应用（后台管理、SaaS）</td>
+          </tr>
+          <tr>
+            <td>SSG（静态生成）</td>
+            <td class="highlight">优秀</td>
+            <td>最快（CDN 缓存）</td>
+            <td>内容不频繁变化的站点</td>
+          </tr>
+          <tr>
+            <td>SSR + Hydration</td>
+            <td class="highlight">优秀</td>
+            <td>快</td>
+            <td>现代主流方案（Next.js, Nuxt）</td>
+          </tr>
+        </table>
+
+        <div class="interview-q">
+          <div class="q">Q: SPA 应用如何解决 SEO 问题？</div>
+          <div class="a">
+            <ol>
+              <li><strong>SSR/同构渲染</strong>：Next.js、Nuxt.js、SvelteKit 等服务端渲染框架</li>
+              <li><strong>预渲染 (Prerendering)</strong>：构建时生成静态 HTML，如 prerender-spa-plugin</li>
+              <li><strong>动态渲染</strong>：根据 User-Agent 判断爬虫，提供预渲染版本（如 Rendertron）</li>
+              <li><strong>Google 的 JavaScript 执行</strong>：Googlebot 已能执行 JS，但其他搜索引擎支持有限</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section id="interview-a11y">
+        <h2>无障碍访问 (A11y) <span class="tag tag-new">重要</span></h2>
+
+        <h3>ARIA 属性使用原则</h3>
+        <div class="highlight-box">
+          <strong>第一原则：能不用就不用</strong>
+          <p>优先使用原生 HTML 语义元素（button、nav、main 等），它们已内置无障碍支持。
+          ARIA 只应在无法用原生元素实现时使用。</p>
+        </div>
+
+        <h4>常用 ARIA 属性</h4>
+        <table class="attr-table">
+          <tr>
+            <td>role</td>
+            <td>定义元素角色：button, dialog, tablist, tab, tabpanel 等</td>
+          </tr>
+          <tr>
+            <td>aria-label</td>
+            <td>为元素提供标签（无可见文本时）</td>
+          </tr>
+          <tr>
+            <td>aria-labelledby</td>
+            <td>引用其他元素的 ID 作为标签</td>
+          </tr>
+          <tr>
+            <td>aria-describedby</td>
+            <td>引用补充说明文本</td>
+          </tr>
+          <tr>
+            <td>aria-hidden</td>
+            <td>从可访问树中移除（true/false）</td>
+          </tr>
+          <tr>
+            <td>aria-expanded</td>
+            <td>展开/折叠状态（true/false）</td>
+          </tr>
+          <tr>
+            <td>aria-selected</td>
+            <td>选中状态</td>
+          </tr>
+          <tr>
+            <td>aria-live</td>
+            <td>动态内容更新提示：off/polite/assertive</td>
+          </tr>
+        </table>
+
+        <h3>无障碍检查清单</h3>
+        <ul>
+          <li>所有图片有 alt 属性，装饰性图片 alt=""</li>
+          <li>表单元素有关联的 label</li>
+          <li>颜色对比度符合 WCAG 标准（4.5:1 正常文本，3:1 大文本）</li>
+          <li>键盘可完全操作（Tab 导航，Enter/Space 激活）</li>
+          <li>焦点可见且顺序合理</li>
+          <li>使用正确的标题层级</li>
+          <li>动态内容有 aria-live 提示</li>
+          <li>避免仅通过颜色传达信息</li>
+        </ul>
+      </section>
+
+      <section id="interview-security">
+        <h2>安全相关 <span class="tag tag-core">核心</span></h2>
+
+        <h3>常见安全威胁与防护</h3>
+        <table class="compare-table">
+          <tr>
+            <th>威胁</th>
+            <th>原理</th>
+            <th>防护措施</th>
+          </tr>
+          <tr>
+            <td>XSS (跨站脚本)</td>
+            <td>注入恶意脚本到页面</td>
+            <td>输入过滤、输出转义、CSP、HttpOnly Cookie</td>
+          </tr>
+          <tr>
+            <td>CSRF (跨站请求伪造)</td>
+            <td>诱导用户发送非预期请求</td>
+            <td>CSRF Token、SameSite Cookie、验证 Origin</td>
+          </tr>
+          <tr>
+            <td>Clickjacking</td>
+            <td>iframe 嵌套欺骗点击</td>
+            <td>X-Frame-Options、CSP frame-ancestors</td>
+          </tr>
+          <tr>
+            <td>MIME Sniffing</td>
+            <td>浏览器猜测文件类型执行</td>
+            <td>X-Content-Type-Options: nosniff</td>
+          </tr>
+          <tr>
+            <td>HTTPS 降级</td>
+            <td>中间人攻击强制 HTTP</td>
+            <td>HSTS 头部、预加载列表</td>
+          </tr>
+        </table>
+
+        <h3>CSP (Content Security Policy)</h3>
+        <pre><code>&lt;!-- 通过 Meta 标签 --&gt;
+&lt;meta http-equiv="Content-Security-Policy"
+      content="default-src 'self';
+               script-src 'self' https://trusted.cdn.com 'nonce-xxx';
+               style-src 'self' 'unsafe-inline';
+               img-src 'self' data: https:;
+               connect-src 'self' https://api.example.com;
+               font-src 'self' https://fonts.gstatic.com;
+               frame-ancestors 'none';
+               base-uri 'self';
+               form-action 'self';"&gt;
+
+&lt;!-- 通过 HTTP Header（推荐） --&gt;
+Content-Security-Policy: default-src 'self'; ...</code></pre>
+
+        <div class="interview-q">
+          <div class="q">Q: 什么是 SRI (Subresource Integrity)？</div>
+          <div class="a">
+            SRI 允许浏览器验证引用的外部资源（CDN 文件）是否被篡改。
+            通过计算文件的哈希值，与 integrity 属性比对。
+            <pre><code>&lt;script src="https://cdn.example.com/lib.js"
+        integrity="sha384-xxx..."
+        crossorigin="anonymous"&gt;&lt;/script&gt;</code></pre>
+            如果文件被修改，哈希不匹配，浏览器会拒绝执行，防止 CDN 投毒攻击。
+          </div>
+        </div>
+      </section>
+
+      <section id="sse">
+        <h2>Server-Sent Events (SSE) <span class="tag tag-new">实时通信</span></h2>
+
+        <h3>SSE vs WebSocket</h3>
+        <table class="compare-table">
+          <tr>
+            <th>特性</th>
+            <th>SSE</th>
+            <th>WebSocket</th>
+          </tr>
+          <tr>
+            <td>通信方向</td>
+            <td>服务端 → 客户端（单向）</td>
+            <td>双向全双工</td>
+          </tr>
+          <tr>
+            <td>协议</td>
+            <td>HTTP（保持连接）</td>
+            <td>WS/WSS（升级协议）</td>
+          </tr>
+          <tr>
+            <td>自动重连</td>
+            <td class="highlight">原生支持</td>
+            <td>需自行实现</td>
+          </tr>
+          <tr>
+            <td>事件 ID</td>
+            <td class="highlight">原生支持</td>
+            <td>需自行实现</td>
+          </tr>
+          <tr>
+            <td>二进制数据</td>
+            <td>不支持（需 Base64）</td>
+            <td>原生支持</td>
+          </tr>
+          <tr>
+            <td>适用场景</td>
+            <td>股票行情、日志推送、通知</td>
+            <td>聊天、游戏、协作编辑</td>
+          </tr>
+        </table>
+
+        <h3>SSE 客户端使用</h3>
+        <pre><code>const eventSource = new EventSource('/sse-endpoint');
+
+// 默认消息（无 event 字段）
+eventSource.onmessage = (e) => {
+  console.log('Message:', e.data);
+};
+
+// 指定事件类型
+eventSource.addEventListener('stock-update', (e) => {
+  const data = JSON.parse(e.data);
+  console.log('Stock:', data);
+});
+
+eventSource.onerror = (e) => {
+  console.error('SSE Error:', e);
+  // 自动重连，可调用 eventSource.close() 停止
+};
+
+// 主动关闭
+eventSource.close();</code></pre>
+
+        <h3>SSE 服务端格式</h3>
+        <pre><code>HTTP/1.1 200 OK
+Content-Type: text/event-stream
+Cache-Control: no-cache
+Connection: keep-alive
+
+id: 1
+event: stock-update
+data: {"symbol": "AAPL", "price": 150.25}
+
+id: 2
+data: 普通消息
+
+: 这是注释（心跳）
+
+event: close
+data: 结束</code></pre>
+      </section>
+
+      <div style="margin-top: 80px; padding-top: 40px; border-top: 2px solid var(--border); color: var(--ink2); text-align: center;">
+        <p>祝面试顺利 🎯</p>
+        <p style="font-size: 12px; margin-top: 8px;">基于 HTML5 Living Standard 2025 | 持续更新</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // 当前章节高亮
+    const sections = document.querySelectorAll('section[id]');
+    const navItems = document.querySelectorAll('.nav-item a');
+
+    const observerOptions = {
+      rootMargin: '-20% 0px -80% 0px',
+      threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navItems.forEach(item => {
+            item.style.color = '';
+            item.style.borderLeftColor = '';
+          });
+          const activeLink = document.querySelector(`.nav-item a[href="#${entry.target.id}"]`);
+          if (activeLink) {
+            activeLink.style.color = 'var(--accent)';
+            activeLink.style.borderLeftColor = 'var(--accent)';
+          }
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(section => observer.observe(section));
+  </script>
+</body>
+</html>
